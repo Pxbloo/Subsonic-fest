@@ -1,9 +1,9 @@
 import React from "react";
-import logo from "../assets/logo/Subsonic-long.webp";
-import Button from "./Button";
-import AppLink from "./AppLink";
+import logo from "@/assets/logo/Subsonic-long.webp";
+import Button from "@/components/ui/Button";
+import AppLink from "@/components/ui/AppLink";
 
-const Navbar = () => {
+const Navbar = ({ onOpenLogin, onOpenRegister }) => {
   const isLoggedIn = false;   // Cambiar cuando tengamos back
   const username = "Usuario"; // Cambiar cuando tengamos back
 
@@ -24,8 +24,8 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <Button variant="ghost">Log In</Button>
-            <Button variant="primarySmall">Registro</Button>
+            <Button variant="ghost" onClick={onOpenLogin}>Log In</Button>
+            <Button variant="primarySmall" onClick={onOpenRegister}>Registro</Button>
           </>
         )}
       </div>
