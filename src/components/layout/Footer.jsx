@@ -1,7 +1,7 @@
 import React from 'react';
 import SubsonicLogo from "@/assets/logo/Subsonic.webp";
 import AppLink from './AppLink';
-import SocialLinks from './SocialLinks'; 
+import SocialLinks from '../SocialLinks'; 
 
 const Footer = () => {
   return (
