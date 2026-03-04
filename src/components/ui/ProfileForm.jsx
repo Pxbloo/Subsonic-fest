@@ -13,11 +13,10 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
     const [confirmNew, setConfirmNew] = useState("");
 
     useEffect(() => {
-        /*
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFullName(value?.fullName ?? "");
         setPhone(value?.phone ?? "");
         setAddress(value?.address ?? { country: "", city: "", street: "", postalCode: ""});
-        */
     }, [value, isEditing]);
 
     const canChangePassword = useMemo(() => {

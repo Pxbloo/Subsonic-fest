@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import Home from '@/pages/Home';
@@ -12,17 +12,27 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(null); // null, 'login' o 'register'
   const [user, setUser] = useState(null); // null o objeto de usuario
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const openLoginModal = () => setIsModalOpen('login');
   const openRegisterModal = () => setIsModalOpen('register');
   const closeModal = () => setIsModalOpen(null);
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
     closeModal();
   };
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('user');
   };
 
   return (
@@ -45,8 +55,9 @@ function App() {
         <main className="grow p-6 md:p-16">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/user-profile" element={<UserProfile />} />            
+            <Route path="/user-profile" element={<UserProfile />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+
           </Routes>
         </main>
 
@@ -55,5 +66,18 @@ function App() {
     </Router>
   );
 }
+
+/*
+Añadir próximamente
+
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    console.log("User not logged in, redirecting to homepage...", user);
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
+*/
+
 
 export default App;

@@ -7,7 +7,7 @@ const UserProfile = () => {
 
     const [isEditing, setIsEditing] = useState(false);
 
-    const [profile, setProfile] = React.useState({
+    const [profile, setProfile] = useState({
         name: "Usuario",
         phone: "",
         avatar: "",

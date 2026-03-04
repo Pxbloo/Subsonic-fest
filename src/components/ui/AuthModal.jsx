@@ -43,6 +43,10 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
 
         if (user && user.password === loginPassword) {
           console.log("Login successful:", user);
+
+          const savedUser = { ...user};
+          delete savedUser.password;
+
           onLoginSuccess(user); // Cuando se pase a fetch -> modificar para no enviar contraseña de usuario al estado global
           onClose();
         }
