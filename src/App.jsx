@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import AuthModal from '@/components/ui/AuthModal';
+import UserProfile from "@/pages/UserProfile.jsx";
 import CheckoutPage from '@/pages/CheckoutPage';
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
 
         <main className="grow p-6 md:p-16">
           <Routes>
-            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/user-profile" element={<UserProfile />} />            <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>
         </main>
 
