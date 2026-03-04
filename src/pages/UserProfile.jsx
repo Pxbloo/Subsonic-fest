@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
-import AvatarPicker from '../components/AvatarPicker';
-import ProfileForm from "@/components/ProfileForm.jsx";
-import RecentPurchases from "@/components/RecentPurchases.jsx";
+import AvatarPicker from '../components/ui/AvatarPicker.jsx';
+import ProfileForm from "@/components/ui/ProfileForm.jsx";
+import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
 
 const UserProfile = () => {
 
