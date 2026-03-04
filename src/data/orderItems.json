@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Entrada Subsonic 3 días",
+    "category": "Abono general",
+    "price": 49.99
+  },
+  {
+    "id": 2,
+    "name": "Zona VIP Upgrade",
+    "category": "Upgrade experiencia",
+    "price": 290.5
+  },
+  {
+    "id": 3,
+    "name": "Merch pack oficial",
+    "category": "Merchandising",
+    "price": 19.99
+  }
+]
