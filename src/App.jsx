@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import AuthModal from '@/components/ui/AuthModal';
 import Home from '@/pages/Home'; // Importamos la Home
 import UserProfile from "@/pages/UserProfile.jsx";
+import CheckoutPage from '@/pages/CheckoutPage';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(null); // null, 'login' o 'register'
