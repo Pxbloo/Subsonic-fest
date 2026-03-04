@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useMemo, useState } from "react";
+import ProductModal from './ProductModal';
 
-const ShopCard = ({ name, category, price, description }) => {
+const ShopCard = ({ name, category, price, description, image}) => {
+
+    const [open, setOpen] = useState(false);
+
+    const product = useMemo(
+        () => ({ name, category, price, description, image }),
+        [name, category, price, description, image]
+    );
+
     return (
         <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl p-6 flex flex-col items-center text-center hover:border-subsonic-accent transition-colors group">
             <div className="w-full aspect-video bg-subsonic-border rounded-lg mb-6 flex items-center justify-center overflow-hidden">
@@ -13,9 +22,21 @@ const ShopCard = ({ name, category, price, description }) => {
             </p>
             <div className="flex justify-between items-center w-full mt-auto">
                 <span className="text-subsonic-accent font-black text-xl">{price}</span>
-                <button className="bg-subsonic-accent text-subsonic-bg px-4 py-2 rounded-full font-black text-xs uppercase hover:bg-subsonic-text transition-colors">
+                <button
+                    onClick={() => setOpen(true)}
+                    className="bg-subsonic-accent text-subsonic-bg px-4 py-2 rounded-full font-black text-xs uppercase hover:bg-subsonic-text transition-colors">
                     Añadir al carrito
                 </button>
+                <ProductModal
+                    open={open}
+                    product={product}
+                    onClose={() => setOpen(false)}
+                    onAddToCart={(payload) => {
+                        // TODO: Conectar con tu estado global / context / store
+                        // payload = { product, quantity, size, color }
+                        console.log("ADD_TO_CART", payload);
+                    }}
+                />
             </div>
         </div>
     );
