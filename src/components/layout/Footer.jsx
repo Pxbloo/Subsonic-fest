@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 import SubsonicLogo from "@/assets/logo/Subsonic.webp";
-import AppLink from '../ui/AppLink';
-import SocialLinks from '../ui/SocialLinks';
+import SocialLinks from '@/components/ui/SocialLinks'; // Importación del componente de redes sociales
 
 const Footer = () => {
   return (
@@ -9,53 +9,71 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-15">
           
+          {/* Columna 1: Logo con enlace a Home */}
           <div className="col-span-1 md:col-span-1">
-            <img 
-              src={SubsonicLogo} 
-              alt="Subsonic Logo" 
-              className="w-40 h-auto mb-6 hover:opacity-50 transition-opacity cursor-pointer" 
-            />
+            <Link to="/">
+              <img 
+                src={SubsonicLogo} 
+                alt="Subsonic Logo" 
+                className="w-40 h-auto mb-6 hover:opacity-50 transition-opacity cursor-pointer" 
+              />
+            </Link>
           </div>
 
+          {/* Columna 2: Inicio */}
           <div>
-            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">Inicio</h4>
+            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">
+              Inicio
+            </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><AppLink href="/experiencias">Experiencias</AppLink></li>
-              <li><AppLink href="/paquetes">Paquetes</AppLink></li>
-              <li><AppLink href="/entradas">Entradas</AppLink></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Experiencias</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Paquetes</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Entradas</Link></li>
             </ul>
           </div>
 
+          {/* Columna 3: Tienda */}
           <div>
-            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">Tienda</h4>
+            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">
+              Tienda
+            </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><AppLink href="/ropa">Ropa</AppLink></li>
-              <li><AppLink href="/accesorios">Accesorios</AppLink></li>
-              <li><AppLink href="/otros">Otros</AppLink></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Ropa</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Accesorios</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Otros</Link></li>
             </ul>
           </div>
 
+          {/* Columna 4: Blog */}
           <div>
-            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">Blog</h4>
+            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">
+              Blog
+            </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><AppLink href="/noticias">Noticias y <br />novedades</AppLink></li>
-              <li><AppLink href="/artistas">Artículos de <br/>artistas</AppLink></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Noticias y <br />novedades</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Artículos de <br/>artistas</Link></li>
             </ul>
           </div>
 
+          {/* Columna 5: Contacto */}
           <div>
-            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">Contacto</h4>
+            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">
+              Contacto
+            </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><AppLink href="/faq">FAQ</AppLink></li>
-              <li><AppLink href="/soporte">Soporte</AppLink></li>
-              <li><AppLink href="/trabaja-con-nosotros">Trabaja con <br/>nosotros</AppLink></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">FAQ</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Soporte</Link></li>
+              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Trabaja con <br/>nosotros</Link></li>
             </ul>
           </div>
 
-          {/* Columna de Redes Sociales Actualizada */}
+          {/* Columna 6: Redes Sociales (Componetizada) */}
           <div>
-            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">Síguenos</h4>
-            <SocialLinks variant="vertical" />
+            <h4 className="font-montserrat font-bold text-subsonic-muted text-xl mb-6 uppercase">
+              Síguenos
+            </h4>
+            {/* Usamos la variante 'full' para mostrar iconos y nombres */}
+            <SocialLinks variant="full" />
           </div>
 
         </div>

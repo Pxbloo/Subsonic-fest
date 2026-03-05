@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
+import Home from '@/pages/Home';
 import AuthModal from '@/components/ui/AuthModal';
-import Merch from '@/Merch';
+import UserProfile from "@/pages/UserProfile.jsx";
+import CheckoutPage from '@/pages/CheckoutPage';
+import FestivalInstance from '@/pages/FestivalInstance';
 
 function App() {
 
@@ -26,7 +29,10 @@ function App() {
 
         <main className="grow p-6 md:p-16">
           <Routes>
-            <Route path="/merch" element={<Merch />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/user-profile" element={<UserProfile />} />            
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/festival/:id" element={<FestivalInstance />} />
           </Routes>
         </main>
 

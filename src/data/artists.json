@@ -1,0 +1,30 @@
+[
+  {
+    "id": "charlotte-de-witte",
+    "name": "Charlotte de Witte",
+    "genre": "Techno",
+    "description": "Charlotte de Witte es una DJ y productora discográfica belga, cuyo estilo incluye el techno minimalista y el techno ácido.",
+    "spotifyId": "1"
+  },
+  {
+    "id": "amelie-lens",
+    "name": "Amelie Lens",
+    "genre": "Acid Techno",
+    "description": "Amelie Lens es una DJ belga, productora de discos y copropietaria del sello discográfico Lenske.",
+    "spotifyId": "2"
+  },
+  {
+    "id": "adam-beyer",
+    "name": "Adam Beyer",
+    "genre": "Drumcode",
+    "description": "DJ y productor sueco de techno, fundador de la marca y el sello Drumcode Records.",
+    "spotifyId": "3"
+  },
+  {
+    "id": "boris-brejcha",
+    "name": "Boris Brejcha",
+    "genre": "High-Tech Minimal",
+    "description": "DJ y productor alemán conocido por su estilo 'High-Tech Minimal'.",
+    "spotifyId": "4"
+  }
+]

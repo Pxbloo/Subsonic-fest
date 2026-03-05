@@ -1,16 +1,15 @@
-import React from 'react';
 import SocialIcon from './SocialIcon';
 
-const SocialLinks = ({ variant = 'vertical' }) => {
-  const platforms = ['instagram', 'x', 'youtube', 'linkedin', 'soundcloud'];
-  
+const SocialLinks = ({ variant = 'full' }) => {
+  const platforms = ['x', 'instagram', 'youtube', 'linkedin', 'soundcloud'];
+
   return (
-    <div className={variant === 'vertical' ? 'flex flex-col space-y-4' : 'flex flex-row space-x-6'}>
-      {platforms.map((p) => (
+    <div className={variant === 'minimal' ? 'flex gap-6' : 'flex flex-col gap-4'}>
+      {platforms.map(p => (
         <SocialIcon 
           key={p} 
           platform={p} 
-          showText={variant === 'vertical'} 
+          showText={variant === 'full'} 
         />
       ))}
     </div>

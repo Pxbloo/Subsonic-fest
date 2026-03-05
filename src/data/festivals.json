@@ -1,0 +1,37 @@
+[
+  { 
+    "id": 1, 
+    "title": "Summer Subsonic", 
+    "date": "15-17 Jul 2025", 
+    "location": "Recinto Ferial, Madrid",
+    "price": "89€", 
+    "description": "El evento principal del verano con los mejores DJs internacionales. Tres días de música, arte inmersivo y tecnología punta.",
+    "tickets": [
+      { "name": "General Pass", "price": "89€" },
+      { "name": "VIP Experience", "price": "155€" },
+      { "name": "Backstage Pass", "price": "250€" }
+    ],
+    "lineup": [
+      { "name": "Charlotte de Witte", "genre": "Techno" },
+      { "name": "Amelie Lens", "genre": "Acid Techno" },
+      { "name": "Adam Beyer", "genre": "Drumcode" },
+      { "name": "Boris Brejcha", "genre": "High-Tech Minimal" }
+    ]
+  },
+  { 
+    "id": 2, 
+    "title": "Electronic Night", 
+    "date": "22 Ago 2025", 
+    "location": "Industrial Park, Barcelona",
+    "price": "45€", 
+    "description": "Una noche dedicada al techno más puro en un entorno industrial transformado.",
+    "tickets": [
+      { "name": "Early Bird", "price": "35€" },
+      { "name": "Standard Entry", "price": "45€" }
+    ],
+    "lineup": [
+      { "name": "Oscar Mulero", "genre": "Techno" },
+      { "name": "Paula Temple", "genre": "Industrial Techno" }
+    ]
+  }
+]
