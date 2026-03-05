@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button'; // Importamos el componente Button
+import Button from './Button'; 
 
 const Hero = () => {
   return (

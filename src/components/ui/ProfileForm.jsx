@@ -45,7 +45,6 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
 
         onChangePassword?.({ currentPassword, newPassword });
 
-        // Clear fields after request
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNew("");
@@ -67,7 +66,7 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
 
     return (
         <div className="space-y-6">
-            {/* Top actions */}
+            {}
             <div className="flex items-center justify-between gap-3">
                 <h3 className="text-lg font-black text-subsonic-text uppercase">Datos</h3>
 

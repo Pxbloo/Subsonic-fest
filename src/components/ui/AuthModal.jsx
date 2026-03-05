@@ -49,7 +49,7 @@ const AuthModal = ({ isOpen, initialType, onClose }) => {
           </div>
         )}
         
-        {/* Pestañas */}
+        {}
         <div className="flex gap-10 mb-10 justify-center">
           {['login', 'register'].map((tab) => (
             <button
@@ -73,7 +73,7 @@ const AuthModal = ({ isOpen, initialType, onClose }) => {
           ))}
         </div>
 
-        {/* Formulario dinámico */}
+        {}
         {activeTab === 'login' ? (
           <form className="space-y-5 max-w-sm mx-auto" onSubmit={handleSubmit} noValidate>
             <Input label="Email o teléfono" type="email" placeholder="tu@email.com" required />
@@ -105,7 +105,7 @@ const AuthModal = ({ isOpen, initialType, onClose }) => {
                </select>
             </div>
 
-            {/* Solo se muestra si el usuario seleccionado es proveedor */}
+            {}
             {userType === 'provider' && (
               <div className="md:col-span-2 border-2 border-dashed border-subsonic-border rounded-lg p-6 text-center text-subsonic-muted hover:border-subsonic-accent transition-colors cursor-pointer bg-subsonic-navfooter/70">
                 <p className="text-xs uppercase tracking-widest italic">Arrastra archivos aquí (DNI / Portfolio)</p>
@@ -116,7 +116,7 @@ const AuthModal = ({ isOpen, initialType, onClose }) => {
           </form>
         )}
         
-        {/* Botón Cerrar */}
+        {}
         <button 
           onClick={onClose} 
           className="mt-8 block mx-auto text-[10px] uppercase tracking-[0.3em] text-subsonic-muted hover:text-subsonic-text transition-colors"

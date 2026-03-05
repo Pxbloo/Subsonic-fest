@@ -9,7 +9,7 @@ import bizumLogo from '@/assets/icons/Bizum.webp';
 const PaymentForm = ({ onSubmit, isLoading, totalAmount }) => {
   return (
     <form className="space-y-6" onSubmit={onSubmit}>
-      {/* Pago externo, de mometno solo logos */}
+      {}
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
         <Button
           type="button"
