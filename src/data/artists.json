@@ -1,22 +1,30 @@
-{
-  "artists": [
-    {
-      "id": 301,
-      "name": "David Guetta",
-      "genres": ["Electrónica", "House", "Dance"],
-      "description": "DJ y productor francés, pionero del EDM, con múltiples premios Grammy."
-    },
-    {
-      "id": 302,
-      "name": "Arctic Monkeys",
-      "genres": ["Rock alternativo", "Indie rock"],
-      "description": "Banda británica formada en Sheffield, conocida por su estilo fresco y letras ingeniosas."
-    },
-    {
-      "id": 303,
-      "name": "Norah Jones",
-      "genres": ["Jazz", "Pop", "Soul"],
-      "description": "Cantante y pianista estadounidense, ganadora de 9 premios Grammy, con una voz suave y emotiva."
-    }
-  ]
-}
+[
+  {
+    "id": "charlotte-de-witte",
+    "name": "Charlotte de Witte",
+    "genre": "Techno",
+    "description": "Charlotte de Witte es una DJ y productora discográfica belga, cuyo estilo incluye el techno minimalista y el techno ácido.",
+    "spotifyId": "1"
+  },
+  {
+    "id": "amelie-lens",
+    "name": "Amelie Lens",
+    "genre": "Acid Techno",
+    "description": "Amelie Lens es una DJ belga, productora de discos y copropietaria del sello discográfico Lenske.",
+    "spotifyId": "2"
+  },
+  {
+    "id": "adam-beyer",
+    "name": "Adam Beyer",
+    "genre": "Drumcode",
+    "description": "DJ y productor sueco de techno, fundador de la marca y el sello Drumcode Records.",
+    "spotifyId": "3"
+  },
+  {
+    "id": "boris-brejcha",
+    "name": "Boris Brejcha",
+    "genre": "High-Tech Minimal",
+    "description": "DJ y productor alemán conocido por su estilo 'High-Tech Minimal'.",
+    "spotifyId": "4"
+  }
+]

@@ -6,6 +6,7 @@ import Home from '@/pages/Home';
 import AuthModal from '@/components/ui/AuthModal';
 import UserProfile from "@/pages/UserProfile.jsx";
 import CheckoutPage from '@/pages/CheckoutPage';
+import FestivalInstance from '@/pages/FestivalInstance';
 
 function App() {
 
@@ -57,7 +58,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/user-profile" element={<UserProfile user={user} />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-
+            <Route path="/festival/:id" element={<FestivalInstance />} />
           </Routes>
         </main>
 
