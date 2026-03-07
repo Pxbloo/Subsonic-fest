@@ -1,50 +1,44 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import AvatarPicker from '../components/ui/AvatarPicker.jsx';
 import ProfileForm from "@/components/ui/ProfileForm.jsx";
 import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
+import orderItems from "@/data/orderItems.json";
 
-const UserProfile = () => {
+const UserProfile = ({user}) => {
 
     const [isEditing, setIsEditing] = useState(false);
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const [profile, setProfile] = React.useState({
-        name: "Usuario",
-        phone: "",
-        avatar: "",
-        address: {
-            country: "",
-            city: "",
-            street: "",
-            postalCode: "",
-        },
-    });
+    useEffect(() => {
+        if (user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setProfile({
+                fullName: user.name || "",
+                email: user.email || "",
+                phone: user.phone || "",
+                avatarUrl: user.avatar || "",
+                address: user.address || {
+                    country: "",
+                    city: "",
+                    street: "",
+                    postalCode: "",
+                },
+            });
+            setLoading(false);
+        }
+    }, [user]);
 
-    const purchases = useMemo(
-        () => [
-            {
-                id: 1,
-                title: "Evento de Festival",
-                date: "15-17 Jul 2025",
-                amount: 89,
-                status: "Completado",
-            },
-            {
-                id: 2,
-                title: "Experiencia de DJ",
-                date: "22 Ago 2025",
-                amount: 45,
-                status: "En progreso",
-            },
-            {
-                id: 3,
-                title: "Paquete de Techno",
-                date: "05 Sep 2025",
-                amount: 60,
-                status: "Pendiente",
-            }
-        ],
-        []
-    );
+    const purchases = useMemo(() => {
+        return orderItems.map((item, index) => ({
+            id: item.id,
+            title: item.name,
+            date: item.date,
+            amount: item.price,
+            status: index === 0 ? "Completado" : index === 1 ? "En progreso" : "Pendiente",
+            category: item.category
+        }));
+    }, []);
 
     const handleAvatarChange = (nextUrl) => {
         setProfile((prev) => ({ ...prev, avatarUrl: nextUrl }));
@@ -67,6 +61,37 @@ const UserProfile = () => {
     const handleCancelEdit = () => {
         setIsEditing(false);
     };
+
+    if (loading) {
+        return (
+            <section className="max-w-6xl mx-auto">
+                <header className="mb-6">
+                    <h1 className="text-3xl md:text-4xl font-black text-subsonic-accent uppercase tracking-tight">
+                        Perfil de usuario
+                    </h1>
+                    <p className="text-subsonic-text/80 mt-2">
+                        Cargando...
+                    </p>
+                </header>
+            </section>
+        );
+    }
+
+    if (!profile) {
+        console.error("Profile data is missing. Unable to render user profile.");
+        return (
+            <section className="max-w-6xl mx-auto">
+                <header className="mb-6">
+                    <h1 className="text-3xl md:text-4xl font-black text-subsonic-accent uppercase tracking-tight">
+                        Perfil de usuario
+                    </h1>
+                    <p className="text-subsonic-text/80 mt-2">
+                        No se pudo cargar el perfil.
+                    </p>
+                </header>
+            </section>
+        );
+    }
 
     return (
         <section className="max-w-6xl mx-auto">

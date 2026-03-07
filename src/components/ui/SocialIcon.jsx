@@ -1,13 +1,12 @@
 import React from 'react';
-// Importaciones de tus iconos
 import XIcon from '@/assets/icons/icon-twitterx.svg';
 import InstagramIcon from '@/assets/icons/icon-instagram.svg';
 import YoutubeIcon from '@/assets/icons/icon-youtube.svg';
 import LinkedInIcon from '@/assets/icons/icon-linkedin.svg';
-import SoundCloudIcon from '@/assets/icons/icon-soundcloud.svg'; // Si tienes un icono específico para SoundCloud
+import SoundCloudIcon from '@/assets/icons/icon-soundcloud.svg'; 
 
 const SocialIcon = ({ platform, url = "#", showText = false }) => {
-  // 1. Definimos los colores corporativos exactos para el hover
+
   const platformData = {
     x: { icon: XIcon, name: 'Twitter', color: 'group-hover:text-white' },
     instagram: { icon: InstagramIcon, name: 'Instagram', color: 'group-hover:text-[#E1306C]' },
@@ -24,14 +23,14 @@ const SocialIcon = ({ platform, url = "#", showText = false }) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      /* 2. Añadimos 'group' para que el icono y el texto reaccionen juntos al hover */
+
       className={`flex items-center gap-2 text-subsonic-muted transition-all duration-300 ${data.color} group`}
     >
       {data.icon ? (
         <img 
           src={data.icon} 
           alt={data.name} 
-          /* 3. ¡ELIMINAMOS 'invert'! Usamos opacity para que resalte al pasar el ratón */
+
           className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" 
         />
       ) : (

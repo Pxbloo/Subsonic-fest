@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Carlos Gómez",
+      "email": "carlos.gomez@email.com",
+      "phone": "+34 611 222 333",
+      "avatar": "https://i.pravatar.cc/150?u=2",
+      "address": {
+        "country": "España",
+        "city": "Madrid",
+        "street": "Calle de la Princesa, 25",
+        "postalCode": "28008"
+      },
+      "password": "cliente123",
+      "role": "client"
+    },
+    {
+      "id": 2,
+      "name": "María López (Proveedor)",
+      "email": "maria.lopez@proveedor.es",
+      "phone": "+34 655 444 777",
+      "avatar": "https://i.pravatar.cc/150?u=1",
+      "address": {
+        "country": "España",
+        "city": "Barcelona",
+        "street": "Avinguda Diagonal, 450",
+        "postalCode": "08006"
+      },
+      "password": "proveedor456",
+      "role": "provider"
+    },
+    {
+      "id": 3,
+      "name": "Ana Martín (Admin)",
+      "email": "ana.martin@admin.com",
+      "phone": "+34 699 888 111",
+      "avatar": "https://i.pravatar.cc/150?u=3",
+      "address": {
+        "country": "España",
+        "city": "Valencia",
+        "street": "Calle Colón, 12",
+        "postalCode": "46004"
+      },
+      "password": "admin789",
+      "role": "admin"
+    }
+  ]
+}
