@@ -2,7 +2,8 @@
   { 
     "id": 1, 
     "title": "Summer Subsonic", 
-    "date": "15-17 Jul 2025", 
+    "date": "15-17 Jul 2026", 
+    "startDate": "2026-07-15",
     "location": "Recinto Ferial, Madrid",
     "price": "89€", 
     "description": "El evento principal del verano con los mejores DJs internacionales. Tres días de música, arte inmersivo y tecnología punta.",
@@ -14,6 +15,7 @@
     "lineup": [
       { "name": "Charlotte de Witte", "genre": "Techno" },
       { "name": "Amelie Lens", "genre": "Acid Techno" },
+      { "name": "Dennis Ferrer", "genre": "Progressive House" },
       { "name": "Adam Beyer", "genre": "Drumcode" },
       { "name": "Boris Brejcha", "genre": "High-Tech Minimal" }
     ]
@@ -21,7 +23,8 @@
   { 
     "id": 2, 
     "title": "Electronic Night", 
-    "date": "22 Ago 2025", 
+    "date": "22 Ago 2026", 
+    "startDate": "2026-08-22",
     "location": "Industrial Park, Barcelona",
     "price": "45€", 
     "description": "Una noche dedicada al techno más puro en un entorno industrial transformado.",
@@ -32,6 +35,96 @@
     "lineup": [
       { "name": "Oscar Mulero", "genre": "Techno" },
       { "name": "Paula Temple", "genre": "Industrial Techno" }
+    ]
+  },
+  { 
+    "id": 3,
+    "title": "Sónar Barcelona 2025",
+    "date": "13-15 Jun 2025",
+    "startDate": "2025-06-13",
+    "location": "Fira Montjuïc & Fira Gran Via, Barcelona",
+    "price": "Desde 120€",
+    "description": "Edición centrada en la vanguardia electrónica, arte digital y tecnología aplicada a la música.",
+    "tickets": [
+      { "name": "Abono 3 Días", "price": "120€" },
+      { "name": "VIP 3 Días", "price": "240€" }
+    ],
+    "lineup": [
+      { "name": "Aphex Twin", "genre": "IDM" },
+      { "name": "The Chemical Brothers", "genre": "Big Beat" },
+      { "name": "Richie Hawtin", "genre": "Techno" }
+    ]
+  },
+  { 
+    "id": 4,
+    "title": "Primavera Sound 2025",
+    "date": "5-8 Jun 2025",
+    "startDate": "2025-06-05",
+    "location": "Parc del Fòrum, Barcelona",
+    "price": "Desde 135€",
+    "description": "Festival urbano junto al mar que mezcla electrónica, pop experimental y propuestas indie.",
+    "tickets": [
+      { "name": "Abono General", "price": "135€" },
+      { "name": "Abono VIP", "price": "250€" }
+    ],
+    "lineup": [
+      { "name": "Floating Points", "genre": "Electronica" },
+      { "name": "Caribou", "genre": "Electronic Pop" },
+      { "name": "Four Tet", "genre": "Experimental Electronica" }
+    ]
+  },
+  { 
+    "id": 5,
+    "title": "Tomorrowland Belgium 2026",
+    "date": "19-21 Jul 2026",
+    "startDate": "2026-07-19",
+    "location": "De Schorre, Boom (Bélgica)",
+    "price": "Desde 295€",
+    "description": "Uno de los festivales más icónicos del mundo, con una producción escénica extrema y un cartel lleno de superestrellas electrónicas.",
+    "tickets": [
+      { "name": "Full Madness Pass", "price": "295€" },
+      { "name": "Comfort Pass", "price": "435€" }
+    ],
+    "lineup": [
+      { "name": "Armin van Buuren", "genre": "Trance" },
+      { "name": "Tale Of Us", "genre": "Melodic Techno" },
+      { "name": "Charlotte de Witte", "genre": "Techno" }
+    ]
+  },
+  { 
+    "id": 6,
+    "title": "Dekmantel Festival 2026",
+    "date": "31 Jul - 4 Ago 2026",
+    "startDate": "2026-07-31",
+    "location": "Amsterdamse Bos, Ámsterdam",
+    "price": "Desde 160€",
+    "description": "Festival de culto enfocado en la electrónica más selecta, con escenarios en plena naturaleza y clubes repartidos por la ciudad.",
+    "tickets": [
+      { "name": "Weekend Pass", "price": "160€" },
+      { "name": "Day Ticket", "price": "60€" }
+    ],
+    "lineup": [
+      { "name": "Ben UFO", "genre": "Eclectic DJ" },
+      { "name": "Joy Orbison", "genre": "Bass / Techno" },
+      { "name": "Helena Hauff", "genre": "Electro / Techno" }
+    ]
+  },
+  { 
+    "id": 7,
+    "title": "Awakenings Festival 2026",
+    "date": "14-16 Jun 2026",
+    "startDate": "2026-06-14",
+    "location": "Spaarnwoude, Países Bajos",
+    "price": "Desde 130€",
+    "description": "Macro-festival especializado en techno con varios escenarios al aire libre y un sonido contundente.",
+    "tickets": [
+      { "name": "Weekend", "price": "130€" },
+      { "name": "Camping + Weekend", "price": "180€" }
+    ],
+    "lineup": [
+      { "name": "Adam Beyer", "genre": "Techno" },
+      { "name": "Nina Kraviz", "genre": "Techno / Acid" },
+      { "name": "ANNA", "genre": "Techno" }
     ]
   }
 ]
