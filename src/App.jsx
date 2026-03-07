@@ -8,6 +8,7 @@ import UserProfile from "@/pages/UserProfile.jsx";
 import CheckoutPage from '@/pages/CheckoutPage';
 import FestivalInstance from '@/pages/FestivalInstance';
 import ArtistProfile from '@/pages/ArtistProfile';
+import Merch from '@/pages/Merch';
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
         <main className="grow p-6 md:p-16">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/Tienda" element={<Merch />} />
             <Route path="/user-profile" element={<UserProfile user={user} />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/festival/:id" element={<FestivalInstance />} />
