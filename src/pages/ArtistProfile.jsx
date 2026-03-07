@@ -74,7 +74,7 @@ const ArtistProfile = () => {
             </div>
 
             <Button variant="primary" className="w-full mb-3 text-xs">
-              Ver Gira 2025
+              Ver Gira 2026
             </Button>
             <Button variant="outline" className="w-full text-xs">
               Añadir a Favoritos

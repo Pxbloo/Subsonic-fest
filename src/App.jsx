@@ -8,6 +8,7 @@ import UserProfile from "@/pages/UserProfile.jsx";
 import CheckoutPage from '@/pages/CheckoutPage';
 import FestivalInstance from '@/pages/FestivalInstance';
 import ArtistProfile from '@/pages/ArtistProfile';
+import History from '@/pages/History';
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/festival/:id" element={<FestivalInstance />} />
             <Route path="/artist/:id" element={<ArtistProfile />} />
+            <Route path="/history" element={<History />} />
           </Routes>
         </main>
 
