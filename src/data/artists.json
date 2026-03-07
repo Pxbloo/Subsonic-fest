@@ -26,5 +26,75 @@
     "genre": "High-Tech Minimal",
     "description": "DJ y productor alemán conocido por su estilo 'High-Tech Minimal'.",
     "spotifyId": "4"
+  },
+  {
+    "id": "bad-bunny",
+    "name": "Bad Bunny",
+    "genre": "Reggaeton / Trap",
+    "description": "Cantante y compositor puertorriqueño, una de las figuras más influyentes de la música urbana actual.",
+    "spotifyId": "bad-bunny"
+  },
+  {
+    "id": "karol-g",
+    "name": "Karol G",
+    "genre": "Pop Urbano",
+    "description": "Cantante colombiana de reguetón y pop urbano conocida por sus giras masivas y colaboraciones internacionales.",
+    "spotifyId": "karol-g"
+  },
+  {
+    "id": "quevedo",
+    "name": "Quevedo",
+    "genre": "Urbano",
+    "description": "Cantante español de música urbana y reguetón que ha destacado por sus hits virales.",
+    "spotifyId": "quevedo"
+  },
+  {
+    "id": "bizarrap",
+    "name": "Bizarrap",
+    "genre": "Electrónica / Urbano",
+    "description": "Productor argentino conocido por sus 'Music Sessions' con artistas de todo el mundo.",
+    "spotifyId": "bizarrap"
+  },
+  {
+    "id": "foo-fighters",
+    "name": "Foo Fighters",
+    "genre": "Rock Alternativo",
+    "description": "Banda estadounidense de rock alternativo liderada por Dave Grohl, reconocida por sus potentes directos.",
+    "spotifyId": "foo-fighters"
+  },
+  {
+    "id": "iron-maiden",
+    "name": "Iron Maiden",
+    "genre": "Heavy Metal",
+    "description": "Histórica banda británica de heavy metal, referente del género desde los años 80.",
+    "spotifyId": "iron-maiden"
+  },
+  {
+    "id": "red-hot-chili-peppers",
+    "name": "Red Hot Chili Peppers",
+    "genre": "Rock",
+    "description": "Banda estadounidense que fusiona rock, funk y otros estilos, con una larga trayectoria en festivales.",
+    "spotifyId": "red-hot-chili-peppers"
+  },
+  {
+    "id": "billie-eilish",
+    "name": "Billie Eilish",
+    "genre": "Pop",
+    "description": "Cantante y compositora estadounidense de pop alternativo, conocida por su sonido oscuro y experimental.",
+    "spotifyId": "billie-eilish"
+  },
+  {
+    "id": "tame-impala",
+    "name": "Tame Impala",
+    "genre": "Psychedelic Rock",
+    "description": "Proyecto musical liderado por Kevin Parker que mezcla rock psicodélico con electrónica.",
+    "spotifyId": "tame-impala"
+  },
+  {
+    "id": "the-weeknd",
+    "name": "The Weeknd",
+    "genre": "R&B / Pop",
+    "description": "Cantante y productor canadiense de R&B y pop, habitual en los principales festivales internacionales.",
+    "spotifyId": "the-weeknd"
   }
 ]

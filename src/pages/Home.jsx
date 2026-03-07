@@ -4,11 +4,20 @@ import FestivalGrid from '../components/ui/FestivalGrid';
 import festivalsData from '../data/festivals.json'; 
 
 const Home = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const upcomingFestivals = festivalsData.filter((fest) => {
+    const referenceDateString = fest.startDate || fest.date;
+    const festivalDate = new Date(referenceDateString);
+    return festivalDate >= today;
+  });
+
   return (
     <div className="flex flex-col items-center py-10">
       <Hero />
       {}
-      <FestivalGrid festivals={festivalsData} />
+      <FestivalGrid festivals={upcomingFestivals} />
     </div>
   );
 };
