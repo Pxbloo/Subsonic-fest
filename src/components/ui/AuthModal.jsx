@@ -9,6 +9,13 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [registerForm, setRegisterForm] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
+    phone: '',
+  });
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -19,7 +26,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
     }
   }, [initialType]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
     if (!form.checkValidity()) {
@@ -36,8 +43,11 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
     if (activeTab === 'login') {
       try {
         console.log("Attempting login with:", { loginEmail, loginPassword });
-        // Posteriormente habrá que modificarlo para hacer fetch a la base de datos
-        const user = userData.users.find(
+
+        const response = await fetch('http://localhost:3001/users');
+        const users = await response.json();
+
+        const user = users.find(
             u => u.email === loginEmail || u.phone === loginEmail
         );
 
@@ -60,14 +70,57 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
       }
     }
     else {
-      handleRegister();
+      await handleRegister();
     }
   };
 
   const handleRegister = async () => {
-    console.log("Registering user with:", {});
+    try {
+      const fullName = `${registerForm.name} ${registerForm.surname}`.trim();
+      const existingUser = userData.users.find(u => u.email === registerForm.email);
 
-    // Implementar registro de usuario
+      if (existingUser) {
+        setErrorMessage("Ya existe un usuario registrado con ese correo.");
+        return;
+      }
+
+      const newUser = {
+        name: fullName,
+        email: registerForm.email,
+        password: registerForm.password,
+        phone: registerForm.phone || '',
+        avatar: '',
+        address: {
+          country: '',
+          city: '',
+          street: '',
+          postalCode: '',
+        },
+        role: userType === 'provider' ? 'provider' : 'user',
+      }
+
+      const response = await fetch('http://localhost:3001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+
+
+
+      const createdUser = await response.json();
+      const savedUser = { ...createdUser };
+      delete savedUser.password;
+
+      onLoginSuccess(savedUser);
+      onClose();
+    }
+    catch (error) {
+      console.error("Error registering user:", error);
+      setErrorMessage("Error al registrar el usuario.");
+      return;
+    }
     onClose();
   }
 
@@ -125,11 +178,44 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
           </form>
         ) : (
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit} noValidate>
-            <Input label="Nombre *" placeholder="Ex: John" required />
-            <Input label="Apellidos *" placeholder="Ex: Doe" required />
-            <Input label="Email *" type="email" placeholder="Ex: correo@ejemplo.com" className="md:col-span-2" required />
-            <Input label="Contraseña *" type="password" placeholder="••••••••" className="md:col-span-2" required />
-            <Input label="Teléfono" type="tel" placeholder="+34 ..." />
+            <Input
+                label="Nombre *"
+                placeholder="Ex: John"
+                required value={registerForm.name}
+                onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
+            />
+            <Input
+                label="Apellidos *"
+                placeholder="Ex: Doe"
+                required
+                value={registerForm.surname}
+                onChange={(e) => setRegisterForm({ ...registerForm, surname: e.target.value })}
+            />
+            <Input
+                label="Email *"
+                type="email"
+                placeholder="Ex: correo@ejemplo.com"
+                className="md:col-span-2"
+                required
+                value={registerForm.email}
+                onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
+            />
+            <Input
+                label="Contraseña *"
+                type="password"
+                placeholder="••••••••"
+                className="md:col-span-2"
+                required
+                value={registerForm.password}
+                onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
+            />
+            <Input
+                label="Teléfono"
+                type="tel"
+                placeholder="+34 ..."
+                value={registerForm.phone}
+                onChange={(e) => setRegisterForm({ ...registerForm, phone: e.target.value })}
+            />
             
             <div className="space-y-1">
                <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest ml-1">Tipo de usuario *</label>
