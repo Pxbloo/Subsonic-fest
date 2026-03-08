@@ -5,7 +5,7 @@
     "date": "15-17 Jul 2026", 
     "startDate": "2026-07-15",
     "location": "Recinto Ferial, Madrid",
-    "price": "89€", 
+    "price": "Desde 89€", 
     "description": "El evento principal del verano con los mejores DJs internacionales. Tres días de música, arte inmersivo y tecnología punta.",
     "tickets": [
       { "name": "General Pass", "price": "89€" },
@@ -13,11 +13,11 @@
       { "name": "Backstage Pass", "price": "250€" }
     ],
     "lineup": [
-      { "name": "Charlotte de Witte", "genre": "Techno" },
-      { "name": "Amelie Lens", "genre": "Acid Techno" },
-      { "name": "Dennis Ferrer", "genre": "Progressive House" },
-      { "name": "Adam Beyer", "genre": "Drumcode" },
-      { "name": "Boris Brejcha", "genre": "High-Tech Minimal" }
+      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" },
+      { "name": "Karol G", "genre": "Pop Urbano" },
+      { "name": "Quevedo", "genre": "Urbano" },
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" },
+      { "name": "The Weeknd", "genre": "R&B / Pop" }
     ]
   },
   { 
@@ -26,15 +26,15 @@
     "date": "22 Ago 2026", 
     "startDate": "2026-08-22",
     "location": "Industrial Park, Barcelona",
-    "price": "45€", 
+    "price": "Desde 45€", 
     "description": "Una noche dedicada al techno más puro en un entorno industrial transformado.",
     "tickets": [
       { "name": "Early Bird", "price": "35€" },
       { "name": "Standard Entry", "price": "45€" }
     ],
     "lineup": [
-      { "name": "Oscar Mulero", "genre": "Techno" },
-      { "name": "Paula Temple", "genre": "Industrial Techno" }
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" },
+      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" }
     ]
   },
   { 
@@ -50,9 +50,9 @@
       { "name": "VIP 3 Días", "price": "240€" }
     ],
     "lineup": [
-      { "name": "Aphex Twin", "genre": "IDM" },
-      { "name": "The Chemical Brothers", "genre": "Big Beat" },
-      { "name": "Richie Hawtin", "genre": "Techno" }
+      { "name": "The Weeknd", "genre": "R&B / Pop" },
+      { "name": "Billie Eilish", "genre": "Pop" },
+      { "name": "Tame Impala", "genre": "Psychedelic Rock" }
     ]
   },
   { 
@@ -68,9 +68,9 @@
       { "name": "Abono VIP", "price": "250€" }
     ],
     "lineup": [
-      { "name": "Floating Points", "genre": "Electronica" },
-      { "name": "Caribou", "genre": "Electronic Pop" },
-      { "name": "Four Tet", "genre": "Experimental Electronica" }
+      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
+      { "name": "Foo Fighters", "genre": "Rock Alternativo" },
+      { "name": "Billie Eilish", "genre": "Pop" }
     ]
   },
   { 
@@ -86,9 +86,9 @@
       { "name": "Comfort Pass", "price": "435€" }
     ],
     "lineup": [
-      { "name": "Armin van Buuren", "genre": "Trance" },
-      { "name": "Tale Of Us", "genre": "Melodic Techno" },
-      { "name": "Charlotte de Witte", "genre": "Techno" }
+      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" },
+      { "name": "Karol G", "genre": "Pop Urbano" },
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" }
     ]
   },
   { 
@@ -104,9 +104,9 @@
       { "name": "Day Ticket", "price": "60€" }
     ],
     "lineup": [
-      { "name": "Ben UFO", "genre": "Eclectic DJ" },
-      { "name": "Joy Orbison", "genre": "Bass / Techno" },
-      { "name": "Helena Hauff", "genre": "Electro / Techno" }
+      { "name": "The Weeknd", "genre": "R&B / Pop" },
+      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
+      { "name": "Quevedo", "genre": "Urbano" }
     ]
   },
   { 
@@ -122,9 +122,9 @@
       { "name": "Camping + Weekend", "price": "180€" }
     ],
     "lineup": [
-      { "name": "Adam Beyer", "genre": "Techno" },
-      { "name": "Nina Kraviz", "genre": "Techno / Acid" },
-      { "name": "ANNA", "genre": "Techno" }
+      { "name": "Iron Maiden", "genre": "Heavy Metal" },
+      { "name": "Red Hot Chili Peppers", "genre": "Rock" },
+      { "name": "Foo Fighters", "genre": "Rock Alternativo" }
     ]
   }
 ]

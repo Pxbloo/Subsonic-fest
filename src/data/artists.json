@@ -1,100 +1,72 @@
 [
   {
-    "id": "charlotte-de-witte",
-    "name": "Charlotte de Witte",
-    "genre": "Techno",
-    "description": "Charlotte de Witte es una DJ y productora discográfica belga, cuyo estilo incluye el techno minimalista y el techno ácido.",
-    "spotifyId": "1"
-  },
-  {
-    "id": "amelie-lens",
-    "name": "Amelie Lens",
-    "genre": "Acid Techno",
-    "description": "Amelie Lens es una DJ belga, productora de discos y copropietaria del sello discográfico Lenske.",
-    "spotifyId": "2"
-  },
-  {
-    "id": "adam-beyer",
-    "name": "Adam Beyer",
-    "genre": "Drumcode",
-    "description": "DJ y productor sueco de techno, fundador de la marca y el sello Drumcode Records.",
-    "spotifyId": "3"
-  },
-  {
-    "id": "boris-brejcha",
-    "name": "Boris Brejcha",
-    "genre": "High-Tech Minimal",
-    "description": "DJ y productor alemán conocido por su estilo 'High-Tech Minimal'.",
-    "spotifyId": "4"
-  },
-  {
     "id": "bad-bunny",
     "name": "Bad Bunny",
     "genre": "Reggaeton / Trap",
     "description": "Cantante y compositor puertorriqueño, una de las figuras más influyentes de la música urbana actual.",
-    "spotifyId": "bad-bunny"
+    "spotifyId": "4q3ewBCX7sLwd24euuV69X"
   },
   {
     "id": "karol-g",
     "name": "Karol G",
     "genre": "Pop Urbano",
     "description": "Cantante colombiana de reguetón y pop urbano conocida por sus giras masivas y colaboraciones internacionales.",
-    "spotifyId": "karol-g"
+    "spotifyId": "790FomKkXshlbRYZFtlgla"
   },
   {
     "id": "quevedo",
     "name": "Quevedo",
     "genre": "Urbano",
     "description": "Cantante español de música urbana y reguetón que ha destacado por sus hits virales.",
-    "spotifyId": "quevedo"
+    "spotifyId": "52iwsT98xCoGgiGntTiR7K"
   },
   {
     "id": "bizarrap",
     "name": "Bizarrap",
     "genre": "Electrónica / Urbano",
     "description": "Productor argentino conocido por sus 'Music Sessions' con artistas de todo el mundo.",
-    "spotifyId": "bizarrap"
+    "spotifyId": "716NhGYqD1jl2wI1Qkgq36"
   },
   {
     "id": "foo-fighters",
     "name": "Foo Fighters",
     "genre": "Rock Alternativo",
     "description": "Banda estadounidense de rock alternativo liderada por Dave Grohl, reconocida por sus potentes directos.",
-    "spotifyId": "foo-fighters"
+    "spotifyId": "7jy3rLJdDQY21OgRLCZ9sD"
   },
   {
     "id": "iron-maiden",
     "name": "Iron Maiden",
     "genre": "Heavy Metal",
     "description": "Histórica banda británica de heavy metal, referente del género desde los años 80.",
-    "spotifyId": "iron-maiden"
+    "spotifyId": "6mdiAmATAx73kdxrNrnlao"
   },
   {
     "id": "red-hot-chili-peppers",
     "name": "Red Hot Chili Peppers",
     "genre": "Rock",
     "description": "Banda estadounidense que fusiona rock, funk y otros estilos, con una larga trayectoria en festivales.",
-    "spotifyId": "red-hot-chili-peppers"
+    "spotifyId": "0L8ExT028jH3ddEcZwqJJ5"
   },
   {
     "id": "billie-eilish",
     "name": "Billie Eilish",
     "genre": "Pop",
     "description": "Cantante y compositora estadounidense de pop alternativo, conocida por su sonido oscuro y experimental.",
-    "spotifyId": "billie-eilish"
+    "spotifyId": "6qqNVTkY8uBg9cP3Jd7DAH"
   },
   {
     "id": "tame-impala",
     "name": "Tame Impala",
     "genre": "Psychedelic Rock",
     "description": "Proyecto musical liderado por Kevin Parker que mezcla rock psicodélico con electrónica.",
-    "spotifyId": "tame-impala"
+    "spotifyId": "5INjqkS1o8h1imAzPqGZBb"
   },
   {
     "id": "the-weeknd",
     "name": "The Weeknd",
     "genre": "R&B / Pop",
     "description": "Cantante y productor canadiense de R&B y pop, habitual en los principales festivales internacionales.",
-    "spotifyId": "the-weeknd"
+    "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ"
   }
 ]
