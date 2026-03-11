@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import BaseCard from '@/components/ui/BaseCard.jsx';
 import userData from "@/data/users.json";
 
 const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
@@ -147,9 +148,9 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
 
             {}
             {userType === 'provider' && (
-              <div className="md:col-span-2 border-2 border-dashed border-subsonic-border rounded-lg p-6 text-center text-subsonic-muted hover:border-subsonic-accent transition-colors cursor-pointer bg-subsonic-navfooter/70">
+              <BaseCard className="md:col-span-2 border-2 border-dashed rounded-lg p-6 text-center text-subsonic-muted cursor-pointer bg-subsonic-navfooter/70">
                 <p className="text-xs uppercase tracking-widest italic">Arrastra archivos aquí (DNI / Portfolio)</p>
-              </div>
+              </BaseCard>
             )}
             
             <Button type="submit" variant="primary" className="md:col-span-2 py-4 text-base mt-2">Registrarse</Button>

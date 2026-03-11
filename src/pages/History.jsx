@@ -1,6 +1,7 @@
 import React from 'react';
 import FestivalGrid from '@/components/ui/FestivalGrid';
 import PageHeader from '@/components/ui/PageHeader';
+import BaseCard from '@/components/ui/BaseCard.jsx';
 import { useHistory } from '@/hooks/useHistory'; 
 
 const History = () => {
@@ -38,9 +39,9 @@ const History = () => {
           {pastFestivals.length > 0 ? (
             <FestivalGrid festivals={pastFestivals} />
           ) : (
-            <div className="border border-dashed border-subsonic-border p-12 rounded-2xl text-center">
+            <BaseCard className="border-dashed p-12 text-center bg-transparent">
               <p className="text-subsonic-muted">Aún no tienes festivales en tu historial.</p>
-            </div>
+            </BaseCard>
           )}
         </section>
 
@@ -55,7 +56,7 @@ const History = () => {
           </div>
 
           {merchHistory.length > 0 ? (
-            <div className="border border-subsonic-border rounded-2xl p-8 bg-subsonic-navfooter/40">
+            <BaseCard className="p-8 bg-subsonic-navfooter/40">
               <ul className="space-y-4">
                 {merchHistory.map((item) => (
                   <li
@@ -76,11 +77,11 @@ const History = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </BaseCard>
           ) : (
-            <div className="border border-dashed border-subsonic-border p-12 rounded-2xl text-center">
+            <BaseCard className="border-dashed p-12 text-center bg-transparent">
               <p className="text-subsonic-muted">Aún no has comprado merchandising.</p>
-            </div>
+            </BaseCard>
           )}
         </section>
 

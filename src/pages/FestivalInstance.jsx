@@ -4,10 +4,10 @@ import festivalsData from '../data/festivals.json';
 import Button from '../components/ui/Button';
 import SocialLinks from '../components/ui/SocialLinks';
 import TicketModal from '../components/ui/TicketModal';
+import BaseCard from '../components/ui/BaseCard.jsx';
 
 // --- COMPONENTES INTERNOS ---
 
-// 1. Componente para la descripción del evento
 const FestivalAbout = ({ description }) => (
   <section>
     <h2 className="text-3xl font-black text-subsonic-accent uppercase mb-6 font-montserrat tracking-tight">
@@ -17,7 +17,6 @@ const FestivalAbout = ({ description }) => (
   </section>
 );
 
-// 2. Componente para la cartelera (Lineup)
 const FestivalLineup = ({ lineup }) => (
   <section>
     <h2 className="text-3xl font-black text-subsonic-accent uppercase mb-6 font-montserrat tracking-tight">
@@ -25,24 +24,23 @@ const FestivalLineup = ({ lineup }) => (
     </h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {lineup && lineup.map((artist, index) => (
-        <Link 
-          key={index} 
-          to={`/artist/${artist.id || artist.name.toLowerCase().replace(/\s+/g, '-')}`} 
+        <Link
+          key={index}
+          to={`/artist/${artist.id || artist.name.toLowerCase().replace(/\s+/g, '-')}`}
           className="block"
         >
-          <div className="bg-subsonic-navfooter border border-subsonic-border p-6 rounded-2xl group hover:border-subsonic-accent transition-all h-full">
+          <BaseCard className="cursor-pointer h-full">
             <h3 className="text-xl font-black uppercase tracking-tighter group-hover:text-subsonic-accent transition-colors">
               {artist.name}
             </h3>
             <p className="text-xs text-subsonic-muted font-bold uppercase">{artist.genre}</p>
-          </div>
+          </BaseCard>
         </Link>
       ))}
     </div>
   </section>
 );
 
-// 3. Componente para la comparativa de entradas
 const FestivalTicketComparison = ({ tickets, onSelect }) => (
   <section className="animate-in fade-in duration-700">
     <h2 className="text-3xl font-black text-subsonic-accent uppercase mb-8 font-montserrat tracking-tight">
@@ -62,7 +60,6 @@ const FestivalTicketComparison = ({ tickets, onSelect }) => (
               </li>
             ))}
           </ul>
-          
         </div>
       ))}
     </div>
@@ -70,7 +67,6 @@ const FestivalTicketComparison = ({ tickets, onSelect }) => (
 );
 
 // --- COMPONENTE PRINCIPAL ---
-
 const FestivalInstance = () => {
   const { id } = useParams();
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
@@ -101,20 +97,16 @@ const FestivalInstance = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
         <div className="lg:col-span-2 space-y-16">
-
           <FestivalAbout description={festival.description} />
-          
           <FestivalLineup lineup={festival.lineup} />
-          
           <FestivalTicketComparison 
             tickets={festival.tickets} 
             onSelect={() => setIsTicketModalOpen(true)} 
           />
-
         </div>
 
         <aside>
-          <div className="bg-subsonic-navfooter border-2 border-subsonic-accent p-8 rounded-3xl sticky top-24 shadow-[0_0_30px_rgba(0,245,255,0.1)]">
+          <BaseCard className="border-2 border-subsonic-accent p-8 rounded-3xl sticky top-24 shadow-[0_0_30px_rgba(0,245,255,0.1)]">
             <h2 className="text-2xl font-black text-subsonic-text uppercase mb-6 font-montserrat">Entradas</h2>
             <div className="space-y-4 mb-8">
               {festival.tickets && festival.tickets.map((ticket, index) => (
@@ -124,7 +116,6 @@ const FestivalInstance = () => {
                 </div>
               ))}
             </div>
-            
             <Button 
               variant="primary" 
               className="w-full py-4 text-base" 
@@ -132,14 +123,13 @@ const FestivalInstance = () => {
             >
               Comprar Tickets
             </Button>
-            
             <div className="mt-8 pt-8 border-t border-subsonic-border text-center">
               <p className="text-[10px] text-subsonic-muted uppercase font-bold mb-4 tracking-widest">Compartir evento</p>
               <div className="flex justify-center">
                 <SocialLinks variant="minimal" />
               </div>
             </div>
-          </div>
+          </BaseCard>
         </aside>
       </div>
 

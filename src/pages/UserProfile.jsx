@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import AvatarPicker from '../components/ui/AvatarPicker.jsx';
 import ProfileForm from "@/components/ui/ProfileForm.jsx";
 import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
+import BaseCard from "@/components/ui/BaseCard.jsx";
 import orderItems from "@/data/orderItems.json";
 
 const UserProfile = ({user}) => {
@@ -106,7 +107,7 @@ const UserProfile = ({user}) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div className="lg:col-span-8">
-                    <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl p-6">
+                    <BaseCard>
                         <div className="flex items-start gap-5">
                             <AvatarPicker
                                 value={profile.avatarUrl}
@@ -135,13 +136,13 @@ const UserProfile = ({user}) => {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </BaseCard>
                 </div>
 
                 <aside className="lg:col-span-4">
-                    <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl p-6">
+                    <BaseCard>
                         <RecentPurchases purchases={purchases} />
-                    </div>
+                    </BaseCard>
                 </aside>
             </div>
         </section>
