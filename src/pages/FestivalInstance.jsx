@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import festivalsData from '../data/festivals.json'; 
 import Button from '../components/ui/Button'; 
 import SocialLinks from '../components/ui/SocialLinks'; 
+import BaseCard from '../components/ui/BaseCard.jsx';
 
 const FestivalInstance = () => {
   const { id } = useParams();
@@ -51,12 +52,12 @@ const FestivalInstance = () => {
                   to={`/artist/${artist.id || artist.name.toLowerCase().replace(/\s+/g, '-')}`}
                   className="block"
                 >
-                  <div className="bg-subsonic-navfooter border border-subsonic-border p-6 rounded-2xl group hover:border-subsonic-accent transition-all cursor-pointer h-full">
+                  <BaseCard className="cursor-pointer h-full">
                     <h3 className="text-xl font-black uppercase tracking-tighter group-hover:text-subsonic-accent transition-colors">
                       {artist.name}
                     </h3>
                     <p className="text-xs text-subsonic-muted font-bold uppercase">{artist.genre}</p>
-                  </div>
+                  </BaseCard>
                 </Link>
               ))}
             </div>
@@ -65,7 +66,7 @@ const FestivalInstance = () => {
 
         {}
         <aside>
-          <div className="bg-subsonic-navfooter border-2 border-subsonic-accent p-8 rounded-3xl sticky top-24 shadow-[0_0_30px_rgba(0,245,255,0.1)]">
+          <BaseCard className="border-2 border-subsonic-accent p-8 rounded-3xl sticky top-24 shadow-[0_0_30px_rgba(0,245,255,0.1)]">
             <h2 className="text-2xl font-black text-subsonic-text uppercase mb-6 font-montserrat">Entradas</h2>
             
             {}
@@ -89,7 +90,7 @@ const FestivalInstance = () => {
                 <SocialLinks variant="minimal" />
               </div>
             </div>
-          </div>
+          </BaseCard>
         </aside>
       </div>
     </div>

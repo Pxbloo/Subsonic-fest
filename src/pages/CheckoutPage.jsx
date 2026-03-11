@@ -3,6 +3,7 @@ import PaymentForm from '@/components/ui/PaymentForm';
 import { useCheckout } from '@/hooks/useCheckout';
 import orderItems from '@/data/orderItems.json';
 import Button from '@/components/ui/Button';
+import BaseCard from '@/components/ui/BaseCard.jsx';
 
 const CheckoutPage = () => {
     const { handlePayment, loading, error, completed } = useCheckout();
@@ -39,7 +40,8 @@ const CheckoutPage = () => {
     return (
         <div className="max-w-6xl mx-auto p-6 md:p-10 flex flex-col gap-8 md:flex-row">
             {/* Columna izquierda: resumen del pedido */}
-            <section className="md:w-2/5 bg-subsonic-navfooter/60 border border-subsonic-border rounded-xl p-6 flex flex-col gap-6">
+            <section className="md:w-2/5">
+                <BaseCard className="bg-subsonic-navfooter/60 rounded-xl gap-6">
                 <header>
                     <h1 className="text-3xl md:text-4xl font-montserrat font-black mb-2 text-subsonic-accent">Pago</h1>
                     <p className="text-2xl font-montserrat font-bold text-subsonic-text">{totalAmount}</p>
@@ -74,12 +76,15 @@ const CheckoutPage = () => {
                 >
                     Más recomendaciones
                 </button>
+                </BaseCard>
             </section>
 
             {/* Columna derecha: formulario de pago */}
-            <section className="md:w-3/5 bg-subsonic-surface border border-subsonic-border rounded-xl p-6 md:p-8 flex flex-col gap-6">
-                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                <PaymentForm onSubmit={handleSubmit} isLoading={loading} totalAmount={totalAmount} />
+            <section className="md:w-3/5">
+                <BaseCard className="bg-subsonic-surface rounded-xl p-6 md:p-8 gap-6">
+                    {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+                    <PaymentForm onSubmit={handleSubmit} isLoading={loading} totalAmount={totalAmount} />
+                </BaseCard>
             </section>
         </div>
     );

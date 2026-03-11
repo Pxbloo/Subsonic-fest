@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import artistsData from "@/data/artists.json"; //
 import Button from "@/components/ui/Button"; //
 import SocialLinks from "@/components/ui/SocialLinks"; //
+import BaseCard from "@/components/ui/BaseCard.jsx";
 
 const ArtistProfile = () => {
   const { id } = useParams();
@@ -65,7 +66,7 @@ const ArtistProfile = () => {
 
         {}
         <aside className="space-y-6">
-          <div className="bg-subsonic-navfooter border border-subsonic-border p-6 rounded-2xl sticky top-24">
+          <BaseCard className="sticky top-24">
             <p className="text-[10px] font-black text-subsonic-muted uppercase mb-4 tracking-widest">
               Redes Sociales
             </p>
@@ -80,7 +81,7 @@ const ArtistProfile = () => {
             <Button variant="outline" className="w-full text-xs">
               Añadir a Favoritos
             </Button>
-          </div>
+          </BaseCard>
         </aside>
       </div>
     </div>
