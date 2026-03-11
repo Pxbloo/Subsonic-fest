@@ -9,6 +9,7 @@ import CheckoutPage from '@/pages/CheckoutPage';
 import FestivalInstance from '@/pages/FestivalInstance';
 import ArtistProfile from '@/pages/ArtistProfile';
 import History from '@/pages/History';
+import GroundsManagement from '@/pages/GroundsManagement.jsx';
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
             <Route path="/festival/:id" element={<FestivalInstance />} />
             <Route path="/artist/:id" element={<ArtistProfile />} />
             <Route path="/history" element={<History />} />
+            <Route path="/grounds" element={<GroundsManagement />} />
           </Routes>
         </main>
 
