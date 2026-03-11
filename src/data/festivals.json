@@ -6,18 +6,16 @@
     "startDate": "2026-07-15",
     "location": "Recinto Ferial, Madrid",
     "price": "Desde 89€", 
-    "description": "El evento principal del verano con los mejores DJs internacionales. Tres días de música, arte inmersivo y tecnología punta.",
+    "description": "El evento principal del verano con los mejores artistas internacionales. Tres días de música, arte inmersivo y tecnología punta.",
     "tickets": [
-      { "name": "General Pass", "price": "89€" },
-      { "name": "VIP Experience", "price": "155€" },
-      { "name": "Backstage Pass", "price": "250€" }
+      { "name": "General Pass", "price": "89€", "features": ["Acceso al recinto", "Zona de restauración", "Escenarios principales"] },
+      { "name": "VIP Experience", "price": "155€", "features": ["Acceso preferente", "Zona VIP elevada", "Barra libre de refrescos", "Baños privados"] },
+      { "name": "Backstage Pass", "price": "250€", "features": ["Acceso al Backstage", "Meet & Greet (Sorteo)", "Catering exclusivo", "Parking VIP"] }
     ],
     "lineup": [
       { "name": "Bad Bunny", "genre": "Reggaeton / Trap" },
       { "name": "Karol G", "genre": "Pop Urbano" },
-      { "name": "Quevedo", "genre": "Urbano" },
-      { "name": "Bizarrap", "genre": "Electrónica / Urbano" },
-      { "name": "The Weeknd", "genre": "R&B / Pop" }
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" }
     ]
   },
   { 
@@ -27,14 +25,14 @@
     "startDate": "2026-08-22",
     "location": "Industrial Park, Barcelona",
     "price": "Desde 45€", 
-    "description": "Una noche dedicada al techno más puro en un entorno industrial transformado.",
+    "description": "Una noche dedicada a los ritmos urbanos y electrónicos en un entorno industrial transformado.",
     "tickets": [
-      { "name": "Early Bird", "price": "35€" },
-      { "name": "Standard Entry", "price": "45€" }
+      { "name": "Early Bird", "price": "35€", "features": ["Acceso anticipado", "Consumición incluida"] },
+      { "name": "Standard Entry", "price": "45€", "features": ["Acceso general", "Zona de descanso"] }
     ],
     "lineup": [
-      { "name": "Bizarrap", "genre": "Electrónica / Urbano" },
-      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" }
+      { "name": "Quevedo", "genre": "Urbano" },
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" }
     ]
   },
   { 
@@ -42,16 +40,15 @@
     "title": "Sónar Barcelona 2025",
     "date": "13-15 Jun 2025",
     "startDate": "2025-06-13",
-    "location": "Fira Montjuïc & Fira Gran Via, Barcelona",
+    "location": "Fira Montjuïc, Barcelona",
     "price": "Desde 120€",
-    "description": "Edición centrada en la vanguardia electrónica, arte digital y tecnología aplicada a la música.",
+    "description": "Edición centrada en la vanguardia, arte digital y tecnología aplicada a la música.",
     "tickets": [
-      { "name": "Abono 3 Días", "price": "120€" },
-      { "name": "VIP 3 Días", "price": "240€" }
+      { "name": "Abono 3 Días", "price": "120€", "features": ["Acceso Sónar de Día", "Acceso Sónar de Noche", "Sónar+D"] },
+      { "name": "VIP 3 Días", "price": "240€", "features": ["Fast track", "Zonas VIP exclusivas", "Bebidas premium"] }
     ],
     "lineup": [
       { "name": "The Weeknd", "genre": "R&B / Pop" },
-      { "name": "Billie Eilish", "genre": "Pop" },
       { "name": "Tame Impala", "genre": "Psychedelic Rock" }
     ]
   },
@@ -62,13 +59,12 @@
     "startDate": "2025-06-05",
     "location": "Parc del Fòrum, Barcelona",
     "price": "Desde 135€",
-    "description": "Festival urbano junto al mar que mezcla electrónica, pop experimental y propuestas indie.",
+    "description": "Festival urbano junto al mar que mezcla electrónica, rock y pop experimental.",
     "tickets": [
-      { "name": "Abono General", "price": "135€" },
-      { "name": "Abono VIP", "price": "250€" }
+      { "name": "Abono General", "price": "135€", "features": ["Acceso todos los días", "Pack de bienvenida"] },
+      { "name": "Abono VIP", "price": "250€", "features": ["Vista panorámica", "Carril de acceso exclusivo", "Crédito para merch"] }
     ],
     "lineup": [
-      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
       { "name": "Foo Fighters", "genre": "Rock Alternativo" },
       { "name": "Billie Eilish", "genre": "Pop" }
     ]
@@ -80,51 +76,102 @@
     "startDate": "2026-07-19",
     "location": "De Schorre, Boom (Bélgica)",
     "price": "Desde 295€",
-    "description": "Uno de los festivales más icónicos del mundo, con una producción escénica extrema y un cartel lleno de superestrellas electrónicas.",
+    "description": "El festival más icónico del mundo con una producción escénica de fantasía.",
     "tickets": [
-      { "name": "Full Madness Pass", "price": "295€" },
-      { "name": "Comfort Pass", "price": "435€" }
+      { "name": "Full Madness", "price": "295€", "features": ["Acceso 3 días", "Treasure case"] },
+      { "name": "Comfort Pass", "price": "435€", "features": ["Acceso a plataformas VIP", "Vistas exclusivas", "Aperitivos"] }
     ],
     "lineup": [
-      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" },
-      { "name": "Karol G", "genre": "Pop Urbano" },
-      { "name": "Bizarrap", "genre": "Electrónica / Urbano" }
+      { "name": "Bizarrap", "genre": "Electrónica / Urbano" },
+      { "name": "Karol G", "genre": "Pop Urbano" }
     ]
   },
   { 
     "id": 6,
-    "title": "Dekmantel Festival 2026",
-    "date": "31 Jul - 4 Ago 2026",
-    "startDate": "2026-07-31",
-    "location": "Amsterdamse Bos, Ámsterdam",
-    "price": "Desde 160€",
-    "description": "Festival de culto enfocado en la electrónica más selecta, con escenarios en plena naturaleza y clubes repartidos por la ciudad.",
+    "title": "Rock in Rio Madrid 2026",
+    "date": "26-28 Jun 2026",
+    "startDate": "2026-06-26",
+    "location": "Arganda del Rey, Madrid",
+    "price": "Desde 95€",
+    "description": "La ciudad del rock vuelve con las bandas más grandes del planeta.",
     "tickets": [
-      { "name": "Weekend Pass", "price": "160€" },
-      { "name": "Day Ticket", "price": "60€" }
+      { "name": "Entrada Diaria", "price": "95€", "features": ["Acceso 1 día", "Tirolina incluida"] },
+      { "name": "VIP Pass", "price": "190€", "features": ["Catering ilimitado", "Aire acondicionado", "Vista frontal escenario"] }
     ],
     "lineup": [
-      { "name": "The Weeknd", "genre": "R&B / Pop" },
-      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
-      { "name": "Quevedo", "genre": "Urbano" }
+      { "name": "Red Hot Chili Peppers", "genre": "Rock" },
+      { "name": "Foo Fighters", "genre": "Rock Alternativo" }
     ]
   },
   { 
     "id": 7,
-    "title": "Awakenings Festival 2026",
-    "date": "14-16 Jun 2026",
-    "startDate": "2026-06-14",
-    "location": "Spaarnwoude, Países Bajos",
-    "price": "Desde 130€",
-    "description": "Macro-festival especializado en techno con varios escenarios al aire libre y un sonido contundente.",
+    "title": "Mad Cool Festival 2026",
+    "date": "10-13 Jul 2026",
+    "startDate": "2026-07-10",
+    "location": "Villaverde, Madrid",
+    "price": "Desde 110€",
+    "description": "El festival de referencia en la capital con un cartel ecléctico y potente.",
     "tickets": [
-      { "name": "Weekend", "price": "130€" },
-      { "name": "Camping + Weekend", "price": "180€" }
+      { "name": "Abono 4 Días", "price": "110€", "features": ["Acceso total", "Pulsera inteligente"] },
+      { "name": "VIP Abono", "price": "220€", "features": ["Zona relax", "Puntos de carga", "Barra propia"] }
+    ],
+    "lineup": [
+      { "name": "Billie Eilish", "genre": "Pop" },
+      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
+      { "name": "The Weeknd", "genre": "R&B / Pop" }
+    ]
+  },
+  { 
+    "id": 8,
+    "title": "Resurrection Fest 2026",
+    "date": "01-04 Jul 2026",
+    "startDate": "2026-07-01",
+    "location": "Viveiro, Galicia",
+    "price": "Desde 140€",
+    "description": "La cita ineludible para los amantes del Metal y el Hardcore en el norte de España.",
+    "tickets": [
+      { "name": "Pandemonium", "price": "210€", "features": ["Área VIP Pandemonium", "Grada lateral", "Plataformas elevadas"] },
+      { "name": "Abono Estándar", "price": "140€", "features": ["Acceso 4 días", "Zona de acampada libre"] }
     ],
     "lineup": [
       { "name": "Iron Maiden", "genre": "Heavy Metal" },
-      { "name": "Red Hot Chili Peppers", "genre": "Rock" },
       { "name": "Foo Fighters", "genre": "Rock Alternativo" }
+    ]
+  },
+  { 
+    "id": 9,
+    "title": "Coachella 2026",
+    "date": "10-12 Abr 2026",
+    "startDate": "2026-04-10",
+    "location": "Indio, California (USA)",
+    "price": "Desde 499€",
+    "description": "Tendencias, moda y música en medio del desierto de California.",
+    "tickets": [
+      { "name": "GA Pass", "price": "499€", "features": ["Acceso 3 días", "Parking incluido"] },
+      { "name": "VIP Pass", "price": "999€", "features": ["Acceso a Rose Garden", "Sombras exclusivas", "Bebidas especializadas"] }
+    ],
+    "lineup": [
+      { "name": "Bad Bunny", "genre": "Reggaeton / Trap" },
+      { "name": "Billie Eilish", "genre": "Pop" },
+      { "name": "The Weeknd", "genre": "R&B / Pop" }
+    ]
+  },
+  { 
+    "id": 10, 
+    "title": "Bilbao BBK Live 2026", 
+    "date": "09-11 Jul 2026", 
+    "startDate": "2026-07-09",
+    "location": "Kobetamendi, Bilbao",
+    "price": "Desde 125€", 
+    "description": "Música en la cima de la montaña con las mejores vistas de Bilbao.",
+    "tickets": [
+      { "name": "Abono + Camping", "price": "155€", "features": ["Bus lanzadera", "Acceso zona acampada", "Vistas al monte"] },
+      { "name": "Abono Estándar", "price": "125€", "features": ["Acceso 3 días", "Bus lanzadera incluido"] }
+    ],
+    "lineup": [
+      { "name": "Red Hot Chili Peppers", "genre": "Rock" },
+      { "name": "Tame Impala", "genre": "Psychedelic Rock" },
+      { "name": "Quevedo", "genre": "Urbano" }
     ]
   }
 ]

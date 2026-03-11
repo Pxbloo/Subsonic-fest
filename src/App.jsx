@@ -10,6 +10,7 @@ import FestivalInstance from '@/pages/FestivalInstance';
 import ArtistProfile from '@/pages/ArtistProfile';
 import History from '@/pages/History';
 import GroundsManagement from '@/pages/GroundsManagement.jsx';
+import Merch from '@/pages/Merch';
 
 function App() {
 
@@ -59,6 +60,8 @@ function App() {
         <main className="grow p-6 md:p-16">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/tienda" element={<Merch />} />
+            <Route path="/history" element={<History />} />
             <Route path="/user-profile" element={<UserProfile user={user} />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/festival/:id" element={<FestivalInstance />} />

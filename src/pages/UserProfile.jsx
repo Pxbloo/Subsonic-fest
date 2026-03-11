@@ -15,6 +15,7 @@ const UserProfile = ({user}) => {
         if (user) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setProfile({
+                id: user.id,
                 fullName: user.name || "",
                 email: user.email || "",
                 phone: user.phone || "",
@@ -29,6 +30,14 @@ const UserProfile = ({user}) => {
             setLoading(false);
         }
     }, [user]);
+
+    function validateResponse(response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Network response was not ok.");
+        }
+    }
 
     const purchases = useMemo(() => {
         return orderItems.map((item, index) => ({
@@ -45,10 +54,49 @@ const UserProfile = ({user}) => {
         setProfile((prev) => ({ ...prev, avatarUrl: nextUrl }));
     };
 
-    const handleProfileSave = (nextProfile) => {
-        setProfile((prev) => ({ ...prev, ...nextProfile }));
-        setIsEditing(false);
-        // Later: llamada de API.
+    const handleProfileSave = async (nextProfile) => {
+        try {
+            const payload = {
+                name: nextProfile.fullName,
+                email: nextProfile.email,
+                phone: nextProfile.phone,
+                address: {
+                    country: nextProfile.address.country,
+                    city: nextProfile.address.city,
+                    street: nextProfile.address.street,
+                    postalCode: nextProfile.address.postalCode,
+                },
+            };
+
+            const response = await fetch(`http://localhost:3001/users/${profile.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const updatedUser = await validateResponse(response);
+
+            setProfile({
+                id: updatedUser.id,
+                fullName: updatedUser.name || "",
+                email: updatedUser.email || "",
+                phone: updatedUser.phone || "",
+                avatarUrl: updatedUser.avatar || "",
+                address: {
+                    country: updatedUser.address.country || "",
+                    city: updatedUser.address.city || "",
+                    street: updatedUser.address.street || "",
+                    postalCode: updatedUser.address.postalCode || "",
+                },
+            });
+
+            setIsEditing(false);
+        }
+        catch (error) {
+            console.error("Error updating profile:", error);
+        }
     };
 
     const handlePasswordChange = ({ currentPassword, newPassword }) => {

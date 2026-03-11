@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Carlos Gómez",
       "email": "carlos.gomez@email.com",
       "phone": "+34 611 222 333",
@@ -16,7 +16,7 @@
       "role": "client"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "María López (Proveedor)",
       "email": "maria.lopez@proveedor.es",
       "phone": "+34 655 444 777",
@@ -31,7 +31,7 @@
       "role": "provider"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Ana Martín (Admin)",
       "email": "ana.martin@admin.com",
       "phone": "+34 699 888 111",
@@ -45,5 +45,6 @@
       "password": "admin789",
       "role": "admin"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
