@@ -3,7 +3,44 @@ import logo from "@/assets/logo/Subsonic-long.webp";
 import Button from "@/components/ui/Button";
 import AppLink from "@/components/ui/AppLink";
 
+const menuItems = {
+    client: [
+        {href: "/", label: "Inicio"},
+        {href: "/tienda", label: "Tienda"},
+        {href: "/blog", label: "Blog"},
+        {href: "/contacto", label: "Contacto"},
+    ],
+    provider: [
+        {href: "/", label: "Inicio"},
+        {href: "/recintos-proveedor", label: "Mis recintos"},
+        {href: "/dashboard-ventas", label: "Mis ventas"},
+        {href: "/contacto", label: "Contacto"},
+    ],
+    admin: [
+        {href: "/", label: "Inicio"},
+        {href: "/dashboard-recintos", label: "Gestión de recintos"},
+        {href: "/dashboard-usuarios", label: "Gestión de usuarios"},
+        {href: "/dashboard-artistas", label: "Gestión de artistas"},
+    ]
+};
+
 const Navbar = ({ user, onOpenLogin, onOpenRegister, onLogout }) => {
+
+    const getMenuItems = () => {
+        if (!user) return menuItems.client;
+
+        switch (user.role) {
+            case 'provider':
+                return menuItems.provider;
+            case 'admin':
+                return menuItems.admin;
+            case 'client':
+            default:
+                return menuItems.client;
+        }
+    };
+
+    const currentMenuItems = getMenuItems();
 
   return (
     <nav className='bg-subsonic-navfooter border-b border-subsonic-border px-6 py-4 flex items-center justify-between font-inter'>
@@ -15,11 +52,12 @@ const Navbar = ({ user, onOpenLogin, onOpenRegister, onLogout }) => {
             />
         </AppLink>
         <div className="flex gap-24 text-subsonic-text font-bold">
-        <AppLink href="/">Inicio</AppLink>
-        <AppLink href="/tienda">Tienda</AppLink>
-        <AppLink href="/blog">Blog</AppLink>
-        <AppLink href="/contacto">Contacto</AppLink>
-      </div>
+            {currentMenuItems.map((item) => (
+                <AppLink key={item.href} href={item.href}>
+                    {item.label}
+                </AppLink>
+            ))}
+        </div>
       <div className="flex gap-6 items-center">
         {user ? (
           <div className="flex items-center gap-3">
