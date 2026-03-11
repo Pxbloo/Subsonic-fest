@@ -17,12 +17,41 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(null); // null, 'login' o 'register'
   const [user, setUser] = useState(null); // null o objeto de usuario
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setUser(JSON.parse(storedUser));
+  const checkUserExists = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/users/${userId}`);
+      return response.ok;
     }
+    catch (error) {
+      console.error("Error checking user existence:", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const validateUser = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        return;
+      }
+
+      try {
+        const userData = JSON.parse(storedUser);
+        await checkUserExists(userData.id).then(exists => {
+          if (exists) {
+            setUser(userData);
+          } else {
+            localStorage.removeItem('user');
+            console.log("User data found but user does not exist. Removing from local storage.");
+          }
+        });
+      } catch (error) {
+        console.error("Error parsing user data from local storage:", error);
+        localStorage.removeItem('user');
+      }
+    };
+
+    validateUser();
   }, []);
 
   const openLoginModal = () => setIsModalOpen('login');
