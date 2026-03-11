@@ -26,6 +26,14 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
     }
   }, [initialType]);
 
+  function validateResponse(response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Network response was not ok.");
+    }
+  }
+
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
@@ -107,9 +115,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
         body: JSON.stringify(newUser),
       });
 
-
-
-      const createdUser = await response.json();
+      const createdUser = await validateResponse(response);
       const savedUser = { ...createdUser };
       delete savedUser.password;
 

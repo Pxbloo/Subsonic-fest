@@ -5,9 +5,12 @@ import Button from "@/components/ui/Button.jsx";
 const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangePassword }) => {
     const [fullName, setFullName] = useState(value?.fullName ?? "");
     const [phone, setPhone] = useState(value?.phone ?? "");
-    const [address, setAddress] = useState(
-        value?.address ?? { country: "", city: "", street: "", postalCode: ""}
-    );
+    const [address, setAddress] = useState({
+        country: value?.address?.country ?? "",
+        city: value?.address?.city ?? "",
+        street: value?.address?.street ?? "",
+        postalCode: value?.address?.postalCode ?? "",
+    });
 
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -32,7 +35,7 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
     const handleCancel = () => {
         setFullName(value?.fullName ?? "");
         setPhone(value?.phone ?? "");
-        setAddress(value?.address ?? { country: "", city: "", line1: "", postalCode: "" });
+        setAddress(value?.address ?? { country: "", city: "", street: "", postalCode: "" });
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNew("");
@@ -74,7 +77,7 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
                     <Button
                         type="button"
                         onClick={onEdit}
-                        className="border border-subsonic-border text-subsonic-text font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
+                        className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
                     >
                         Editar
                     </Button>
@@ -83,7 +86,7 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
                         <Button
                             type="button"
                             onClick={handleCancel}
-                            className="border border-subsonic-border text-subsonic-text font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
+                            className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
                         >
                             Cancelar
                         </Button>
@@ -156,7 +159,7 @@ const ProfileForm = ({ value, isEditing, onEdit, onCancelEdit, onSave, onChangeP
                             <input
                                 className={inputClass(readOnly)}
                                 value={address.street}
-                                onChange={(e) => setAddress((a) => ({ ...a, line1: e.target.value }))}
+                                onChange={(e) => setAddress((a) => ({ ...a, street: e.target.value }))}
                                 placeholder="Calle, número, piso, etc."
                                 autoComplete="address-line1"
                                 readOnly={readOnly}
