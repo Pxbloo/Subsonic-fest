@@ -11,6 +11,7 @@ import ArtistProfile from '@/pages/ArtistProfile';
 import History from '@/pages/History';
 import GroundsManagement from '@/pages/GroundsManagement.jsx';
 import Merch from '@/pages/Merch';
+import SalesDashboard from '@/pages/SalesDashboard.jsx';
 
 function App() {
 
@@ -97,6 +98,7 @@ function App() {
             <Route path="/artist/:id" element={<ArtistProfile />} />
             <Route path="/history" element={<History />} />
             <Route path="/grounds" element={<GroundsManagement />} />
+            <Route path="/sales-dashboard" element={<SalesDashboard />} />
           </Routes>
         </main>
 
