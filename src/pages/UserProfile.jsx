@@ -13,7 +13,6 @@ const UserProfile = ({user}) => {
 
     useEffect(() => {
         if (user) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setProfile({
                 id: user.id,
                 fullName: user.name || "",
