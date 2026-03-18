@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import PageHeader from '@/components/ui/PageHeader';
 import groundImage from '@/assets/images/Ground.jpg';
+import SearchIcon from '@/assets/icons/search.svg';
 
 const GroundsManagement = () => {
   const [grounds, setGrounds] = useState([]);
@@ -130,7 +131,12 @@ const GroundsManagement = () => {
                   placeholder="Búsqueda"
                   className="w-full"
                 />
-                <span className="text-subsonic-muted text-lg" aria-hidden="true">🔍</span>
+                <img
+                  src={SearchIcon}
+                  alt="Buscar"
+                  className="w-4 h-4 opacity-70"
+                  aria-hidden="true"
+                />
               </div>
             </div>
 

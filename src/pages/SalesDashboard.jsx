@@ -7,6 +7,7 @@ import DashboardCard from "@/components/ui/DashboardCard";
 import SalesDetailModal from "@/components/ui/SalesDetailModal";
 import useSalesDashboard from "@/hooks/useSalesDashboard";
 import salesPlaceholder from "@/assets/images/Sales.png";
+import SearchIcon from "@/assets/icons/search.svg";
 
 const SalesDashboard = () => {
   const {
@@ -32,8 +33,14 @@ const SalesDashboard = () => {
           className="w-full md:w-80 flex items-center bg-subsonic-navfooter border border-subsonic-border rounded-full px-4 py-2 gap-2"
           inputClassName="bg-transparent outline-none text-subsonic-text placeholder:text-subsonic-muted flex-1 text-sm"
           showButton={true}
-          buttonLabel="🔍"
-          buttonClassName="text-subsonic-muted hover:text-subsonic-accent text-lg"
+          buttonLabel={
+            <img
+              src={SearchIcon}
+              alt="Buscar"
+              className="w-4 h-4 opacity-70"
+            />
+          }
+          buttonClassName="text-subsonic-muted hover:text-subsonic-accent text-lg flex items-center justify-center"
         />
       </div>
 
