@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PaymentForm from '@/components/ui/PaymentForm';
 import { useCheckout } from '@/hooks/useCheckout';
-import orderItems from '@/data/orderItems.json';
 import Button from '@/components/ui/Button';
 import BaseCard from '@/components/ui/BaseCard.jsx';
 
 const CheckoutPage = () => {
     const { handlePayment, loading, error, completed } = useCheckout();
+    const [orderItems, setOrderItems] = useState([]);
+
+    useEffect(() => {
+        const fetchOrderItems = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/orderItems');
+                if (!response.ok) throw new Error('Error al cargar pedidos');
+                const data = await response.json();
+                setOrderItems(data || []);
+            } catch (err) {
+                console.error('Error fetching order items:', err);
+                setOrderItems([]);
+            }
+        };
+
+        fetchOrderItems();
+    }, []);
+
     const totalAmountNumber = orderItems.reduce((sum, item) => sum + item.price, 0);
     const totalAmount = totalAmountNumber.toLocaleString('es-ES', {
         style: 'currency',

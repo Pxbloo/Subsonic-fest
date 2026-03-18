@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import BaseCard from '@/components/ui/BaseCard.jsx';
-import userData from "@/data/users.json";
 
 const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const [activeTab, setActiveTab] = useState(initialType);
@@ -53,7 +52,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
       try {
         console.log("Attempting login with:", { loginEmail, loginPassword });
 
-        const response = await fetch('http://localhost:3001/users');
+        const response = await fetch('http://localhost:3000/users');
         const users = await response.json();
 
         const user = users.find(
@@ -86,7 +85,9 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const handleRegister = async () => {
     try {
       const fullName = `${registerForm.name} ${registerForm.surname}`.trim();
-      const existingUser = userData.users.find(u => u.email === registerForm.email);
+      const usersResponse = await fetch('http://localhost:3000/users');
+      const users = await usersResponse.json();
+      const existingUser = users.find(u => u.email === registerForm.email);
 
       if (existingUser) {
         setErrorMessage("Ya existe un usuario registrado con ese correo.");
@@ -108,7 +109,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
         role: userType === 'provider' ? 'provider' : 'user',
       }
 
-      const response = await fetch('http://localhost:3001/users', {
+      const response = await fetch('http://localhost:3000/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

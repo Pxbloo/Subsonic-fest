@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import artistsData from "@/data/artists.json"; //
-import Button from "@/components/ui/Button"; //
-import SocialLinks from "@/components/ui/SocialLinks"; //
+import Button from "@/components/ui/Button"; 
+import SocialLinks from "@/components/ui/SocialLinks"; 
 import BaseCard from "@/components/ui/BaseCard.jsx";
 
 const ArtistProfile = () => {
   const { id } = useParams();
+  const [artist, setArtist] = useState(null);
 
-  const artist = artistsData.find((a) => a.id === id || a.id === parseInt(id));
+  useEffect(() => {
+    const fetchArtist = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/artists/${id}`);
+        if (!response.ok) {
+          setArtist(null);
+          return;
+        }
+        const data = await response.json();
+        setArtist(data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+        setArtist(null);
+      }
+    };
+
+    fetchArtist();
+  }, [id]);
 
   if (!artist) {
     return (

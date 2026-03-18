@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import festivalsData from '../data/festivals.json';
 import Button from '../components/ui/Button';
 import SocialLinks from '../components/ui/SocialLinks';
 import TicketModal from '../components/ui/TicketModal';
@@ -70,8 +69,26 @@ const FestivalTicketComparison = ({ tickets, onSelect }) => (
 const FestivalInstance = () => {
   const { id } = useParams();
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+  const [festival, setFestival] = useState(null);
 
-  const festival = festivalsData.find(f => f.id === parseInt(id));
+  useEffect(() => {
+    const fetchFestival = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/festivals/${id}`);
+        if (!response.ok) {
+          setFestival(null);
+          return;
+        }
+        const data = await response.json();
+        setFestival(data);
+      } catch (error) {
+        console.error('Error fetching festival:', error);
+        setFestival(null);
+      }
+    };
+
+    fetchFestival();
+  }, [id]);
 
   if (!festival) {
     return (

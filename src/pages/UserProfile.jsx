@@ -3,13 +3,13 @@ import AvatarPicker from '../components/ui/AvatarPicker.jsx';
 import ProfileForm from "@/components/ui/ProfileForm.jsx";
 import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
 import BaseCard from "@/components/ui/BaseCard.jsx";
-import orderItems from "@/data/orderItems.json";
 
 const UserProfile = ({user}) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [orderItems, setOrderItems] = useState([]);
 
     useEffect(() => {
         if (user) {
@@ -30,6 +30,22 @@ const UserProfile = ({user}) => {
             setLoading(false);
         }
     }, [user]);
+
+    useEffect(() => {
+        const fetchOrderItems = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/orderItems');
+                if (!response.ok) throw new Error('Error al cargar pedidos');
+                const data = await response.json();
+                setOrderItems(data || []);
+            } catch (error) {
+                console.error('Error fetching order items:', error);
+                setOrderItems([]);
+            }
+        };
+
+        fetchOrderItems();
+    }, []);
 
     function validateResponse(response) {
         if (response.ok) {
@@ -68,7 +84,7 @@ const UserProfile = ({user}) => {
                 },
             };
 
-            const response = await fetch(`http://localhost:3001/users/${profile.id}`, {
+            const response = await fetch(`http://localhost:3000/users/${profile.id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

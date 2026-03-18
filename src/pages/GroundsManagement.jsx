@@ -4,29 +4,45 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import PageHeader from '@/components/ui/PageHeader';
 import groundImage from '@/assets/images/Ground.jpg';
-import groundsData from '@/data/grounds.json';
 
 const GroundsManagement = () => {
-  const [grounds, setGrounds] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = window.localStorage.getItem('grounds');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed;
-          }
-        } catch {
-        }
-      }
-    }
-    return groundsData;
-  });
+  const [grounds, setGrounds] = useState([]);
 
   const [newName, setNewName] = useState('');
   const [newArea, setNewArea] = useState('');
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedGroundId, setSelectedGroundId] = useState(null);
+
+  useEffect(() => {
+    const fetchGrounds = async () => {
+      if (typeof window !== 'undefined') {
+        const stored = window.localStorage.getItem('grounds');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setGrounds(parsed);
+              return;
+            }
+          } catch {
+            // ignore JSON errors and fall back to server
+          }
+        }
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/grounds');
+        if (!response.ok) throw new Error('Error al cargar recintos');
+        const data = await response.json();
+        setGrounds(data || []);
+      } catch (error) {
+        console.error('Error fetching grounds:', error);
+        setGrounds([]);
+      }
+    };
+
+    fetchGrounds();
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

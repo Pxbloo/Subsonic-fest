@@ -1,17 +1,30 @@
 import { useState, useEffect } from "react";
-import historyData from "@/data/history.json";
 
 export const useHistory = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setData(historyData);
-            setLoading(false);
-        }, 500); // simula el fetch de datos con un retraso de 500ms
+        const fetchHistory = async () => {
+            try {
+                const [historyRes, merchRes] = await Promise.all([
+                    fetch('http://localhost:3000/history'),
+                    fetch('http://localhost:3000/merchandising'),
+                ]);
 
-        return () => clearTimeout(timer); 
+                const history = historyRes.ok ? await historyRes.json() : [];
+                const merchandising = merchRes.ok ? await merchRes.json() : [];
+
+                setData({ pastFestivals: history || [], merchandising: merchandising || [] });
+            } catch (error) {
+                console.error('Error fetching history data:', error);
+                setData({ pastFestivals: [], merchandising: [] });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHistory();
     }, []);
 
     return { data, loading };
