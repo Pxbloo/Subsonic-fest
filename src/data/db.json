@@ -244,10 +244,75 @@
     { "id": "the-weeknd", "name": "The Weeknd", "genre": "R&B / Pop", "description": "Cantante y productor canadiense de R&B y pop, habitual en los principales festivales internacionales.", "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ" }
   ],
   "merchandising": [
-    { "id": 201, "name": "Camiseta ElectroBeach 2025", "type": "ropa", "price": 25.99, "description": "Camiseta oficial del festival, algodón 100%, diseño exclusivo." },
-    { "id": 202, "name": "Gorra Rock City", "type": "accesorio", "price": 18.50, "description": "Gorra negra con el logo bordado del festival." },
-    { "id": 203, "name": "Pack de pulseras LED", "type": "accesorio", "price": 12.00, "description": "Pack de 3 pulseras LED sincronizables con la música." },
-    { "id": 204, "name": "Mochila impermeable", "type": "accesorio", "price": 34.90, "description": "Mochila plegable ideal para festivales, resistente al agua." }
+    {
+      "id": "camiseta-subsonic-2024",
+      "name": "Camiseta Subsonic 2024",
+      "categoryId": "ropa",
+      "categoryLabel": "Ropa",
+      "price": "29.99€",
+      "description": "Camiseta oficial del festival de 2024 con diseño exclusivo",
+      "purchaseOptions": [
+        { "name": "size", "label": "Talla", "values": ["XS", "S", "M", "L", "XL"] },
+        { "name": "color", "label": "Color", "values": ["Negro", "Blanco", "Rojo", "Azul", "Verde"] }
+      ]
+    },
+    {
+      "id": "camiseta-subsonic-2025",
+      "name": "Camiseta Subsonic 2025",
+      "categoryId": ["nuevo", "ropa"],
+      "categoryLabel": "Nuevo, Ropa",
+      "price": "34.99€",
+      "description": "Camiseta oficial del festival de 2025 con diseño exclusivo",
+      "purchaseOptions": [
+        {"name": "size", "label": "Talla", "values": ["XS", "S", "M", "L", "XL"]},
+        {"name": "color", "label": "Color", "values": ["Negro", "Blanco", "Rojo", "Azul", "Verde"]}
+      ]
+    },
+    {
+      "id": "gorra-subsonic-2025",
+      "name": "Gorra Subsonic 2025",
+      "categoryId": ["nuevo", "accesorios"],
+      "categoryLabel": "Nuevo, Accesiorios",
+      "price": "14.99€",
+      "description": "Gorra oficial del festival de 2025 con diseño exclusivo",
+      "purchaseOptions": [
+        {"name": "color", "label": "Color", "values": ["Negro", "Blanco", "Rojo", "Azul", "Verde"]}
+      ]
+    },
+    {
+      "id": "libro-subsonic-2025",
+      "name": "Libro Subsonic 2025",
+      "categoryId": ["nuevo", "libros"],
+      "categoryLabel": "Nuevo, Libros",
+      "price": "17.99€",
+      "description": "Libro oficial del festival de 2025",
+      "purchaseOptions": [
+        {"name": "format", "label": "Formato", "values": ["Cubierta plana", "Cubierta robusta"]}
+      ]
+    },
+    {
+      "id": "perfume-subsonic-2025",
+      "name": "Perfume Subsonic 2025",
+      "categoryId": ["nuevo", "perfumes"],
+      "categoryLabel": "Nuevo, Perfumes",
+      "price": "24.85€",
+      "description": "Perfume oficial del festival de 2025",
+      "purchaseOptions": [
+        {"name": "extent", "label": "Tamaño", "values": ["20ml", "30ml", "50ml"]}
+      ]
+    },
+    {
+      "id": "poster-subsonic-2024",
+      "name": "Poster Subsonic 2024",
+      "categoryId": ["posters"],
+      "categoryLabel": "Posters",
+      "price": "7.99€",
+      "description": "Poster oficial del festival de 2025",
+      "purchaseOptions": [
+        {"name": "extent", "label": "Tamaño", "values": ["A4", "A3"]},
+        {"name": "finish", "label": "Acabado", "values": ["Normal", "Mate"]}
+      ]
+    }
   ],
   "orderItems": [
     { "id": 1, "name": "Entrada Subsonic 3 días", "category": "Abono general", "price": 49.99, "date": "2025-07-15" },

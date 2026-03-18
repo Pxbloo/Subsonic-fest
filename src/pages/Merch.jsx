@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useEffect, useState, useCallback } from "react";
 import ShopCard from "@/components/ui/ShopCard.jsx";
 import MerchCategoryBar from "@/components/layout/MerchBar.jsx";
 import PurchaseSummary from "@/components/ui/PurchaseSummary.jsx";
@@ -18,67 +18,70 @@ const buildCartItemKey = (productName, selectedOptions = {}) =>
     `${productName}__${JSON.stringify(normalizeOptions(selectedOptions))}`;
 
 function Merch() {
+
+    // 1) Categorías
     const categories = useMemo(
         () => [
-            { id: "all", label: "Todo" },
+            { id: "nuevo", label: "Nuevo" },
             { id: "ropa", label: "Ropa" },
             { id: "accesorios", label: "Accesorios" },
+            { id: "libros", label: "Libros" },
+            { id: "perfumes", label: "Perfumes" },
+            { id: "posters", label: "Posters" },
         ],
         []
     );
 
-    const [activeCategoryId, setActiveCategoryId] = useState("all");
+    // 2) Estado: categoría seleccionada
+    const [activeCategoryId, setActiveCategoryId] = useState(categories[0]?.id ?? "ropa");
     const [searchTerm, setSearchTerm] = useState("");
     const [cartItems, setCartItems] = useState([]);
     const [isSummaryOpen, setIsSummaryOpen] = useState(false);
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // 3) Carga de Productos
+    const loadProducts = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await fetch('http://localhost:3000/merchandising');
+
+            if (!response.ok) {
+                setError(`Error HTTP: ${response.status} - ${response.statusText}`);
+                setProducts([]);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!data) {
+                setError('El archivo JSON está vacío');
+                setProducts([]);
+                return;
+            }
+
+            const productsArray = Array.isArray(data) ? data : (data.products || []);
+            setProducts(productsArray);
+
+        } catch (err) {
+            console.error('Error cargando productos:', err);
+            setError('No se pudieron cargar los productos. Verifica que el archivo JSON exista en public/data/');
+            setProducts([]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchMerchandising = async () => {
-            try {
-                const response = await fetch("http://localhost:3000/merchandising");
-                if (!response.ok) throw new Error("Error al cargar merchandising");
-
-                const data = await response.json();
-
-                const mappedProducts = (data || []).map((item) => {
-                    const rawPrice = typeof item.price === "number" ? item.price : Number(item.price);
-                    const numericPrice = Number.isNaN(rawPrice) ? 0 : rawPrice;
-                    const formattedPrice = `${numericPrice.toFixed(2)}€`;
-
-                    const type = String(item.type || "").toLowerCase();
-                    let categoryId = "otros";
-                    let categoryLabel = "Otros";
-
-                    if (type === "ropa") {
-                        categoryId = "ropa";
-                        categoryLabel = "Ropa";
-                    } else if (type === "accesorio" || type === "accesorios") {
-                        categoryId = "accesorios";
-                        categoryLabel = "Accesorios";
-                    }
-
-                    return {
-                        id: String(item.id),
-                        name: item.name,
-                        categoryId,
-                        categoryLabel,
-                        price: formattedPrice,
-                        description: item.description,
-                        // De momento no hay opciones de compra en la API
-                        purchaseOptions: [],
-                    };
-                });
-
-                setProducts(mappedProducts);
-            } catch (error) {
-                console.error("Error fetching merchandising:", error);
-                setProducts([]);
-            }
-        };
-
-        fetchMerchandising();
-    }, []);
+        loadProducts().catch(err => {
+            console.error('Error inesperado en loadProducts:', err);
+            setError('Error inesperado al cargar los productos');
+            setLoading(false);
+        });
+    }, [loadProducts]);
 
     const totalCartUnits = useMemo(
         () => cartItems.reduce((sum, item) => sum + Number(item.quantity ?? 0), 0),
@@ -150,13 +153,15 @@ function Merch() {
         updateCartItemQuantity(itemKey, target.quantity - 1);
     };
 
+    // 4) Filtrado por categoría seleccionada
     const visibleProducts = useMemo(() => {
         const q = searchTerm.trim().toLowerCase();
 
         return products
             .filter((p) => {
-                if (activeCategoryId === "all") return true;
-                return p.categoryId === activeCategoryId;
+                if(!p) return false
+                const ids = Array.isArray(p.categoryId) ? p.categoryId : [p.categoryId];
+                return ids.includes(activeCategoryId);
             })
             .filter((p) => {
                 if (!q) return true;
@@ -164,6 +169,14 @@ function Merch() {
                 return haystack.includes(q);
             });
     }, [products, activeCategoryId, searchTerm]);
+
+    if (loading) {
+        return <div className="text-center py-8">Cargando productos...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center py-8 text-subsonic-text">{error}</div>;
+    }
 
     return (
         <section className="space-y-6 -mt-6 md:-mt-16">
