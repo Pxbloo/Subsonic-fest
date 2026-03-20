@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import TicketItem from './TicketItem';
@@ -6,22 +6,40 @@ import TicketItem from './TicketItem';
 const TicketModal = ({ isOpen, onClose, festival }) => {
   const navigate = useNavigate();
 
-  const [quantities, setQuantities] = useState(
-    festival.tickets.reduce((acc, ticket) => ({ ...acc, [ticket.name]: 0 }), {})
-  );
+  const [quantities, setQuantities] = useState({});
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (festival && festival.tickets) {
+      const initialQuantities = festival.tickets.reduce((acc, ticket) => ({ 
+        ...acc, 
+        [ticket.name]: 0 
+      }), {});
+      setQuantities(initialQuantities);
+    }
+  }, [festival, isOpen]);
+
+  if (!isOpen || !festival) return null;
 
   const handleUpdate = (name, delta) => {
     setQuantities(prev => ({
       ...prev,
-      [name]: Math.max(0, prev[name] + delta)
+      [name]: Math.max(0, (prev[name] || 0) + delta)
     }));
   };
 
-  const parsePrice = (priceStr) => parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
+  // CORRECCIÓN: parsePrice ahora acepta números y strings, manejando comas y puntos
+  const parsePrice = (price) => {
+    if (typeof price === 'number') return price;
+    if (typeof price === 'string') {
+      const normalizedPrice = price.replace(',', '.');
+      return parseFloat(normalizedPrice.replace(/[^0-9.]/g, '')) || 0;
+    }
+    return 0;
+  };
+
   const totalAmount = festival.tickets.reduce((total, ticket) => {
-    return total + (parsePrice(ticket.price) * quantities[ticket.name]);
+    const qty = quantities[ticket.name] || 0;
+    return total + (parsePrice(ticket.price) * qty);
   }, 0);
 
   const handleConfirm = () => {
@@ -45,7 +63,7 @@ const TicketModal = ({ isOpen, onClose, festival }) => {
             <TicketItem 
               key={index}
               {...ticket}
-              quantity={quantities[ticket.name]}
+              quantity={quantities[ticket.name] || 0}
               onAdd={() => handleUpdate(ticket.name, 1)}
               onRemove={() => handleUpdate(ticket.name, -1)}
             />
@@ -55,7 +73,7 @@ const TicketModal = ({ isOpen, onClose, festival }) => {
         <div className="border-t border-subsonic-border pt-6 space-y-4">
           <div className="flex justify-between items-center px-2">
             <span className="text-subsonic-muted uppercase font-bold text-xs tracking-widest">Total</span>
-            <span className="text-3xl font-black text-white">{totalAmount}€</span>
+            <span className="text-3xl font-black text-white">{totalAmount.toFixed(2)}€</span>
           </div>
 
           <div className="flex gap-3">

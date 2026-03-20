@@ -23,7 +23,6 @@ const GroundInstance = () => {
               return;
             }
           } catch {
-            // ignore JSON errors and fall back to server
           }
         }
       }

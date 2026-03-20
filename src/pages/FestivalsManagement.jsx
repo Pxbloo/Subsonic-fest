@@ -51,7 +51,7 @@ const LineupManager = ({ lineup, artists, onAdd, onRemove }) => (
 );
 
 // --- 3. MÓDULO: GESTIÓN DE TICKETS ---
-const TicketManager = ({ tickets, templates, onAddTemplate, onUpdate, onRemove }) => (
+const TicketManager = ({ tickets, templates, onAddTemplate, onRemove }) => (
   <BaseCard className="border-l-4 border-l-subsonic-accent animate-in fade-in duration-500 delay-300">
     <h2 className="text-xl font-black text-white uppercase mb-6">Entradas y Precios</h2>
     <select 
@@ -59,17 +59,22 @@ const TicketManager = ({ tickets, templates, onAddTemplate, onUpdate, onRemove }
       onChange={(e) => onAddTemplate(e.target.value)}
       value=""
     >
-      <option value="" disabled>Seleccionar tipo de entrada para añadir...</option>
-      {templates.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+      <option value="" disabled>Añadir entrada desde plantillas guardadas...</option>
+      {templates.map(t => <option key={t.id} value={t.id}>{t.name} ({t.price}€)</option>)}
     </select>
+    
     <div className="space-y-4">
       {tickets && tickets.map((ticket, index) => (
         <div key={index} className="p-4 bg-subsonic-bg/50 border border-subsonic-border rounded-xl relative group">
           <button type="button" onClick={() => onRemove(index)} className="absolute top-2 right-2 text-subsonic-muted hover:text-red-500 transition-colors">✕</button>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input label="Nombre" value={ticket.name} onChange={e => onUpdate(index, 'name', e.target.value)} required />
-            <Input label="Precio" placeholder="Ej: 89€" value={ticket.price} onChange={e => onUpdate(index, 'price', e.target.value)} required />
-            <Input label="Beneficios (comas)" value={ticket.features ? ticket.features.join(', ') : ''} onChange={e => onUpdate(index, 'features', e.target.value)} />
+            <Input label="Tipo" value={ticket.name} readOnly />
+            <Input label="Precio" value={`${ticket.price}€`} readOnly />
+            <Input 
+              label="Beneficios" 
+              value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''} 
+              readOnly 
+            />
           </div>
         </div>
       ))}
@@ -180,15 +185,24 @@ const FestivalsManagement = () => {
             tickets={currentFestival.tickets} 
             templates={ticketTemplates}
             onAddTemplate={(tid) => {
-              const t = ticketTemplates.find(tem => tem.id === parseInt(tid));
+              const t = ticketTemplates.find(tem => String(tem.id) === String(tid));
               if (t) {
-                setCurrentFestival({...currentFestival, tickets: [...currentFestival.tickets, { name: t.name, price: '', features: [...t.defaultFeatures] }]});
+                const isDuplicate = currentFestival.tickets.some(tic => tic.name === t.name && tic.price === t.price);
+                
+                if (isDuplicate) {
+                  alert("Esta entrada ya ha sido añadida.");
+                  return;
+                }
+
+                setCurrentFestival({
+                  ...currentFestival, 
+                  tickets: [...currentFestival.tickets, { 
+                    name: t.name, 
+                    price: t.price, 
+                    features: t.features 
+                  }]
+                });
               }
-            }}
-            onUpdate={(idx, field, val) => {
-              const newT = [...currentFestival.tickets];
-              newT[idx][field] = field === 'features' ? val.split(',').map(v => v.trim()) : val;
-              setCurrentFestival({...currentFestival, tickets: newT});
             }}
             onRemove={(idx) => setCurrentFestival({...currentFestival, tickets: currentFestival.tickets.filter((_, i) => i !== idx)})}
           />
@@ -208,8 +222,6 @@ const FestivalsManagement = () => {
               </div>
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={() => { setCurrentFestival(fest); setIsEditing(true); }}>Editar</Button>
-                
-                {/* Botón de eliminar con la nueva variante danger */}
                 <Button 
                   variant="danger" 
                   className="text-xs px-4" 
