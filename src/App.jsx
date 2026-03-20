@@ -14,6 +14,7 @@ import Merch from '@/pages/Merch';
 import SalesDashboard from '@/pages/SalesDashboard.jsx';
 import FestivalsManagement from '@/pages/FestivalsManagement';
 import Blog from '@/pages/Blog.jsx';
+import UsersDashboard from "@/pages/UsersDashboard.jsx";
 
 function App() {
 
@@ -103,6 +104,7 @@ function App() {
             <Route path="/sales-dashboard" element={<SalesDashboard />} />
             <Route path="/dashboard-festivales" element={<FestivalsManagement />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/dashboard-usuarios" element={<UsersDashboard />} />
           </Routes>
         </main>
 
