@@ -45,7 +45,7 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
         const { name, value } = e.target;
         if (name.startsWith('address.')) {
             const field = name.split('.')[1];
-            setUserData(prev => ({  //TODO revisar
+            setUserData(prev => ({
                 ...prev,
                 address: { ...prev.address, [field]: value }
             }));
@@ -70,60 +70,59 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Nombre */}
                         <div className="space-y-1">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">Nombre *</label>
-                            <input
+                            <Input
                                 type="text"
                                 name="name"
                                 value={userData.name}
                                 onChange={handleChange}
                                 required
+                                placeholder="Nombre y Apellidos"
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             />
                         </div>
 
-                        {/* Email */}
                         <div className="space-y-1">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">Email *</label>
-                            <input
+                            <Input
                                 type="email"
                                 name="email"
                                 value={userData.email}
                                 onChange={handleChange}
                                 required
+                                placeholder="ejemplo@correo.com"
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             />
                         </div>
 
-                        {/* Teléfono */}
                         <div className="space-y-1">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">Teléfono</label>
-                            <input
+                            <Input
                                 type="tel"
                                 name="phone"
                                 value={userData.phone}
                                 onChange={handleChange}
+                                placeholder="+34 123 456 789"
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             />
                         </div>
 
-                        {/* Contraseña */}
                         <div className="space-y-1">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">
                                 {user ? 'Nueva contraseña (dejar vacío para no cambiar)' : 'Contraseña *'}
                             </label>
-                            <input
+                            <Input
                                 type="password"
                                 name="password"
                                 value={userData.password}
                                 onChange={handleChange}
                                 required={!user}
+                                placeholder='*********'
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             />
                         </div>
 
-                        {/* Avatar (URL) */}
                         <div className="space-y-1 md:col-span-2">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">Avatar URL</label>
                             <Input
@@ -131,12 +130,11 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
                                 name="avatar"
                                 value={userData.avatar}
                                 onChange={handleChange}
-                                placeholder={<div className="w-10 h-10 rounded-full bg-subsonic-accent"></div>}
+                                placeholder="Enlace al avatar (URL)"
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             />
                         </div>
 
-                        {/* Rol */}
                         <div className="space-y-1 md:col-span-2">
                             <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest">Rol *</label>
                             <select
@@ -152,7 +150,6 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
                             </select>
                         </div>
 
-                        {/* Dirección - campos */}
                         <div className="md:col-span-2">
                             <h3 className="text-sm font-semibold text-subsonic-text mb-2">Dirección</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -196,13 +193,13 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
                         <Button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border border-subsonic-border rounded-md text-subsonic-muted hover:text-subsonic-text transition"
+                            className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
                         >
                             Cancelar
                         </Button>
                         <Button
                             type="submit"
-                            className="px-4 py-2 bg-subsonic-accent text-white rounded-md hover:bg-opacity-80 transition"
+                            className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-accent transition"
                         >
                             {user ? 'Actualizar' : 'Crear'}
                         </Button>

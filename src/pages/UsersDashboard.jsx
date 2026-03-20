@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import UserModal from "@/components/ui/UserModal.jsx"
+import ConfirmDialog from "@/components/ui/ConfirmDialog.jsx";
+import Button from "@/components/ui/Button.jsx";
 
 
 const UsersDashboard = () => {
@@ -16,7 +18,7 @@ const UsersDashboard = () => {
             const response = await fetch('http://localhost:3000/users');
 
             if (!response.ok) {
-                throw new Error('Failed to fetch users');
+                console.error('Failed to fetch users:', response.statusText);
             }
             const data = await response.json();
             setUsers(data);
@@ -54,7 +56,7 @@ const UsersDashboard = () => {
                     body: JSON.stringify(userData)
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to update user');
+                    console.error('Failed to update user:', response.statusText);
                 }
             }
             else {
@@ -66,7 +68,7 @@ const UsersDashboard = () => {
                     body: JSON.stringify(userData)
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to create user');
+                    console.error('Failed to create user:', response.statusText);
                 }
             }
         }
@@ -86,7 +88,7 @@ const UsersDashboard = () => {
                 method: 'DELETE',
             });
             if (!response.ok) {
-                throw new Error('Failed to delete user');
+                console.error('Failed to delete user:', response.statusText);
             }
             await fetchUsers();
         }
@@ -105,12 +107,12 @@ const UsersDashboard = () => {
                 <h1 className="text-3xl font-black text-subsonic-accent uppercase tracking-tight">
                     Gestión de Usuarios
                 </h1>
-                <button
+                <Button
                     onClick={handleNewUser}
-                    className="bg-subsonic-accent hover:bg-opacity-80 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-bg transition"
                 >
                     + Nuevo Usuario
-                </button>
+                </Button>
             </div>
 
             <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl overflow-hidden">
@@ -142,18 +144,20 @@ const UsersDashboard = () => {
                   </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                                <button
+                                <Button
                                     onClick={() => handleEdit(user)}
-                                    className="text-subsonic-accent hover:text-opacity-80 font-medium"
+                                    className="bg-subsonic-border text-subsonic-accent hover:text-opacity-80 hover:bg-subsonic-accent hover:text-subsonic-bg px-6 py-2"
+                                    variant=''
                                 >
                                     Editar
-                                </button>
-                                <button
+                                </Button>
+                                <Button
                                     onClick={() => setConfirmDelete({ id: user.id, name: user.name })}
-                                    className="text-red-400 hover:text-red-300 font-medium"
+                                    className="bg-subsonic-border text-red-400 hover:bg-red-500 hover:text-subsonic-bg px-6 py-2"
+                                    variant=''
                                 >
                                     Eliminar
-                                </button>
+                                </Button>
                             </td>
                         </tr>
                     ))}
