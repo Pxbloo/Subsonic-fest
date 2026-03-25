@@ -556,6 +556,26 @@
       "area": "Zona restringida"
     }
   ],
+  "groundReservations": [
+    {
+      "id": "r1",
+      "groundId": "1",
+      "providerId": "2",
+      "providerName": "María López (Proveedor)",
+      "status": "Reservado",
+      "createdAt": "2025-07-15T12:00:00Z",
+      "notes": "Food trucks"
+    },
+    {
+      "id": "r2",
+      "groundId": "2",
+      "providerId": "2",
+      "providerName": "María López (Proveedor)",
+      "status": "Pendiente",
+      "createdAt": "2025-07-15T12:00:00Z",
+      "notes": "Food trucks"
+    }
+  ],
   "artists": [
     {
       "id": "bad-bunny",
