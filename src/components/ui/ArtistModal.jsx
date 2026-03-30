@@ -96,7 +96,7 @@ const ArtistModal = ({ isOpen, onClose, onSave, artist }) => {
                 }));
             }
         }
-    }, [artist, artistData.name]);
+    }, [artist, artistData.name, artistData.id]);
 
     if (!isOpen) return null;
 
