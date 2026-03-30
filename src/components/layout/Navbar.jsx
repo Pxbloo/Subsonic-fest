@@ -12,7 +12,7 @@ const menuItems = {
     ],
     provider: [
         {href: "/", label: "Inicio"},
-        {href: "/recintos-proveedor", label: "Mis recintos"},
+        {href: "/grounds", label: "Mis recintos"}, // Medida temporal, gestión de recintos para proveedor NO EXISTE.
         {href: "/sales-dashboard", label: "Mis ventas"},
         {href: "/contact", label: "Contacto"},
     ],

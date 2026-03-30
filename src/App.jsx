@@ -95,20 +95,29 @@ function App() {
 
         <main className="grow p-6 md:p-16">
           <Routes>
+            {/* Rutas COMUNES */}
             <Route path="/" element={<Home />} />
-            <Route path="/tienda" element={<Merch />} />
-            <Route path="/history" element={<History />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/user-profile" element={<UserProfile user={user} />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/festival/:id" element={<FestivalInstance />} />
             <Route path="/artist/:id" element={<ArtistProfile />} />
-            <Route path="/grounds" element={<GroundsManagement />} />
-            <Route path="/sales-dashboard" element={<SalesDashboard />} />
-            <Route path="/dashboard-festivales" element={<FestivalsManagement />} />
+
+            {/* Rutas de CLIENTE */}
+            <Route path="/tienda" element={<Merch />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/blog" element={<Blog />} />
+
+            {/* Rutas de PROVEEDOR */}
+            <Route path="/sales-dashboard" element={<SalesDashboard />} />
+            {/* --------------- Gestión de recintos de PROVEEDOR conectado a "/grounds" de ADMIN --------------- */}
+
+            {/* Rutas de ADMINISTRADOR */}
+            <Route path="/grounds" element={<GroundsManagement />} />
+            <Route path="/dashboard-festivales" element={<FestivalsManagement />} />
             <Route path="/dashboard-usuarios" element={<UsersDashboard />} />
             <Route path="/dashboard-entradas" element={<TicketsManagement />} />
-            <Route path="/contact" element={<ContactUs />} />
+
           </Routes>
         </main>
 
