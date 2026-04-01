@@ -4,7 +4,7 @@ from typing import List, Optional
 class TicketDTO(BaseModel):
     """Objeto de transferencia de datos para una categoría de entrada."""
     name: str
-    price: str
+    price: float
     features: List[str]
 
 class LineupItemDTO(BaseModel):
@@ -20,7 +20,7 @@ class FestivalDTO(BaseModel):
     date: str
     startDate: str
     location: str
-    price: Optional[str] = None
+    price: Optional[float] = None
     description: str
     tickets: List[TicketDTO]
     lineup: List[LineupItemDTO]
