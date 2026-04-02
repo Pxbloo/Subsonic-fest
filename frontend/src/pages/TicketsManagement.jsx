@@ -2,56 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import BaseCard from '@/components/ui/BaseCard';
+import API_BASE_URL from '@/config/api';
+import TicketTemplateForm from '@/components/ui/TicketTemplateForm';
 
-// --- SUBCOMPONENTE: FORMULARIO DE PLANTILLA ---
-const TicketTemplateForm = ({ data, onChange, onSave, onCancel }) => (
-  <form onSubmit={onSave} className="max-w-2xl mx-auto space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-    <BaseCard className="border-l-4 border-l-subsonic-accent">
-      <h2 className="text-xl font-black text-subsonic-accent uppercase mb-6">Detalles de la Entrada</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input 
-          label="Nombre de la Entrada" 
-          value={data.name} 
-          onChange={e => onChange({...data, name: e.target.value})} 
-          required 
-        />
-        <Input 
-          label="Precio Base (€)" 
-          type="text"
-          placeholder="Ej: 19.99"
-          value={data.price} 
-          onChange={e => onChange({...data, price: e.target.value})} 
-          required 
-        />
-      </div>
-      <div className="mt-6">
-        <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest mb-2 ml-1">
-          Descripción de Beneficios (separa con comas)
-        </label>
-        <textarea 
-          className="w-full bg-subsonic-bg border border-subsonic-border p-4 rounded-xl text-subsonic-text text-sm focus:border-subsonic-accent outline-none min-h-[100px]"
-          placeholder="Ej: Acceso VIP, Barra libre, Parking"
-          value={data.features}
-          onChange={e => onChange({...data, features: e.target.value})}
-          required
-        />
-      </div>
-    </BaseCard>
-
-    <div className="flex gap-4">
-      <Button type="submit" variant="primary" className="flex-1">Guardar Plantilla</Button>
-      <Button type="button" variant="outline" className="flex-1" onClick={onCancel}>Cancelar</Button>
-    </div>
-  </form>
-);
-
-// --- COMPONENTE PRINCIPAL ---
 const TicketsManagement = () => {
   const [templates, setTemplates] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTemplate, setCurrentTemplate] = useState({ name: '', features: '', price: '' });
 
-  const API_URL = 'http://localhost:3000/ticketTemplates';
+  const API_URL = `${API_BASE_URL}/ticketTemplates`;
 
   useEffect(() => {
     fetchTemplates();
@@ -69,12 +28,11 @@ const TicketsManagement = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     const isNew = !currentTemplate.id;
-    const method = isNew ? 'POST' : 'PUT';
+    const method = isNew ? 'POST' : 'PUT'; 
     const url = isNew ? API_URL : `${API_URL}/${currentTemplate.id}`;
    
     const templateToSave = {
       ...currentTemplate,
-      price: currentTemplate.price, 
       features: typeof currentTemplate.features === 'string' 
         ? currentTemplate.features.split(',').map(v => v.trim()).filter(v => v !== '')
         : currentTemplate.features
