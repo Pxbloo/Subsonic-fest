@@ -18,6 +18,7 @@ import Blog from '@/pages/Blog.jsx';
 import UsersDashboard from "@/pages/UsersDashboard.jsx";
 import ContactUs from "@/pages/ContactUs.jsx";
 import TicketsManagement from "@/pages/TicketsManagement.jsx";
+import GroundsProvider from "@/pages/GroundsProvider.jsx";
 import ArtistMan from "@/pages/ArtistManagement.jsx";
 
 function App() {
@@ -111,10 +112,11 @@ function App() {
 
             {/* Rutas de PROVEEDOR */}
             <Route path="/sales-dashboard" element={<SalesDashboard />} />
+            <Route path="/grounds" element={<GroundsProvider user={user} />} />
             {/* --------------- Gestión de recintos de PROVEEDOR conectado a "/grounds" de ADMIN --------------- */}
 
             {/* Rutas de ADMINISTRADOR */}
-            <Route path="/grounds" element={<GroundsManagement />} />
+            <Route path="/dashboard-grounds" element={<GroundsManagement />} />
             <Route path="/dashboard-festivales" element={<FestivalsManagement />} />
             <Route path="/dashboard-usuarios" element={<UsersDashboard />} />
             <Route path="/dashboard-entradas" element={<TicketsManagement />} />

@@ -1,0 +1,39 @@
+from abc import ABC, abstractmethod
+from model.dao.interfaces.user_dao import UserDAO
+from model.dao.interfaces.artist_dao import ArtistDAO
+from model.dao.interfaces.blog_post_dao import BlogPostDAO
+from model.dao.interfaces.festival_dao import FestivalDAO
+from model.dao.interfaces.ground_dao import GroundDAO
+from model.dao.interfaces.history_dao import HistoryDAO
+from model.dao.interfaces.merchandising_dao import MerchandisingDAO
+
+class InterfaceDAOFacrtory(ABC):
+    """Fábrica de interfaces DAO para la gestión de datos en la aplicación."""
+
+    @abstractmethod
+    def get_user_dao(self) -> UserDAO:
+        pass
+
+    @abstractmethod
+    def get_artist_dao(self) -> ArtistDAO:
+        pass
+
+    @abstractmethod
+    def get_blog_post_dao(self) -> BlogPostDAO:
+        pass
+
+    @abstractmethod
+    def get_festival_dao(self) -> FestivalDAO:
+        pass
+
+    @abstractmethod
+    def get_ground_dao(self) -> GroundDAO:
+        pass
+
+    @abstractmethod
+    def get_history_dao(self) -> HistoryDAO:
+        pass
+
+    @abstractmethod
+    def get_merchandising_dao(self) -> MerchandisingDAO:
+        pass

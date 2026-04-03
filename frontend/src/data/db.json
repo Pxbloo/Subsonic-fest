@@ -53,12 +53,12 @@
       "date": "15-17 Jul 2026",
       "startDate": "2026-07-15",
       "location": "Recinto Ferial, Madrid",
-      "price": "Desde 89€",
+      "price": 89.0,
       "description": "El evento principal del verano con los mejores artistas internacionales. Tres días de música, arte inmersivo y tecnología punta.",
       "tickets": [
         {
           "name": "General Pass",
-          "price": "89€",
+          "price": 89.0,
           "features": [
             "Acceso al recinto",
             "Zona de restauración",
@@ -67,7 +67,7 @@
         },
         {
           "name": "VIP Experience",
-          "price": "155€",
+          "price": 155.0,
           "features": [
             "Acceso preferente",
             "Zona VIP elevada",
@@ -77,7 +77,7 @@
         },
         {
           "name": "Backstage Pass",
-          "price": "250€",
+          "price": 250.0,
           "features": [
             "Acceso al Backstage",
             "Meet & Greet (Sorteo)",
@@ -110,12 +110,12 @@
       "date": "22 Ago 2026",
       "startDate": "2026-08-22",
       "location": "Industrial Park, Barcelona",
-      "price": "Desde 45€",
+      "price": 45.0,
       "description": "Una noche dedicada a los ritmos urbanos y electrónicos en un entorno industrial transformado.",
       "tickets": [
         {
           "name": "Early Bird",
-          "price": "35€",
+          "price": 35.0,
           "features": [
             "Acceso anticipado",
             "Consumición incluida"
@@ -123,7 +123,7 @@
         },
         {
           "name": "Standard Entry",
-          "price": "45€",
+          "price": 45.0,
           "features": [
             "Acceso general",
             "Zona de descanso"
@@ -149,12 +149,12 @@
       "date": "13-15 Jun 2025",
       "startDate": "2025-06-13",
       "location": "Fira Montjuïc, Barcelona",
-      "price": "Desde 120€",
+      "price": 120.0,
       "description": "Edición centrada en la vanguardia, arte digital y tecnología aplicada a la música.",
       "tickets": [
         {
           "name": "Abono 3 Días",
-          "price": "120€",
+          "price": 120.0,
           "features": [
             "Acceso Sónar de Día",
             "Acceso Sónar de Noche",
@@ -163,7 +163,7 @@
         },
         {
           "name": "VIP 3 Días",
-          "price": "240€",
+          "price": 240.0,
           "features": [
             "Fast track",
             "Zonas VIP exclusivas",
@@ -190,12 +190,12 @@
       "date": "5-8 Jun 2025",
       "startDate": "2025-06-05",
       "location": "Parc del Fòrum, Barcelona",
-      "price": "Desde 135€",
+      "price": 135.0,
       "description": "Festival urbano junto al mar que mezcla electrónica, rock y pop experimental.",
       "tickets": [
         {
           "name": "Abono General",
-          "price": "135€",
+          "price": 135.0,
           "features": [
             "Acceso todos los días",
             "Pack de bienvenida"
@@ -203,7 +203,7 @@
         },
         {
           "name": "Abono VIP",
-          "price": "250€",
+          "price": 250.0,
           "features": [
             "Vista panorámica",
             "Carril de acceso exclusivo",
@@ -230,12 +230,12 @@
       "date": "19-21 Jul 2026",
       "startDate": "2026-07-19",
       "location": "De Schorre, Boom (Bélgica)",
-      "price": "Desde 295€",
+      "price": 295.0,
       "description": "El festival más icónico del mundo con una producción escénica de fantasía.",
       "tickets": [
         {
           "name": "Full Madness",
-          "price": "295€",
+          "price": 295.0,
           "features": [
             "Acceso 3 días",
             "Treasure case"
@@ -243,7 +243,7 @@
         },
         {
           "name": "Comfort Pass",
-          "price": "435€",
+          "price": 435.0,
           "features": [
             "Acceso a plataformas VIP",
             "Vistas exclusivas",
@@ -270,12 +270,12 @@
       "date": "26-28 Jun 2026",
       "startDate": "2026-06-26",
       "location": "Arganda del Rey, Madrid",
-      "price": "Desde 95€",
+      "price": 95.0,
       "description": "La ciudad del rock vuelve con las bandas más grandes del planeta.",
       "tickets": [
         {
           "name": "Entrada Diaria",
-          "price": "95€",
+          "price": 95.0,
           "features": [
             "Acceso 1 día",
             "Tirolina incluida"
@@ -283,7 +283,7 @@
         },
         {
           "name": "VIP Pass",
-          "price": "190€",
+          "price": 190.0,
           "features": [
             "Catering ilimitado",
             "Aire acondicionado",
@@ -310,12 +310,12 @@
       "date": "10-13 Jul 2026",
       "startDate": "2026-07-10",
       "location": "Villaverde, Madrid",
-      "price": "Desde 110€",
+      "price": 110.0,
       "description": "El festival de referencia en la capital con un cartel ecléctico y potente.",
       "tickets": [
         {
           "name": "Abono 4 Días",
-          "price": "110€",
+          "price": 110.0,
           "features": [
             "Acceso total",
             "Pulsera inteligente"
@@ -323,7 +323,7 @@
         },
         {
           "name": "VIP Abono",
-          "price": "220€",
+          "price": 220.0,
           "features": [
             "Zona relax",
             "Puntos de carga",
@@ -355,12 +355,12 @@
       "date": "01-04 Jul 2026",
       "startDate": "2026-07-01",
       "location": "Viveiro, Galicia",
-      "price": "Desde 140€",
+      "price": 140.0,
       "description": "La cita ineludible para los amantes del Metal y el Hardcore en el norte de España.",
       "tickets": [
         {
           "name": "Pandemonium",
-          "price": "210€",
+          "price": 210.0,
           "features": [
             "Área VIP Pandemonium",
             "Grada lateral",
@@ -369,7 +369,7 @@
         },
         {
           "name": "Abono Estándar",
-          "price": "140€",
+          "price": 140.0,
           "features": [
             "Acceso 4 días",
             "Zona de acampada libre"
@@ -395,12 +395,12 @@
       "date": "10-12 Abr 2026",
       "startDate": "2026-04-10",
       "location": "Indio, California (USA)",
-      "price": "Desde 499€",
+      "price": 499.0,
       "description": "Tendencias, moda y música en medio del desierto de California.",
       "tickets": [
         {
           "name": "GA Pass",
-          "price": "499€",
+          "price": 499.0,
           "features": [
             "Acceso 3 días",
             "Parking incluido"
@@ -408,7 +408,7 @@
         },
         {
           "name": "VIP Pass",
-          "price": "999€",
+          "price": 999.0,
           "features": [
             "Acceso a Rose Garden",
             "Sombras exclusivas",
@@ -440,12 +440,12 @@
       "date": "09-11 Jul 2026",
       "startDate": "2026-07-09",
       "location": "Kobetamendi, Bilbao",
-      "price": "Desde 125€",
+      "price": 125.0,
       "description": "Música en la cima de la montaña con las mejores vistas de Bilbao.",
       "tickets": [
         {
           "name": "Abono + Camping",
-          "price": "155€",
+          "price": 155.0,
           "features": [
             "Bus lanzadera",
             "Acceso zona acampada",
@@ -454,7 +454,7 @@
         },
         {
           "name": "Abono Estándar",
-          "price": "125€",
+          "price": 125.0,
           "features": [
             "Acceso 3 días",
             "Bus lanzadera incluido"
@@ -489,7 +489,7 @@
       "tickets": [
         {
           "name": "entradas11",
-          "price": "19.99",
+          "price": 19.99,
           "features": [
             "Barrilada",
             "Acceso VIP"
@@ -497,7 +497,7 @@
         },
         {
           "name": "entrada22",
-          "price": "49.99",
+          "price": 49.99,
           "features": [
             "Parking"
           ]
@@ -556,6 +556,26 @@
       "area": "Zona restringida"
     }
   ],
+  "groundReservations": [
+    {
+      "id": "r1",
+      "groundId": "1",
+      "providerId": "2",
+      "providerName": "María López (Proveedor)",
+      "status": "Reservado",
+      "createdAt": "2025-07-15T12:00:00Z",
+      "notes": "Food trucks"
+    },
+    {
+      "id": "r2",
+      "groundId": "2",
+      "providerId": "2",
+      "providerName": "María López (Proveedor)",
+      "status": "Pendiente",
+      "createdAt": "2025-07-15T12:00:00Z",
+      "notes": "Food trucks"
+    }
+  ],
   "artists": [
     {
       "id": "bad-bunny",
@@ -608,7 +628,13 @@
       "genre": "Electrónica / Urbano",
       "email": "bizarrap@gmail.com",
       "description": "Productor argentino conocido por sus 'Music Sessions' con artistas de todo el mundo.",
-      "spotifyId": "716NhGYqD1jl2wI1Qkgq36"
+      "spotifyId": "716NhGYqD1jl2wI1Qkgq36",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     },
     {
       "id": "iron-maiden",
@@ -616,7 +642,13 @@
       "genre": "Heavy Metal",
       "email": "ironmaiden@gmail.com",
       "description": "Histórica banda británica de heavy metal, referente del género desde los años 80.",
-      "spotifyId": "6mdiAmATAx73kdxrNrnlao"
+      "spotifyId": "6mdiAmATAx73kdxrNrnlao",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     },
     {
       "id": "red-hot-chili-peppers",
@@ -624,7 +656,13 @@
       "genre": "Rock",
       "email": "redchili@gmail.com",
       "description": "Banda estadounidense que fusiona rock, funk y otros estilos, con una larga trayectoria en festivales.",
-      "spotifyId": "0L8ExT028jH3ddEcZwqJJ5"
+      "spotifyId": "0L8ExT028jH3ddEcZwqJJ5",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     },
     {
       "id": "billie-eilish",
@@ -632,7 +670,13 @@
       "genre": "Pop",
       "email": "billie@gmail.com",
       "description": "Cantante y compositora estadounidense de pop alternativo, conocida por su sonido oscuro y experimental.",
-      "spotifyId": "6qqNVTkY8uBg9cP3Jd7DAH"
+      "spotifyId": "6qqNVTkY8uBg9cP3Jd7DAH",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     },
     {
       "id": "tame-impala",
@@ -640,7 +684,13 @@
       "genre": "Psychedelic Rock",
       "email": "tame@gmail.com",
       "description": "Proyecto musical liderado por Kevin Parker que mezcla rock psicodélico con electrónica.",
-      "spotifyId": "5INjqkS1o8h1imAzPqGZBb"
+      "spotifyId": "5INjqkS1o8h1imAzPqGZBb",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     },
     {
       "id": "the-weeknd",
@@ -648,7 +698,13 @@
       "genre": "R&B / Pop",
       "email": "theweeknd@gmail.com",
       "description": "Cantante y productor canadiense de R&B y pop, habitual en los principales festivales internacionales.",
-      "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ"
+      "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ",
+      "address": {
+        "country": "",
+        "city": "",
+        "street": "",
+        "postalCode": ""
+      }
     }
   ],
   "merchandising": [
@@ -736,27 +792,27 @@
   "blogPosts": [
     {
       "id": "1",
-      "titulo": "Harry Styles arrasa: 'Kiss All the Time. Disco, Occasionally.' debuta en el #1 del Billboard 200",
-      "resumen": "El cuarto álbum en solitario de Harry Styles arrasa en su primera semana con 430.000 unidades equivalentes, consolidándolo como el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes.",
-      "contenido": "El cuarto álbum en solitario de Harry Styles, Kiss All the Time. Disco, Occasionally., debutó en el número uno del Billboard 200 con 430.000 unidades equivalentes en la semana que terminó el 12 de marzo. Es la semana más grande para cualquier álbum en cinco meses, y Styles se convierte en el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes, solo por detrás de DMX. Las ventas en vinilo representaron 186.000 unidades, el mayor debut en vinilo para un artista masculino en la era moderna.",
-      "categoria": "Internacional",
+      "title": "Harry Styles arrasa: 'Kiss All the Time. Disco, Occasionally.' debuta en el #1 del Billboard 200",
+      "summary": "El cuarto álbum en solitario de Harry Styles arrasa en su primera semana con 430.000 unidades equivalentes, consolidándolo como el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes.",
+      "content": "El cuarto álbum en solitario de Harry Styles, Kiss All the Time. Disco, Occasionally., debutó en el número uno del Billboard 200 con 430.000 unidades equivalentes en la semana que terminó el 12 de marzo. Es la semana más grande para cualquier álbum en cinco meses, y Styles se convierte en el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes, solo por detrás de DMX. Las ventas en vinilo representaron 186.000 unidades, el mayor debut en vinilo para un artista masculino en la era moderna.",
+      "category": "Internacional",
       "tags": [
         "Harry Styles",
         "Billboard 200",
         "Pop",
         "Charts"
       ],
-      "fecha": "2026-03-17",
-      "autor": "Billboard Español",
-      "imagen": "https://www.billboard.com/wp-content/uploads/2026/01/harry-styles-press-aperture-stella-blackmon-billboard-1800.jpg",
+      "date": "2026-03-17",
+      "author": "Billboard Español",
+      "image": "https://www.billboard.com/wp-content/uploads/2026/01/harry-styles-press-aperture-stella-blackmon-billboard-1800.jpg",
       "url": "https://www.billboard.com/espanol/noticias/harry-styles-kiss-all-the-time-no-1-billboard-200-1236201254/"
     },
     {
       "id": "2",
-      "titulo": "J Balvin hace historia: 40 números uno en Latin Airplay con 'Si te vas'",
-      "resumen": "La colaboración entre J Balvin y Jay Wheeler asciende al número uno de Latin Airplay, ampliando el récord histórico del colombiano. Para Wheeler, es su tercer número uno en la lista.",
-      "contenido": "J Balvin extiende a 40 su récord de números uno en Latin Airplay con 'Si te vas', junto a Jay Wheeler. El tema subió al primer lugar en su cuarta semana en la lista tras un crecimiento del 19% en impresiones de audiencia, alcanzando 8,2 millones en Estados Unidos. 'Jay aportó algo especial a esta canción y estoy agradecido de que hayamos podido crearla juntos', declaró Balvin. En el mismo chart, Shakira debuta en el top 5 de Latin Pop Airplay con 'Algo tú' junto a Beéle, empatando con Enrique Iglesias en top 10s históricos.",
-      "categoria": "Latin",
+      "title": "J Balvin hace historia: 40 números uno en Latin Airplay con 'Si te vas'",
+      "summary": "La colaboración entre J Balvin y Jay Wheeler asciende al número uno de Latin Airplay, ampliando el récord histórico del colombiano. Para Wheeler, es su tercer número uno en la lista.",
+      "content": "J Balvin extiende a 40 su récord de números uno en Latin Airplay con 'Si te vas', junto a Jay Wheeler. El tema subió al primer lugar en su cuarta semana en la lista tras un crecimiento del 19% en impresiones de audiencia, alcanzando 8,2 millones en Estados Unidos. 'Jay aportó algo especial a esta canción y estoy agradecido de que hayamos podido crearla juntos', declaró Balvin. En el mismo chart, Shakira debuta en el top 5 de Latin Pop Airplay con 'Algo tú' junto a Beéle, empatando con Enrique Iglesias en top 10s históricos.",
+      "category": "Latin",
       "tags": [
         "J Balvin",
         "Jay Wheeler",
@@ -764,17 +820,17 @@
         "Latin Airplay",
         "Charts"
       ],
-      "fecha": "2026-03-17",
-      "autor": "Billboard Español",
-      "imagen": "https://www.billboard.com/wp-content/uploads/2026/01/j-balvin-2026-press-cr-ricardo-beas-billboard-espanol-1800.jpg",
+      "date": "2026-03-17",
+      "author": "Billboard Español",
+      "image": "https://www.billboard.com/wp-content/uploads/2026/01/j-balvin-2026-press-cr-ricardo-beas-billboard-espanol-1800.jpg",
       "url": "https://www.billboard.com/espanol/noticias/j-balvin-jay-wheeler-si-te-vas-no-1-latin-airplay-1236201447/"
     },
     {
       "id": "3",
-      "titulo": "Share Festival 2026 completa su cartel: Myke Towers, Lola Índigo, Dellafuente y Dei V",
-      "resumen": "El festival barcelonés cierra su cartel para los días 24 y 25 de julio en el Parc del Fòrum. Dellafuente ofrecerá su único concierto en Cataluña del año.",
-      "contenido": "El Share Festival 2026 ha completado su cartel con la confirmación de Myke Towers, Lola Índigo, Dellafuente y Dei V para su octava edición en el Parc del Fòrum de Barcelona, los días 24 y 25 de julio. Dellafuente protagonizará su único concierto en Cataluña de 2026 en este festival, que se consolida como uno de los eventos de referencia del urbano y el pop en España. Las entradas ya están disponibles a través de los canales oficiales del festival.",
-      "categoria": "Festivales",
+      "title": "Share Festival 2026 completa su cartel: Myke Towers, Lola Índigo, Dellafuente y Dei V",
+      "summary": "El festival barcelonés cierra su cartel para los días 24 y 25 de julio en el Parc del Fòrum. Dellafuente ofrecerá su único concierto en Cataluña del año.",
+      "content": "El Share Festival 2026 ha completado su cartel con la confirmación de Myke Towers, Lola Índigo, Dellafuente y Dei V para su octava edición en el Parc del Fòrum de Barcelona, los días 24 y 25 de julio. Dellafuente protagonizará su único concierto en Cataluña de 2026 en este festival, que se consolida como uno de los eventos de referencia del urbano y el pop en España. Las entradas ya están disponibles a través de los canales oficiales del festival.",
+      "category": "Festivales",
       "tags": [
         "Share Festival",
         "Myke Towers",
@@ -783,17 +839,17 @@
         "Barcelona",
         "Festival"
       ],
-      "fecha": "2026-03-18",
-      "autor": "Los 40",
-      "imagen": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80",
+      "date": "2026-03-18",
+      "author": "Los 40",
+      "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80",
       "url": "https://los40.com/2026/03/18/share-festival-2026-completa-su-cartel-con-myke-towers-lola-indigo-dellafuente-y-dei-v/"
     },
     {
       "id": "4",
-      "titulo": "Don Omar agota España: Barcelona se suma a su gira de despedida el 23 de julio",
-      "resumen": "El Rey del Reggaetón añade Barcelona al mapa tras agotar entradas en Tenerife en menos de una hora. Actuará en el Estadi Olímpic de Montjuïc.",
-      "contenido": "Don Omar ha anunciado un nuevo concierto en España dentro de su gira de despedida, esta vez en Barcelona. El Rey del Reggaetón actuará el 23 de julio en el Estadi Olímpic de Montjuïc, sumando así una nueva fecha tras agotar entradas en Tenerife en menos de una hora. El artista puertorriqueño, conocido por éxitos como 'Danza Kuduro' y 'Conteo', está realizando una extensa gira mundial que le traerá a varias ciudades españolas.",
-      "categoria": "Conciertos",
+      "title": "Don Omar agota España: Barcelona se suma a su gira de despedida el 23 de julio",
+      "summary": "El Rey del Reggaetón añade Barcelona al mapa tras agotar entradas en Tenerife en menos de una hora. Actuará en el Estadi Olímpic de Montjuïc.",
+      "content": "Don Omar ha anunciado un nuevo concierto en España dentro de su gira de despedida, esta vez en Barcelona. El Rey del Reggaetón actuará el 23 de julio en el Estadi Olímpic de Montjuïc, sumando así una nueva fecha tras agotar entradas en Tenerife en menos de una hora. El artista puertorriqueño, conocido por éxitos como 'Danza Kuduro' y 'Conteo', está realizando una extensa gira mundial que le traerá a varias ciudades españolas.",
+      "category": "Conciertos",
       "tags": [
         "Don Omar",
         "Reggaetón",
@@ -801,9 +857,9 @@
         "Concierto",
         "Gira"
       ],
-      "fecha": "2026-03-16",
-      "autor": "Los 40",
-      "imagen": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+      "date": "2026-03-16",
+      "author": "Los 40",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
       "url": "https://los40.com/2026/03/16/don-omar-anuncia-nuevo-concierto-en-espana-en-2026-ciudad-fecha-entradas-donde-y-cuando-comprarlas/"
     }
   ],
@@ -815,7 +871,7 @@
         "Barrilada",
         "Acceso VIP"
       ],
-      "price": "19.99"
+      "price": 19.99
     },
     {
       "id": "149a",
@@ -823,8 +879,7 @@
       "features": [
         "Parking"
       ],
-      "price": "49.99"
+      "price": 49.99
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }
