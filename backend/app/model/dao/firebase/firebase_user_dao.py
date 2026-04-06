@@ -3,11 +3,12 @@ from app.model.dao.interfaces.user_dao import UserDAO
 from app.model.dto.UserDTO import UserDTO
 from .firebase_connector import FirebaseConnector
 
+
 class FirebaseUserDAO(UserDAO):
 
     def __init__(self):
         """Inicializa la conexión a Firebase Firestore y establece la referencia a la colección 'users'."""
-        self.db = FirebaseConnector().get_db()
+        self.db = FirebaseConnector.get_db()
         self.collection = self.db.collection("users")
 
     def get_all(self) -> List[UserDTO]:

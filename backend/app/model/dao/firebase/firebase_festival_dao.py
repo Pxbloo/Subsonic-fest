@@ -4,10 +4,10 @@ from model.dao.interfaces.festival_dao import FestivalDAO
 from model.dto.FestivalDTO import FestivalDTO
 from .firebase_connector import FirebaseConnector
 
+
 class FirebaseFestivalDAO(FestivalDAO):
-    def __init__(self, cred_path: str):
-        connector = FirebaseConnector(cred_path)
-        self.db = connector.get_db()
+    def __init__(self):
+        self.db = FirebaseConnector.get_db()
         self.collection = self.db.collection("festivals")
 
     def get_all(self) -> List[FestivalDTO]:
