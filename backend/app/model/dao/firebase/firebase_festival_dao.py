@@ -1,15 +1,13 @@
-import firebase_admin
-from firebase_admin import credentials, firestore
 from typing import List, Optional
+
 from model.dao.interfaces.festival_dao import FestivalDAO
 from model.dto.FestivalDTO import FestivalDTO
+from .firebase_connector import FirebaseConnector
 
 class FirebaseFestivalDAO(FestivalDAO):
     def __init__(self, cred_path: str):
-        if not firebase_admin._apps:
-            cred = credentials.Certificate(cred_path)
-            firebase_admin.initialize_app(cred)
-        self.db = firestore.client()
+        connector = FirebaseConnector(cred_path)
+        self.db = connector.get_db()
         self.collection = self.db.collection("festivals")
 
     def get_all(self) -> List[FestivalDTO]:
@@ -25,7 +23,6 @@ class FirebaseFestivalDAO(FestivalDAO):
     def create(self, festival: FestivalDTO) -> bool:
         """Crea un nuevo documento en la colección 'festivals' con los datos proporcionados por el objeto FestivalDTO.
         El ID del documento se establece como el valor del atributo 'id' del objeto FestivalDTO."""
-        # Usamos siempre el atributo "id" del DTO como identificador del documento
         doc_id = str(festival.id)
         self.collection.document(doc_id).set(festival.model_dump())
         return True

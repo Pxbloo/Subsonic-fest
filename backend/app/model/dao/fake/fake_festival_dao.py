@@ -32,11 +32,11 @@ class FakeFestivalDAO(FestivalDAO):
         festivals = self.get_all()
         return next((f for f in festivals if f.id == festival_id), None)
     
-    def create(self, festival: FestivalDTO) -> FestivalDTO:
+    def create(self, festival: FestivalDTO) -> bool:
         data = self._load_raw_data()
         data.setdefault("festivals", []).append(festival.model_dump())
         self._save_raw_data(data)
-        return festival
+        return True
 
     def update(self, festival_id: str, festival_dto: FestivalDTO) -> Optional[FestivalDTO]:
         data = self._load_raw_data()
