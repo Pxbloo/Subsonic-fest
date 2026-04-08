@@ -30,3 +30,25 @@ class FirebaseBlogDAO(BlogPostDAO):
         query = self.collection.where("category", "==", category)
         docs = query.stream()
         return [BlogPostDTO.model_validate(doc.to_dict()) for doc in docs]
+    
+    def create(self, blog_post: BlogPostDTO) -> str:
+        """Crea un nuevo post en la colección 'blog'."""
+        doc_ref = self.collection.document(str(blog_post.id))
+        doc_ref.set(blog_post.model_dump())
+        return str(doc_ref.id)
+    
+    def update(self, post_id: str, blog_post: BlogPostDTO) -> bool:
+        """Actualiza un post existente por su ID."""
+        doc_ref = self.collection.document(str(post_id))
+        if doc_ref.get().exists:
+            doc_ref.update(blog_post.model_dump())
+            return True
+        return False
+    
+    def delete(self, post_id: str) -> bool:
+        """Elimina un post por su ID."""
+        doc_ref = self.collection.document(str(post_id))
+        if doc_ref.get().exists:
+            doc_ref.delete()
+            return True
+        return False
