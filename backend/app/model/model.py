@@ -32,3 +32,7 @@ class SubsonicModel:
             return user_dto
             
         return None
+    
+    def listar_festivales(self):  
+        dao = self.factory.get_festival_dao()
+        return dao.get_all()
