@@ -1,6 +1,6 @@
 from typing import List, Optional
-from app.model.dao.interfaces.merchandising_dao import MerchandisingDAO
-from app.model.dto.MerchandisingDTO import MerchandisingDTO
+from ..interfaces.merchandising_dao import MerchandisingDAO
+from ...dto.MerchandisingDTO import MerchandisingDTO
 from .firebase_connector import FirebaseConnector
 
 class FirebaseMerchandisingDAO(MerchandisingDAO):
@@ -21,6 +21,11 @@ class FirebaseMerchandisingDAO(MerchandisingDAO):
         if doc.exists:
             return MerchandisingDTO.model_validate(doc.to_dict())
         return None
+
+    def get_by_type(self, product_type: str) -> List[MerchandisingDTO]:
+        query = self.collection.where("type", "==", product_type)
+        docs = query.stream()
+        return [MerchandisingDTO.model_validate(doc.to_dict()) for doc in docs]
 
     def create(self, merchandising_item: MerchandisingDTO) -> bool:
         """Crea un nuevo documento en la colección 'merchandising' con los datos proporcionados por el objeto MerchandisingDTO."""
