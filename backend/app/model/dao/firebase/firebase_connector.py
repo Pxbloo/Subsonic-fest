@@ -6,6 +6,7 @@ from typing import Optional
 import firebase_admin
 from firebase_admin import credentials, firestore, get_app
 from google.cloud.firestore import Client
+from firebase_admin import auth
 
 logger = logging.getLogger(__name__)
 
@@ -44,3 +45,15 @@ class FirebaseConnector:
             return Path(env_path)
 
         return Path(__file__).resolve().parents[4] / "serviceAccountKey.json"
+    
+    def verify_token(self, token: str):
+        """
+        Se comunica con los servidores de Google para validar el ID Token.
+        Retorna un diccionario con la información del usuario (uid, email, etc.)
+        """
+        try:
+            decoded_token = auth.verify_id_token(token)
+            return decoded_token
+        except Exception as e:
+            print(f"Error al verificar el token de OAuth: {e}")
+            return None
