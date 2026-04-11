@@ -17,10 +17,11 @@ const menuItems = {
         {href: "/contact", label: "Contacto"},
     ],
     admin: [
-        {href: "/dashboard-festivales", label: "Gestión de festivales"},
-        {href: "/dashboard-grounds", label: "Gestión de recintos"},
-        {href: "/dashboard-usuarios", label: "Gestión de usuarios"},
-        {href: "/dashboard-artistas", label: "Gestión de artistas"},
+        {href: "/dashboard-festivales", label: "Festivales"},
+        {href: "/dashboard-grounds", label: "Recintos"},
+        {href: "/dashboard-usuarios", label: "Usuarios"},
+        {href: "/dashboard-artistas", label: "Artistas"},
+        {href: "/dashboard-productos", label: "Productos"},
     ]
 };
 
@@ -51,7 +52,7 @@ const Navbar = ({ user, onOpenLogin, onOpenRegister, onLogout }) => {
                 className="w-40 h-auto object-contain hover:opacity-50 transition-opacity cursor-pointer"
             />
         </AppLink>
-        <div className="flex gap-24 text-subsonic-text font-bold">
+        <div className="flex gap-20 text-subsonic-text font-bold">
             {currentMenuItems.map((item) => (
                 <AppLink key={item.href} href={item.href}>
                     {item.label}

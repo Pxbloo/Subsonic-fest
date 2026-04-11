@@ -6,6 +6,8 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
 
     const title = useMemo(() => product?.name ?? "Producto", [product]);
     const purchaseOptions = useMemo(() => product?.purchaseOptions ?? [], [product]);
+    const stock = Number(product?.stock ?? 0);
+    const outOfStock = stock <= 0;
 
     // Reset state cada vez que se abre (así, si se cierra sin añadir, no se guarda nada)
     useEffect(() => {
@@ -41,7 +43,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
     const allOptionsSelected = purchaseOptions.every(
         (option) => Boolean(selectedOptions[option.name])
     );
-    const canAdd = qty > 0 && allOptionsSelected;
+    const canAdd = qty > 0 && allOptionsSelected && !outOfStock;
 
     const handleOptionChange = (optionName, value) => {
         setSelectedOptions((current) => ({
@@ -128,7 +130,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                                     type="button"
                                     className="h-10 w-10 rounded-full border border-subsonic-border bg-subsonic-bg/40 font-black hover:bg-white/10 transition disabled:opacity-40"
                                     onClick={() => setQty((q) => Math.max(0, q - 1))}
-                                    disabled={!canDecrement}
+                                    disabled={!canDecrement || outOfStock}
                                     aria-label="Quitar uno"
                                 >
                                     −
@@ -142,7 +144,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                                     type="button"
                                     className="h-10 w-10 rounded-full border border-subsonic-border bg-subsonic-bg/40 font-black hover:bg-white/10 transition disabled:opacity-40"
                                     onClick={() => setQty((q) => Math.min(20, q + 1))}
-                                    disabled={!canIncrement}
+                                    disabled={!canIncrement || outOfStock}
                                     aria-label="Añadir uno"
                                 >
                                     +
@@ -156,6 +158,13 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                         <p className="text-sm leading-relaxed opacity-85">
                             {product.description}
                         </p>
+
+                        {outOfStock && (
+                            <div className="mt-4 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-300">
+                                No hay existencias disponibles.
+                            </div>
+                        )}
+
                         {purchaseOptions.length > 0 && (
                             <div className="mt-5 grid gap-4">
                                 {purchaseOptions.map((option) => (
@@ -200,14 +209,16 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                                 disabled={!canAdd}
                                 className="flex-1 rounded-full bg-subsonic-accent px-6 py-3 text-sm font-black uppercase text-subsonic-bg hover:bg-subsonic-text transition disabled:opacity-40 disabled:hover:bg-subsonic-accent"
                             >
-                                Añadir al carrito
+                                {outOfStock ? "Sin existencias" : "Añadir al carrito"}
                             </button>
                         </div>
 
                         <p className="mt-3 text-xs text-subsonic-muted">
-                            {purchaseOptions.length > 0
-                                ? "Selecciona cantidad y las opciones del producto."
-                                : "Selecciona la cantidad para añadir el producto."}
+                            {outOfStock
+                                ? "Este producto no puede añadirse hasta que haya stock."
+                                : purchaseOptions.length > 0
+                                    ? "Selecciona cantidad y las opciones del producto."
+                                    : "Selecciona la cantidad para añadir el producto."}
                         </p>
                     </div>
                 </div>

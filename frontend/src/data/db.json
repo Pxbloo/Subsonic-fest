@@ -53,12 +53,12 @@
       "date": "15-17 Jul 2026",
       "startDate": "2026-07-15",
       "location": "Recinto Ferial, Madrid",
-      "price": 89.0,
+      "price": 89,
       "description": "El evento principal del verano con los mejores artistas internacionales. Tres días de música, arte inmersivo y tecnología punta.",
       "tickets": [
         {
           "name": "General Pass",
-          "price": 89.0,
+          "price": 89,
           "features": [
             "Acceso al recinto",
             "Zona de restauración",
@@ -67,7 +67,7 @@
         },
         {
           "name": "VIP Experience",
-          "price": 155.0,
+          "price": 155,
           "features": [
             "Acceso preferente",
             "Zona VIP elevada",
@@ -77,7 +77,7 @@
         },
         {
           "name": "Backstage Pass",
-          "price": 250.0,
+          "price": 250,
           "features": [
             "Acceso al Backstage",
             "Meet & Greet (Sorteo)",
@@ -110,12 +110,12 @@
       "date": "22 Ago 2026",
       "startDate": "2026-08-22",
       "location": "Industrial Park, Barcelona",
-      "price": 45.0,
+      "price": 45,
       "description": "Una noche dedicada a los ritmos urbanos y electrónicos en un entorno industrial transformado.",
       "tickets": [
         {
           "name": "Early Bird",
-          "price": 35.0,
+          "price": 35,
           "features": [
             "Acceso anticipado",
             "Consumición incluida"
@@ -123,7 +123,7 @@
         },
         {
           "name": "Standard Entry",
-          "price": 45.0,
+          "price": 45,
           "features": [
             "Acceso general",
             "Zona de descanso"
@@ -149,12 +149,12 @@
       "date": "13-15 Jun 2025",
       "startDate": "2025-06-13",
       "location": "Fira Montjuïc, Barcelona",
-      "price": 120.0,
+      "price": 120,
       "description": "Edición centrada en la vanguardia, arte digital y tecnología aplicada a la música.",
       "tickets": [
         {
           "name": "Abono 3 Días",
-          "price": 120.0,
+          "price": 120,
           "features": [
             "Acceso Sónar de Día",
             "Acceso Sónar de Noche",
@@ -163,7 +163,7 @@
         },
         {
           "name": "VIP 3 Días",
-          "price": 240.0,
+          "price": 240,
           "features": [
             "Fast track",
             "Zonas VIP exclusivas",
@@ -190,12 +190,12 @@
       "date": "5-8 Jun 2025",
       "startDate": "2025-06-05",
       "location": "Parc del Fòrum, Barcelona",
-      "price": 135.0,
+      "price": 135,
       "description": "Festival urbano junto al mar que mezcla electrónica, rock y pop experimental.",
       "tickets": [
         {
           "name": "Abono General",
-          "price": 135.0,
+          "price": 135,
           "features": [
             "Acceso todos los días",
             "Pack de bienvenida"
@@ -203,7 +203,7 @@
         },
         {
           "name": "Abono VIP",
-          "price": 250.0,
+          "price": 250,
           "features": [
             "Vista panorámica",
             "Carril de acceso exclusivo",
@@ -230,12 +230,12 @@
       "date": "19-21 Jul 2026",
       "startDate": "2026-07-19",
       "location": "De Schorre, Boom (Bélgica)",
-      "price": 295.0,
+      "price": 295,
       "description": "El festival más icónico del mundo con una producción escénica de fantasía.",
       "tickets": [
         {
           "name": "Full Madness",
-          "price": 295.0,
+          "price": 295,
           "features": [
             "Acceso 3 días",
             "Treasure case"
@@ -243,7 +243,7 @@
         },
         {
           "name": "Comfort Pass",
-          "price": 435.0,
+          "price": 435,
           "features": [
             "Acceso a plataformas VIP",
             "Vistas exclusivas",
@@ -270,12 +270,12 @@
       "date": "26-28 Jun 2026",
       "startDate": "2026-06-26",
       "location": "Arganda del Rey, Madrid",
-      "price": 95.0,
+      "price": 95,
       "description": "La ciudad del rock vuelve con las bandas más grandes del planeta.",
       "tickets": [
         {
           "name": "Entrada Diaria",
-          "price": 95.0,
+          "price": 95,
           "features": [
             "Acceso 1 día",
             "Tirolina incluida"
@@ -283,7 +283,7 @@
         },
         {
           "name": "VIP Pass",
-          "price": 190.0,
+          "price": 190,
           "features": [
             "Catering ilimitado",
             "Aire acondicionado",
@@ -310,12 +310,12 @@
       "date": "10-13 Jul 2026",
       "startDate": "2026-07-10",
       "location": "Villaverde, Madrid",
-      "price": 110.0,
+      "price": 110,
       "description": "El festival de referencia en la capital con un cartel ecléctico y potente.",
       "tickets": [
         {
           "name": "Abono 4 Días",
-          "price": 110.0,
+          "price": 110,
           "features": [
             "Acceso total",
             "Pulsera inteligente"
@@ -323,7 +323,7 @@
         },
         {
           "name": "VIP Abono",
-          "price": 220.0,
+          "price": 220,
           "features": [
             "Zona relax",
             "Puntos de carga",
@@ -355,12 +355,12 @@
       "date": "01-04 Jul 2026",
       "startDate": "2026-07-01",
       "location": "Viveiro, Galicia",
-      "price": 140.0,
+      "price": 140,
       "description": "La cita ineludible para los amantes del Metal y el Hardcore en el norte de España.",
       "tickets": [
         {
           "name": "Pandemonium",
-          "price": 210.0,
+          "price": 210,
           "features": [
             "Área VIP Pandemonium",
             "Grada lateral",
@@ -369,7 +369,7 @@
         },
         {
           "name": "Abono Estándar",
-          "price": 140.0,
+          "price": 140,
           "features": [
             "Acceso 4 días",
             "Zona de acampada libre"
@@ -395,12 +395,12 @@
       "date": "10-12 Abr 2026",
       "startDate": "2026-04-10",
       "location": "Indio, California (USA)",
-      "price": 499.0,
+      "price": 499,
       "description": "Tendencias, moda y música en medio del desierto de California.",
       "tickets": [
         {
           "name": "GA Pass",
-          "price": 499.0,
+          "price": 499,
           "features": [
             "Acceso 3 días",
             "Parking incluido"
@@ -408,7 +408,7 @@
         },
         {
           "name": "VIP Pass",
-          "price": 999.0,
+          "price": 999,
           "features": [
             "Acceso a Rose Garden",
             "Sombras exclusivas",
@@ -440,12 +440,12 @@
       "date": "09-11 Jul 2026",
       "startDate": "2026-07-09",
       "location": "Kobetamendi, Bilbao",
-      "price": 125.0,
+      "price": 125,
       "description": "Música en la cima de la montaña con las mejores vistas de Bilbao.",
       "tickets": [
         {
           "name": "Abono + Camping",
-          "price": 155.0,
+          "price": 155,
           "features": [
             "Bus lanzadera",
             "Acceso zona acampada",
@@ -454,7 +454,7 @@
         },
         {
           "name": "Abono Estándar",
-          "price": 125.0,
+          "price": 125,
           "features": [
             "Acceso 3 días",
             "Bus lanzadera incluido"
@@ -709,32 +709,43 @@
   ],
   "merchandising": [
     {
-      "id": "201",
+      "id": "camiseta-electrobeach-2025",
       "name": "Camiseta ElectroBeach 2025",
       "type": "ropa",
       "price": 25.99,
+      "stock": 700,
       "description": "Camiseta oficial del festival, algodón 100%, diseño exclusivo."
     },
     {
-      "id": "202",
+      "id": "gorra-rock-city",
       "name": "Gorra Rock City",
       "type": "accesorio",
       "price": 18.5,
-      "description": "Gorra negra con el logo bordado del festival."
+      "description": "Gorra negra con el logo bordado del festival.",
+      "stock": 200
     },
     {
-      "id": "203",
+      "id": "pack-de-pulseras-led",
       "name": "Pack de pulseras LED",
       "type": "accesorio",
       "price": 12,
-      "description": "Pack de 3 pulseras LED sincronizables con la música."
+      "description": "Pack de 3 pulseras LED sincronizables con la música.",
+      "stock": 500
     },
     {
-      "id": "204",
+      "id": "mochila-impermeable",
       "name": "Mochila impermeable",
       "type": "accesorio",
       "price": 34.9,
-      "description": "Mochila plegable ideal para festivales, resistente al agua."
+      "description": "Mochila plegable ideal para festivales, resistente al agua.",
+      "stock": 50
+    },
+    {
+      "id": "libro-subsonic",
+      "name": "Libro subsonic",
+      "type": "libro",
+      "price": 19.99,
+      "stock": 0
     }
   ],
   "orderItems": [
@@ -881,5 +892,6 @@
       ],
       "price": 49.99
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
