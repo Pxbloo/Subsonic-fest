@@ -7,6 +7,7 @@ class HistoryDAO(ABC):
 
     @abstractmethod
     def get_all(self) -> List[HistoryDTO]:
+        """Recupera todos los eventos a los que ha asistido cualquier usuario."""
         pass
 
     @abstractmethod

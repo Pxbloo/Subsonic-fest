@@ -7,10 +7,12 @@ class MerchandisingDAO(ABC):
 
     @abstractmethod
     def get_all(self) -> List[MerchandisingDTO]:
+        """Recupera todos los productos de merchandising disponibles."""
         pass
 
     @abstractmethod
     def get_by_id(self, product_id: str) -> Optional[MerchandisingDTO]:
+        """Recupera un producto de merchandising específico por su ID."""
         pass
 
     @abstractmethod
