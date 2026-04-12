@@ -17,7 +17,7 @@ class UserDTO(BaseModel):
     address: AddressDTO
     phone: str
     avatar: Optional[str] = None
-    password: str
+    password: Optional[str] = None 
 
     class Config:
         from_attributes = True

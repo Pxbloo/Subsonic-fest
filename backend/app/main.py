@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from .model.model import SubsonicModel
+from .model.dto.UserDTO import UserDTO
 from fastapi import Header, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,6 +35,13 @@ async def verify_user(authorization: Optional[str] = Header(None)):
     if not user:
         raise HTTPException(status_code=401, detail="Token inválido o usuario no encontrado")
 
+    return user
+
+@app.post("/api/users") # Registro manual
+async def create_user(user: UserDTO):
+    success = model.crear_usuario(user)
+    if not success:
+        raise HTTPException(status_code=400, detail="Error al crear el usuario")
     return user
 
 @app.get("/api/festivals")
