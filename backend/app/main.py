@@ -2,11 +2,21 @@ from fastapi import FastAPI
 from .model.model import SubsonicModel
 from fastapi import Header, HTTPException
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"], # Puerto del frontend Vite
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 model = SubsonicModel()
 
-@app.get("/auth/verify")
+@app.get("/api/auth/verify")
 async def verify_user(authorization: Optional[str] = Header(None)):
     """
     Endpoint para verificar la identidad del usuario mediante OAuth.
