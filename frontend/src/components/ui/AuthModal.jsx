@@ -4,6 +4,7 @@ import Input from '@/components/ui/Input';
 import BaseCard from '@/components/ui/BaseCard.jsx';
 import API_BASE_URL from '@/config/api';
 import { signInWithPopup } from "firebase/auth"; 
+import { auth, googleProvider } from '@/config/firebase';
 
 const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const [activeTab, setActiveTab] = useState(initialType);
