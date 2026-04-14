@@ -11,7 +11,7 @@ class FirebaseBlogDAO(BlogPostDAO):
     def __init__(self) -> None:
         """Inicializa la conexión a Firebase Firestore y establece la referencia a la colección 'blog'."""
         self.db = FirebaseConnector().get_db()
-        self.collection = self.db.collection("blog")
+        self.collection = self.db.collection("blogPosts")
 
     def get_all(self) -> List[BlogPostDTO]:
         """Recupera todos los documentos de la colección 'blog'."""
