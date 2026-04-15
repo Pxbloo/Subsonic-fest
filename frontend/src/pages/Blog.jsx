@@ -29,7 +29,7 @@ const Blog = () => {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-3xl bg-subsonic-navfooter/40 animate-pulse aspect-[4/5]"
+                className="rounded-3xl bg-subsonic-navfooter/40 animate-pulse aspect-4/5"
               />
             ))}
           </div>
@@ -96,7 +96,7 @@ const Blog = () => {
             className="group cursor-pointer w-full"
             onClick={() => setSelectedPost(filteredPosts[0])}
           >
-            <div className="relative w-full rounded-3xl overflow-hidden aspect-[21/8] bg-subsonic-navfooter/90">
+            <div className="relative w-full rounded-3xl overflow-hidden aspect-21/8 bg-subsonic-navfooter/90">
               <img
                 src={filteredPosts[0].imagen}
                 alt={filteredPosts[0].titulo}
@@ -105,7 +105,7 @@ const Blog = () => {
                   e.target.src = "";
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-8 md:p-10">
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-8 md:p-10">
                 <span className="text-[10px] font-black uppercase tracking-widest text-subsonic-accent mb-2">
                   {filteredPosts[0].categoria} · {filteredPosts[0].autor}
                 </span>

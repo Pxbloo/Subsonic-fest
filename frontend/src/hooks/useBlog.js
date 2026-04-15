@@ -1,6 +1,19 @@
 import { useState, useEffect } from 'react';
 import API_BASE_URL from '@/config/api';
 
+const normalizePost = (post) => ({
+  id: post.id,
+  titulo: post.titulo ?? post.title ?? '',
+  resumen: post.resumen ?? post.summary ?? '',
+  contenido: post.contenido ?? post.content ?? '',
+  categoria: post.categoria ?? post.category ?? 'General',
+  tags: Array.isArray(post.tags) ? post.tags : [],
+  fecha: post.fecha ?? post.date ?? '',
+  autor: post.autor ?? post.author ?? '',
+  imagen: post.imagen ?? post.image ?? '',
+  url: post.url ?? '',
+});
+
 const useBlog = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +27,7 @@ const useBlog = () => {
         const response = await fetch(`${API_BASE_URL}/blogPosts`);
         if (!response.ok) throw new Error('Error al cargar el blog');
         const data = await response.json();
-        setPosts(data || []);
+        setPosts(Array.isArray(data) ? data.map(normalizePost) : []);
       } catch (err) {
         console.error('Error fetching blog posts:', err);
         setError(err.message);
@@ -30,10 +43,14 @@ const useBlog = () => {
   const categorias = ['Todas', ...new Set(posts.map((p) => p.categoria))];
 
   const filteredPosts = posts.filter((post) => {
+    const titulo = String(post.titulo ?? '').toLowerCase();
+    const resumen = String(post.resumen ?? '').toLowerCase();
+    const term = searchTerm.toLowerCase();
+
     const matchesSearch =
-      post.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.resumen.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.tags?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+      titulo.includes(term) ||
+      resumen.includes(term) ||
+      post.tags.some((tag) => String(tag).toLowerCase().includes(term));
 
     const matchesCategoria =
       categoriaActiva === 'Todas' || post.categoria === categoriaActiva;
