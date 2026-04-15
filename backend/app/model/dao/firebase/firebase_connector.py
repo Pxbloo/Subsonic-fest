@@ -48,11 +48,12 @@ class FirebaseConnector:
     
     def verify_token(self, token: str):
         """
+        // TODO hacer asíncrona
         Se comunica con los servidores de Google para validar el ID Token.
         Retorna un diccionario con la información del usuario (uid, email, etc.)
         """
         try:
-            decoded_token = auth.verify_id_token(token)
+            decoded_token = auth.verify_id_token(token, clock_skew_seconds=3)
             return decoded_token
         except Exception as e:
             print(f"Error al verificar el token de OAuth: {e}")
