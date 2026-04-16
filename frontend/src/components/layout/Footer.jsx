@@ -4,6 +4,34 @@ import SubsonicLogo from "@/assets/logo/Subsonic.webp";
 import SocialLinks from '@/components/ui/SocialLinks'; // Importación del componente de redes sociales
 
 const Footer = () => {
+  const homeLinks = [
+    { to: '/', label: 'Experiencias' },
+  ];
+
+  const shopLinks = [
+    { to: '/tienda?categoria=ropa', label: 'Ropa' },
+    { to: '/tienda?categoria=accesorios', label: 'Accesorios' },
+  ];
+
+  const blogLinks = [
+    { to: '/blog', label: 'Noticias y novedades' },
+  ];
+
+  const contactLinks = [
+    { to: '/contact', label: 'Contacto' },
+  ];
+
+  const renderLink = ({ to, label }) => (
+    <li key={label}>
+      <Link
+        to={to}
+        className="transition-colors hover:text-subsonic-accent"
+      >
+        {label}
+      </Link>
+    </li>
+  );
+
   return (
     <footer className="bg-subsonic-navfooter border-t border-subsonic-border mt-auto">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -26,9 +54,7 @@ const Footer = () => {
               Inicio
             </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Experiencias</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Paquetes</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Entradas</Link></li>
+              {homeLinks.map(renderLink)}
             </ul>
           </div>
 
@@ -38,9 +64,7 @@ const Footer = () => {
               Tienda
             </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Ropa</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Accesorios</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Otros</Link></li>
+              {shopLinks.map(renderLink)}
             </ul>
           </div>
 
@@ -50,8 +74,7 @@ const Footer = () => {
               Blog
             </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Noticias y <br />novedades</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Artículos de <br/>artistas</Link></li>
+              {blogLinks.map(renderLink)}
             </ul>
           </div>
 
@@ -61,9 +84,7 @@ const Footer = () => {
               Contacto
             </h4>
             <ul className="space-y-4 text-sm font-extralight text-subsonic-text">
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">FAQ</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Soporte</Link></li>
-              <li><Link to="/" className="hover:text-subsonic-accent transition-colors">Trabaja con <br/>nosotros</Link></li>
+              {contactLinks.map(renderLink)}
             </ul>
           </div>
 

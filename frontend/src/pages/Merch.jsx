@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ShopCard from "@/components/ui/ShopCard.jsx";
 import MerchCategoryBar from "@/components/layout/MerchBar.jsx";
 import PurchaseSummary from "@/components/ui/PurchaseSummary.jsx";
@@ -19,6 +20,7 @@ const buildCartItemKey = (productName, selectedOptions = {}) =>
     `${productName}__${JSON.stringify(normalizeOptions(selectedOptions))}`;
 
 function Merch() {
+    const [searchParams] = useSearchParams();
     const categories = useMemo(
         () => [
             { id: "all", label: "Todo" },
@@ -33,6 +35,12 @@ function Merch() {
     const [cartItems, setCartItems] = useState([]);
     const [isSummaryOpen, setIsSummaryOpen] = useState(false);
     const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const requestedCategory = (searchParams.get("categoria") || "all").toLowerCase();
+        const validCategories = new Set(categories.map((category) => category.id));
+        setActiveCategoryId(validCategories.has(requestedCategory) ? requestedCategory : "all");
+    }, [categories, searchParams]);
 
     useEffect(() => {
         const fetchMerchandising = async () => {
