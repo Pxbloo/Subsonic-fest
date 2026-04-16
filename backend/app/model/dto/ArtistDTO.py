@@ -3,10 +3,10 @@ from typing import Optional
 
 class AddressDTO(BaseModel):
     """Representación de una dirección postal o ubicación geográfica."""
-    country: str
-    city: str
-    street: str
-    postalCode: str
+    country: Optional[str] = None
+    city: Optional[str] = None
+    street: Optional[str] = None
+    postalCode: Optional[str] = None
 
 class ArtistDTO(BaseModel):
     """Objeto de transferencia de datos para la entidad Artista."""
