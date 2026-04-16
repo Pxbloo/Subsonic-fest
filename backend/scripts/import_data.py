@@ -4,12 +4,13 @@ from firebase_admin import credentials, firestore
 from pathlib import Path
 
 # Inicializar Firebase
-cred = credentials.Certificate("../serviceAccountKey.json")
+script_dir = Path(__file__).parent
+cred = credentials.Certificate(script_dir.parent / "serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Cargar el db.json del frontend
-db_path = Path("../../frontend/src/data/db.json")
+db_path = script_dir.parent.parent / "frontend" / "src" / "data" / "db.json"
 with open(db_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 

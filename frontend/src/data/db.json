@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": "carlos-gomez",
       "name": "Carlos Gómez",
       "email": "carlos.gomez@email.com",
       "phone": "+34 611 222 333",
@@ -16,7 +16,7 @@
       "role": "client"
     },
     {
-      "id": "2",
+      "id": "maria-lopez-proveedor",
       "name": "María López (Proveedor)",
       "email": "maria.lopez@proveedor.es",
       "phone": "+34 655 444 777",
@@ -31,7 +31,7 @@
       "role": "provider"
     },
     {
-      "id": "3",
+      "id": "ana-martin-admin",
       "name": "Ana Martín (Admin)",
       "email": "ana.martin@admin.com",
       "phone": "+34 699 888 111",
@@ -48,10 +48,11 @@
   ],
   "festivals": [
     {
-      "id": "1",
+      "id": "summer-subsonic-2026",
       "title": "Summer Subsonic",
       "date": "15-17 Jul 2026",
       "startDate": "2026-07-15",
+      "endDate": "2026-07-17",
       "location": "Recinto Ferial, Madrid",
       "price": 89.0,
       "description": "El evento principal del verano con los mejores artistas internacionales. Tres días de música, arte inmersivo y tecnología punta.",
@@ -105,10 +106,11 @@
       ]
     },
     {
-      "id": "2",
+      "id": "electronic-night-2026",
       "title": "Electronic Night",
-      "date": "22 Ago 2026",
+      "date": "22 Aug 2026",
       "startDate": "2026-08-22",
+      "endDate": "2026-08-22",
       "location": "Industrial Park, Barcelona",
       "price": 45.0,
       "description": "Una noche dedicada a los ritmos urbanos y electrónicos en un entorno industrial transformado.",
@@ -144,10 +146,11 @@
       ]
     },
     {
-      "id": "3",
+      "id": "sonar-barcelona-2025",
       "title": "Sónar Barcelona 2025",
       "date": "13-15 Jun 2025",
       "startDate": "2025-06-13",
+      "endDate": "2025-06-15",
       "location": "Fira Montjuïc, Barcelona",
       "price": 120.0,
       "description": "Edición centrada en la vanguardia, arte digital y tecnología aplicada a la música.",
@@ -185,10 +188,11 @@
       ]
     },
     {
-      "id": "4",
+      "id": "primavera-sound-2025",
       "title": "Primavera Sound 2025",
       "date": "5-8 Jun 2025",
       "startDate": "2025-06-05",
+      "endDate": "2025-06-08",
       "location": "Parc del Fòrum, Barcelona",
       "price": 135.0,
       "description": "Festival urbano junto al mar que mezcla electrónica, rock y pop experimental.",
@@ -225,10 +229,11 @@
       ]
     },
     {
-      "id": "5",
+      "id": "tomorrowland-belgium-2026",
       "title": "Tomorrowland Belgium 2026",
       "date": "19-21 Jul 2026",
       "startDate": "2026-07-19",
+      "endDate": "2026-07-21",
       "location": "De Schorre, Boom (Bélgica)",
       "price": 295.0,
       "description": "El festival más icónico del mundo con una producción escénica de fantasía.",
@@ -265,10 +270,11 @@
       ]
     },
     {
-      "id": "6",
+      "id": "rock-in-rio-madrid-2026",
       "title": "Rock in Rio Madrid 2026",
       "date": "26-28 Jun 2026",
       "startDate": "2026-06-26",
+      "endDate": "2026-06-28",
       "location": "Arganda del Rey, Madrid",
       "price": 95.0,
       "description": "La ciudad del rock vuelve con las bandas más grandes del planeta.",
@@ -305,10 +311,11 @@
       ]
     },
     {
-      "id": "7",
+      "id": "mad-cool-festival-2026",
       "title": "Mad Cool Festival 2026",
       "date": "10-13 Jul 2026",
       "startDate": "2026-07-10",
+      "endDate": "2026-07-13",
       "location": "Villaverde, Madrid",
       "price": 110.0,
       "description": "El festival de referencia en la capital con un cartel ecléctico y potente.",
@@ -350,10 +357,11 @@
       ]
     },
     {
-      "id": "8",
+      "id": "resurrection-fest-2026",
       "title": "Resurrection Fest 2026",
       "date": "01-04 Jul 2026",
       "startDate": "2026-07-01",
+      "endDate": "2026-07-04",
       "location": "Viveiro, Galicia",
       "price": 140.0,
       "description": "La cita ineludible para los amantes del Metal y el Hardcore en el norte de España.",
@@ -390,10 +398,11 @@
       ]
     },
     {
-      "id": "9",
+      "id": "coachella-2026",
       "title": "Coachella 2026",
-      "date": "10-12 Abr 2026",
+      "date": "10-12 Apr 2026",
       "startDate": "2026-04-10",
+      "endDate": "2026-04-12",
       "location": "Indio, California (USA)",
       "price": 499.0,
       "description": "Tendencias, moda y música en medio del desierto de California.",
@@ -435,10 +444,11 @@
       ]
     },
     {
-      "id": "10",
+      "id": "bilbao-bbk-live-2026",
       "title": "Bilbao BBK Live 2026",
       "date": "09-11 Jul 2026",
       "startDate": "2026-07-09",
+      "endDate": "2026-07-11",
       "location": "Kobetamendi, Bilbao",
       "price": 125.0,
       "description": "Música en la cima de la montaña con las mejores vistas de Bilbao.",
@@ -480,10 +490,11 @@
       ]
     },
     {
-      "id": "b293",
+      "id": "prueba-festival-1-2026",
       "title": "pruebaFestival1",
-      "date": "15-17 JUL",
+      "date": "12-14 May 2026",
       "startDate": "2026-05-12",
+      "endDate": "2026-05-14",
       "location": "madrid",
       "description": "prueba",
       "tickets": [
@@ -514,42 +525,42 @@
   ],
   "grounds": [
     {
-      "id": "1",
+      "id": "escenario-principal",
       "name": "Escenario principal",
       "status": "Operativo",
       "capacity": 12000,
       "area": "Zona central"
     },
     {
-      "id": "2",
+      "id": "carpa-electronica",
       "name": "Carpa electrónica",
       "status": "Operativo",
       "capacity": 6000,
       "area": "Zona norte"
     },
     {
-      "id": "3",
+      "id": "escenario-alternativo",
       "name": "Escenario alternativo",
       "status": "En montaje",
       "capacity": 4500,
       "area": "Zona este"
     },
     {
-      "id": "4",
+      "id": "zona-food-trucks",
       "name": "Zona food trucks",
       "status": "Operativo",
       "capacity": 2500,
       "area": "Anillo perimetral"
     },
     {
-      "id": "5",
+      "id": "accesos-y-colas",
       "name": "Accesos y colas",
       "status": "Operativo",
       "capacity": 8000,
       "area": "Entrada principal"
     },
     {
-      "id": "6",
+      "id": "backstage-y-staff",
       "name": "Backstage y staff",
       "status": "Solo staff",
       "capacity": 300,
@@ -558,18 +569,18 @@
   ],
   "groundReservations": [
     {
-      "id": "r1",
-      "groundId": "1",
-      "providerId": "2",
+      "id": "ground-reservation-001",
+      "groundId": "escenario-principal",
+      "providerId": "maria-lopez-proveedor",
       "providerName": "María López (Proveedor)",
       "status": "Reservado",
       "createdAt": "2025-07-15T12:00:00Z",
       "notes": "Food trucks"
     },
     {
-      "id": "r2",
-      "groundId": "2",
-      "providerId": "2",
+      "id": "ground-reservation-002",
+      "groundId": "carpa-electronica",
+      "providerId": "maria-lopez-proveedor",
       "providerName": "María López (Proveedor)",
       "status": "Pendiente",
       "createdAt": "2025-07-15T12:00:00Z",
@@ -577,160 +588,132 @@
     }
   ],
   "artists": [
-    {
-      "id": "bad-bunny",
-      "name": "Bad Bunny",
-      "genre": "Reggaeton / Trap",
-      "email": "badbunny@gmail.com",
-      "phone": "+34 666 666 666",
-      "description": "Cantante y compositor puertorriqueño, una de las figuras más influyentes de la música urbana actual.",
-      "spotifyId": "4q3ewBCX7sLwd24euuV69X",
-      "address": {
-        "country": "Puerto Rico",
-        "city": "Madrid",
-        "street": "Calle de la Princesa, 25",
-        "postalCode": "28008"
-      }
-    },
-    {
-      "id": "karol-g",
-      "name": "Karol G",
-      "genre": "Pop Urbano",
-      "email": "karol@gmail.com",
-      "phone": "+34 666 666 667",
-      "description": "Cantante colombiana de reguetón y pop urbano conocida por sus giras masivas y colaboraciones internacionales.",
-      "spotifyId": "790FomKkXshlbRYZFtlgla",
-      "address": {
-        "country": "España",
-        "city": "Madrid",
-        "street": "Calle de la Princesa, 25",
-        "postalCode": "28008"
-      }
-    },
-    {
-      "id": "quevedo",
-      "name": "Quevedo",
-      "email": "quevedo@gmail.com",
-      "phone": "",
-      "genre": "Urbano",
-      "spotifyId": "52iwsT98xCoGgiGntTiR7K",
-      "description": "Cantante español de música urbana y reguetón que ha destacado por sus hits virales.",
-      "address": {
-        "country": "España",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "bizarrap",
-      "name": "Bizarrap",
-      "genre": "Electrónica / Urbano",
-      "email": "bizarrap@gmail.com",
-      "description": "Productor argentino conocido por sus 'Music Sessions' con artistas de todo el mundo.",
-      "spotifyId": "716NhGYqD1jl2wI1Qkgq36",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "iron-maiden",
-      "name": "Iron Maiden",
-      "genre": "Heavy Metal",
-      "email": "ironmaiden@gmail.com",
-      "description": "Histórica banda británica de heavy metal, referente del género desde los años 80.",
-      "spotifyId": "6mdiAmATAx73kdxrNrnlao",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "red-hot-chili-peppers",
-      "name": "Red Hot Chili Peppers",
-      "genre": "Rock",
-      "email": "redchili@gmail.com",
-      "description": "Banda estadounidense que fusiona rock, funk y otros estilos, con una larga trayectoria en festivales.",
-      "spotifyId": "0L8ExT028jH3ddEcZwqJJ5",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "billie-eilish",
-      "name": "Billie Eilish",
-      "genre": "Pop",
-      "email": "billie@gmail.com",
-      "description": "Cantante y compositora estadounidense de pop alternativo, conocida por su sonido oscuro y experimental.",
-      "spotifyId": "6qqNVTkY8uBg9cP3Jd7DAH",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "tame-impala",
-      "name": "Tame Impala",
-      "genre": "Psychedelic Rock",
-      "email": "tame@gmail.com",
-      "description": "Proyecto musical liderado por Kevin Parker que mezcla rock psicodélico con electrónica.",
-      "spotifyId": "5INjqkS1o8h1imAzPqGZBb",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    },
-    {
-      "id": "the-weeknd",
-      "name": "The Weeknd",
-      "genre": "R&B / Pop",
-      "email": "theweeknd@gmail.com",
-      "description": "Cantante y productor canadiense de R&B y pop, habitual en los principales festivales internacionales.",
-      "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ",
-      "address": {
-        "country": "",
-        "city": "",
-        "street": "",
-        "postalCode": ""
-      }
-    }
-  ],
+    
+  {
+    "id": "bad-bunny",
+    "name": "Bad Bunny",
+    "genre": "Reggaeton / Trap",
+    "email": "badbunny@gmail.com",
+    "phone": "+34 666 666 666",
+    "description": "Cantante y compositor puertorriqueño, figura clave de la música urbana global.",
+    "spotifyId": "4q3ewBCX7sLwd24euuV69X",
+    "address": { "country": "Puerto Rico", "city": "San Juan", "street": null, "postalCode": null }
+  },
+  {
+    "id": "billie-eilish",
+    "name": "Billie Eilish",
+    "genre": "Alternative Pop",
+    "email": "billie@gmail.com",
+    "phone": null,
+    "description": "Cantante y compositora estadounidense conocida por su estilo innovador y experimental.",
+    "spotifyId": "6qqNVTkY8uBg9cP3Jd7DAH",
+    "address": { "country": "USA", "city": "Los Angeles", "street": null, "postalCode": null }
+  },
+  {
+    "id": "bizarrap",
+    "name": "Bizarrap",
+    "genre": "Electronic / Urban",
+    "email": "bizarrap@gmail.com",
+    "phone": null,
+    "description": "Productor argentino y DJ, famoso por sus 'BZRP Music Sessions'.",
+    "spotifyId": "716NhGYqD1jl2wI1Qkgq36",
+    "address": { "country": "Argentina", "city": "Buenos Aires", "street": null, "postalCode": null }
+  },
+  {
+    "id": "foo-fighters",
+    "name": "Foo Fighters",
+    "genre": "Rock / Alternative",
+    "email": "foofighters@gmail.com",
+    "phone": null,
+    "description": "Banda estadounidense de rock formada por Dave Grohl en 1994.",
+    "spotifyId": "7bu3H8U70Gv61oGvH3oUvS",
+    "address": { "country": "USA", "city": "Seattle", "street": null, "postalCode": null }
+  },
+  {
+    "id": "iron-maiden",
+    "name": "Iron Maiden",
+    "genre": "Heavy Metal",
+    "email": "ironmaiden@gmail.com",
+    "phone": null,
+    "description": "Banda británica mítica, pioneros de la nueva ola del heavy metal británico.",
+    "spotifyId": "6mdiAmATAx73kdxrNrnlao",
+    "address": { "country": "UK", "city": "London", "street": null, "postalCode": null }
+  },
+  {
+    "id": "karol-g",
+    "name": "Karol G",
+    "genre": "Urbano / Reggaeton",
+    "email": "karol@gmail.com",
+    "phone": "+34 666 666 667",
+    "description": "Cantante colombiana, una de las mayores exponentes femeninas del género urbano.",
+    "spotifyId": "790FomKkXshlbRYZFtlgla",
+    "address": { "country": "Colombia", "city": "Medellín", "street": "Calle de la Princesa, 25", "postalCode": "28008" }
+  },
+  {
+    "id": "quevedo",
+    "name": "Quevedo",
+    "genre": "Urbano / Reggaeton",
+    "email": "quevedo@gmail.com",
+    "phone": null,
+    "description": "Cantante español que se convirtió en un fenómeno global con sus hits de reggaetón.",
+    "spotifyId": "52iwsT98xCoGgiGntTiR7K",
+    "address": { "country": "España", "city": "Las Palmas", "street": null, "postalCode": null }
+  },
+  {
+    "id": "red-hot-chili-peppers",
+    "name": "Red Hot Chili Peppers",
+    "genre": "Funk Rock",
+    "email": "redchili@gmail.com",
+    "phone": null,
+    "description": "Banda californiana icónica que mezcla rock, funk y elementos psicodélicos.",
+    "spotifyId": "0L8ExT028jH3ddEcZwqJJ5",
+    "address": { "country": "USA", "city": "Los Angeles", "street": null, "postalCode": null }
+  },
+  {
+    "id": "tame-impala",
+    "name": "Tame Impala",
+    "genre": "Psychedelic Pop",
+    "email": "tame@gmail.com",
+    "phone": null,
+    "description": "Proyecto de Kevin Parker, referente del sonido psicodélico moderno.",
+    "spotifyId": "5INjqkS1o8h1imAzPqGZBb",
+    "address": { "country": "Australia", "city": "Perth", "street": null, "postalCode": null }
+  },
+  {
+    "id": "the-weeknd",
+    "name": "The Weeknd",
+    "genre": "R&B / Pop",
+    "email": "theweeknd@gmail.com",
+    "phone": null,
+    "description": "Artista canadiense conocido por su voz única y su estética cinematográfica.",
+    "spotifyId": "1Xyo4u8uXC1ZmMpatF05PJ",
+    "address": { "country": "Canada", "city": "Toronto", "street": null, "postalCode": null }
+  }
+],
   "merchandising": [
     {
-      "id": "201",
+      "id": "camiseta-electrobeach-2025",
       "name": "Camiseta ElectroBeach 2025",
       "type": "ropa",
       "price": 25.99,
       "description": "Camiseta oficial del festival, algodón 100%, diseño exclusivo."
     },
     {
-      "id": "202",
+      "id": "gorra-rock-city",
       "name": "Gorra Rock City",
       "type": "accesorio",
       "price": 18.5,
       "description": "Gorra negra con el logo bordado del festival."
     },
     {
-      "id": "203",
+      "id": "pack-pulseras-led",
       "name": "Pack de pulseras LED",
       "type": "accesorio",
       "price": 12,
       "description": "Pack de 3 pulseras LED sincronizables con la música."
     },
     {
-      "id": "204",
+      "id": "mochila-impermeable",
       "name": "Mochila impermeable",
       "type": "accesorio",
       "price": 34.9,
@@ -739,21 +722,21 @@
   ],
   "orderItems": [
     {
-      "id": "1",
+      "id": "order-item-001",
       "name": "Entrada Subsonic 3 días",
       "category": "Abono general",
       "price": 49.99,
       "date": "2025-07-15"
     },
     {
-      "id": "2",
+      "id": "order-item-002",
       "name": "Zona VIP Upgrade",
       "category": "Upgrade experiencia",
       "price": 290.5,
       "date": "2026-09-15"
     },
     {
-      "id": "3",
+      "id": "order-item-003",
       "name": "Merch pack oficial",
       "category": "Merchandising",
       "price": 19.99,
@@ -762,7 +745,7 @@
   ],
   "history": [
     {
-      "id": "6",
+      "id": "history-boombastic-festival",
       "title": "Boombastic Festival",
       "date": "2023-06-15",
       "location": "Madrid",
@@ -771,7 +754,7 @@
       "rating": 4.5
     },
     {
-      "id": "7",
+      "id": "history-rock-in-rio",
       "title": "Rock in Rio",
       "date": "2023-09-10",
       "location": "Rio de Janeiro",
@@ -780,7 +763,7 @@
       "rating": 4
     },
     {
-      "id": "8",
+      "id": "history-lollapalooza",
       "title": "Lollapalooza",
       "date": "2023-08-20",
       "location": "Chicago",
@@ -791,7 +774,7 @@
   ],
   "blogPosts": [
     {
-      "id": "1",
+      "id": "harry-styles-number-one",
       "title": "Harry Styles arrasa: 'Kiss All the Time. Disco, Occasionally.' debuta en el #1 del Billboard 200",
       "summary": "El cuarto álbum en solitario de Harry Styles arrasa en su primera semana con 430.000 unidades equivalentes, consolidándolo como el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes.",
       "content": "El cuarto álbum en solitario de Harry Styles, Kiss All the Time. Disco, Occasionally., debutó en el número uno del Billboard 200 con 430.000 unidades equivalentes en la semana que terminó el 12 de marzo. Es la semana más grande para cualquier álbum en cinco meses, y Styles se convierte en el segundo solista masculino en debutar en el número uno con sus primeros cuatro álbumes, solo por detrás de DMX. Las ventas en vinilo representaron 186.000 unidades, el mayor debut en vinilo para un artista masculino en la era moderna.",
@@ -808,7 +791,7 @@
       "url": "https://www.billboard.com/espanol/noticias/harry-styles-kiss-all-the-time-no-1-billboard-200-1236201254/"
     },
     {
-      "id": "2",
+      "id": "j-balvin-latin-airplay-record",
       "title": "J Balvin hace historia: 40 números uno en Latin Airplay con 'Si te vas'",
       "summary": "La colaboración entre J Balvin y Jay Wheeler asciende al número uno de Latin Airplay, ampliando el récord histórico del colombiano. Para Wheeler, es su tercer número uno en la lista.",
       "content": "J Balvin extiende a 40 su récord de números uno en Latin Airplay con 'Si te vas', junto a Jay Wheeler. El tema subió al primer lugar en su cuarta semana en la lista tras un crecimiento del 19% en impresiones de audiencia, alcanzando 8,2 millones en Estados Unidos. 'Jay aportó algo especial a esta canción y estoy agradecido de que hayamos podido crearla juntos', declaró Balvin. En el mismo chart, Shakira debuta en el top 5 de Latin Pop Airplay con 'Algo tú' junto a Beéle, empatando con Enrique Iglesias en top 10s históricos.",
@@ -826,7 +809,7 @@
       "url": "https://www.billboard.com/espanol/noticias/j-balvin-jay-wheeler-si-te-vas-no-1-latin-airplay-1236201447/"
     },
     {
-      "id": "3",
+      "id": "share-festival-cartel-completo",
       "title": "Share Festival 2026 completa su cartel: Myke Towers, Lola Índigo, Dellafuente y Dei V",
       "summary": "El festival barcelonés cierra su cartel para los días 24 y 25 de julio en el Parc del Fòrum. Dellafuente ofrecerá su único concierto en Cataluña del año.",
       "content": "El Share Festival 2026 ha completado su cartel con la confirmación de Myke Towers, Lola Índigo, Dellafuente y Dei V para su octava edición en el Parc del Fòrum de Barcelona, los días 24 y 25 de julio. Dellafuente protagonizará su único concierto en Cataluña de 2026 en este festival, que se consolida como uno de los eventos de referencia del urbano y el pop en España. Las entradas ya están disponibles a través de los canales oficiales del festival.",
@@ -845,7 +828,7 @@
       "url": "https://los40.com/2026/03/18/share-festival-2026-completa-su-cartel-con-myke-towers-lola-indigo-dellafuente-y-dei-v/"
     },
     {
-      "id": "4",
+      "id": "don-omar-barcelona-2026",
       "title": "Don Omar agota España: Barcelona se suma a su gira de despedida el 23 de julio",
       "summary": "El Rey del Reggaetón añade Barcelona al mapa tras agotar entradas en Tenerife en menos de una hora. Actuará en el Estadi Olímpic de Montjuïc.",
       "content": "Don Omar ha anunciado un nuevo concierto en España dentro de su gira de despedida, esta vez en Barcelona. El Rey del Reggaetón actuará el 23 de julio en el Estadi Olímpic de Montjuïc, sumando así una nueva fecha tras agotar entradas en Tenerife en menos de una hora. El artista puertorriqueño, conocido por éxitos como 'Danza Kuduro' y 'Conteo', está realizando una extensa gira mundial que le traerá a varias ciudades españolas.",
@@ -865,7 +848,7 @@
   ],
   "ticketTemplates": [
     {
-      "id": "7da1",
+      "id": "ticket-template-barrilada-vip",
       "name": "entradas1",
       "features": [
         "Barrilada",
@@ -874,7 +857,7 @@
       "price": 19.99
     },
     {
-      "id": "149a",
+      "id": "ticket-template-parking",
       "name": "entrada2",
       "features": [
         "Parking"
