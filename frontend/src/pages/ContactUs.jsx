@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import PageHeader from "@/components/ui/PageHeader.jsx";
 import Input from "@/components/ui/Input.jsx";
 import Button from "@/components/ui/Button.jsx";
 import Desplegable from "@/components/ui/Desplegable.jsx";
 
 const ContactUs = () => {
+	const location = useLocation();
+	const [searchParams] = useSearchParams();
 	const [form, setForm] = useState({
 		fullName: "",
 		email: "",
@@ -13,6 +16,28 @@ const ContactUs = () => {
 	});
 
 	const [status, setStatus] = useState({ type: null, message: "" });
+
+	useEffect(() => {
+		const requestedTopic = searchParams.get("topic");
+		const validTopics = new Set(["general", "tickets", "collab", "press", "other"]);
+
+		if (requestedTopic && validTopics.has(requestedTopic)) {
+			setForm((current) => ({ ...current, topic: requestedTopic }));
+		}
+	}, [searchParams]);
+
+	useEffect(() => {
+		if (!location.hash) {
+			return;
+		}
+
+		const elementId = location.hash.replace("#", "");
+		const targetElement = document.getElementById(elementId);
+
+		if (targetElement) {
+			targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}, [location.hash]);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -73,7 +98,7 @@ const ContactUs = () => {
 			<PageHeader title="Contacto" />
 
 			<div className="grid gap-10 md:grid-cols-2">
-				<div className="space-y-4">
+				<div id="faq" className="space-y-4 scroll-mt-32">
 					<h2 className="text-xl md:text-2xl font-black text-subsonic-text">
 						Preguntas frecuentes
 					</h2>
@@ -86,7 +111,7 @@ const ContactUs = () => {
 					<Desplegable items={faqItems} />
 				</div>
 
-				<div className="space-y-5">
+				<div id="formulario-contacto" className="space-y-5 scroll-mt-32">
 					<h2 className="text-xl md:text-2xl font-black text-subsonic-text">
 						Escríbenos
 					</h2>
