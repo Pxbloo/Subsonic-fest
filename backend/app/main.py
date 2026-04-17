@@ -11,6 +11,12 @@ from fastapi import Depends, Header, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
+import firebase_admin
+from firebase_admin import credentials, auth
+
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -159,6 +165,27 @@ async def update_user(user_id: str, user: UserDTO, current_user: UserDTO = Depen
     if not success:
         raise HTTPException(status_code=400, detail="Error al actualizar el usuario")
     return user
+
+@app.put("/api/users/admin-password-reset/{user_id}")
+async def update_user_password(user_id: str, payload: dict, current_user: UserDTO = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Permiso denegado")
+
+    existing_user = model.listar_usuario_por_id(user_id)
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    new_password = payload.get("new_password")
+    if not new_password:
+        raise HTTPException(status_code=422, detail="new_password is required")
+
+    try:
+        auth.update_user(user_id, password=new_password)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error updating Auth password: {str(e)}")
+
+    return {"detail": "Password updated successfully"}
+
 
 @app.delete("/api/users/{user_id}")
 async def delete_user(user_id: str):

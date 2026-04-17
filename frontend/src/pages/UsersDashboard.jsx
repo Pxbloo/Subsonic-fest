@@ -4,7 +4,7 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog.jsx";
 import Button from "@/components/ui/Button.jsx";
 import SearchBar from "@/components/ui/SearchBar.jsx";
 import API_BASE_URL from '@/config/api';
-import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
+import {createUserWithEmailAndPassword, getAuth,} from "firebase/auth";
 
 
 const UsersDashboard = () => {
@@ -76,23 +76,26 @@ const UsersDashboard = () => {
             }
 
             const token = await currentUser.getIdToken();
+            let uid = selectedUser?.id;
 
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                userData.email,
-                userData.password
-            );
+            if (!selectedUser) {
+                const userCredential = await createUserWithEmailAndPassword(
+                    auth,
+                    userData.email,
+                    userData.password
+                );
 
-            const uid = userCredential.user.uid;
+                uid = userCredential.user.uid;
+            }
 
             const payload = {
                 ...userData,
-                id: userData.id?.trim() || uid,
-                ...(userData.password?.trim() ? { password: userData.password } : {}), // TODO revisar para evitar subir la contraseña a firebase
+                id: userData.id?.trim() || uid
             };
+            delete payload.password;
 
             const url = selectedUser
-                ? `${API_BASE_URL}/users/${selectedUser.id}`
+                ? `${API_BASE_URL}/users/${uid}`
                 : `${API_BASE_URL}/users`;
 
             const method = selectedUser ? 'PUT' : 'POST';
@@ -109,6 +112,22 @@ const UsersDashboard = () => {
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`Request failed: ${response.status} ${errorText}`);
+            }
+
+            if (userData.password) {
+                const response = await fetch(`${API_BASE_URL}/users/admin-password-reset/${uid}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({new_password: userData.password}),
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Request failed: ${response.status} ${errorText}`);
+                }
             }
 
             setModalOpen(false);

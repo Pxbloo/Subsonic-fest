@@ -4,7 +4,7 @@ import ProfileForm from "@/components/ui/ProfileForm.jsx";
 import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
 import BaseCard from "@/components/ui/BaseCard.jsx";
 import API_BASE_URL from '@/config/api';
-import {getAuth} from "firebase/auth";
+import {getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider} from "firebase/auth";
 
 const UserProfile = ({user}) => {
 
@@ -132,12 +132,32 @@ const UserProfile = ({user}) => {
         }
     };
 
-    const handlePasswordChange = ({ currentPassword, newPassword }) => {
-        // Later: llamada API
-        console.log("Password change requested", {
-            currentPassword: currentPassword ? "[provided]" : "[missing]",
-            newPassword: newPassword ? "[provided]" : "[missing]",
-        });
+    const handlePasswordChange = async ({currentPassword, newPassword}) => {
+
+        try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+                throw new Error("No user is currently logged in or user is not authenticated.");
+            }
+
+            const cred = EmailAuthProvider.credential(currentUser.email, currentPassword);
+
+            await reauthenticateWithCredential(currentUser, cred);
+            await updatePassword(currentUser, newPassword);
+
+            alert("Contraseña cambiada correctamente");
+
+        } catch (error) {
+            console.error("Error changing password:", error);
+
+            if (error.code === "auth/invalid-credential") {
+                alert("La contraseña actual es incorrecta. Inténtalo de nuevo.");
+            }
+            else alert("Ocurrió un error al cambiar la contraseña. Inténtalo de nuevo.");
+        }
+
     };
 
     const handleCancelEdit = () => {
