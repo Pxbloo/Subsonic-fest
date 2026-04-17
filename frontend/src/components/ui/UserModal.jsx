@@ -4,11 +4,12 @@ import Button from "@/components/ui/Button.jsx";
 
 const UserModal = ({isOpen, onClose, onSave, user}) => {
     const [userData, setUserData] = useState({
+        id: '',
         name: '',
         email: '',
         phone: '',
         password: '',
-        role: 'client',
+        role: 'user',
         avatar: '',
         address: {
             country: '',
@@ -25,11 +26,12 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
         }
         else {
             setUserData({
+                id: '',
                 name: '',
                 email: '',
                 phone: '',
                 password: '',
-                role: 'client',
+                role: 'user',
                 avatar: '',
                 address: {
                     country: '',
@@ -144,7 +146,7 @@ const UserModal = ({isOpen, onClose, onSave, user}) => {
                                 required
                                 className="w-full bg-subsonic-navfooter border border-subsonic-border p-2 rounded-md text-subsonic-text focus:border-subsonic-accent outline-none"
                             >
-                                <option value="client">Cliente</option>
+                                <option value="user">Cliente</option>
                                 <option value="provider">Proveedor</option>
                                 <option value="admin">Administrador</option>
                             </select>

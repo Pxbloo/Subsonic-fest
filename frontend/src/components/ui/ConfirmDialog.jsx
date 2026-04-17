@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "@/components/ui/Button.jsx";
 
-const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
+const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message, user }) => {
     if (!isOpen) return null;
 
     return (
@@ -19,7 +19,7 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
                     </Button>
                     <Button
                         onClick={() => {
-                            onConfirm();
+                            onConfirm(user);
                             onClose();
                         }}
                         className="px-4 py-2 bg-red-500 text-black hover:text-white hover:bg-red-600 transition"
