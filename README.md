@@ -13,7 +13,7 @@ Este README describe cómo levantar el proyecto en local y cómo se conectan las
 
 - Python 3.11+ (recomendado) y `pip`.
 - Node.js 18+ y `npm`.
-- Cuenta de Firebase con el fichero de credenciales de servicio (service account) ya configurado en `backend/serviceAccountKey.json`.
+- Cuenta de Firebase con el fichero de credenciales de servicio (service account) en `backend/serviceAccountKey.json` si vas a usar modo `firebase`.
 
 ---
 
@@ -45,13 +45,25 @@ Código en `backend/`.
    pip install -r requirements.txt
    ```
 
-5. Lanzar el servidor de desarrollo:
+5. Crear/editar `backend/.env` (mínimo funcional):
+
+   ```env
+   DATA_BACKEND=firebase
+   FRONTEND_URL=http://localhost:5173
+   STRIPE_SECRET_KEY=sk_test_xxx
+   ```
+
+   Opciones de `DATA_BACKEND`:
+   - `firebase`: usa Firestore y requiere `serviceAccountKey.json` válido.
+   - `fake`: guarda pedidos en `backend/app/data/order_items.json`.
+
+6. Lanzar el servidor de desarrollo:
 
    ```bash
    uvicorn app.main:app --reload --port 8000
    ```
 
-6. Endpoints útiles:
+7. Endpoints útiles:
    - API base: `http://localhost:8000/api`
    - Documentación interactiva (Swagger): `http://localhost:8000/docs`
 
@@ -107,6 +119,7 @@ En dos terminales distintas:
    - `cd backend`
    - Activar entorno virtual.
    - `pip install -r requirements.txt` (solo la primera vez).
+   - Revisar `backend/.env`.
    - `uvicorn app.main:app --reload --port 8000`.
 
 2. **Terminal 2 (frontend)**
@@ -114,11 +127,21 @@ En dos terminales distintas:
    - `npm install` (solo la primera vez).
    - `npm run dev`.
 
-De esta forma el frontend se servirá en `http://localhost:5173` y se comunicará con la API del backend en `http://localhost:8000/api`.
-
----
+## De esta forma el frontend se servirá en `http://localhost:5173` y se comunicará con la API del backend en `http://localhost:8000/api`.
 
 ## Notas
 
 - La autenticación de usuarios se gestiona con Firebase Auth en el frontend y se valida en el backend a través de tokens de Firebase.
 - Los datos de dominio (usuarios, festivales, artistas, blog, merchandising, etc.) se almacenan en Firestore.
+
+---
+
+## Anexo Stripe de entrega
+
+- La integración se ejecuta exclusivamente con claves de prueba: `sk_test_...` en backend y `pk_test_...` en frontend.
+- Tarjetas de prueba recomendadas para evaluar el flujo:
+  - `4242 4242 4242 4242` para un pago correcto.
+  - `4000 0000 0000 9995` para simular fondos insuficientes.
+  - `4000 0025 0000 3155` para simular autenticación 3D Secure si hace falta.
+- El proyecto usa Checkout Sessions alojadas por Stripe y confirma el pago de forma síncrona al volver a la web.
+- No se han configurado webhooks ni Stripe CLI; el retorno a `/checkout/success` activa la confirmación directa en backend.

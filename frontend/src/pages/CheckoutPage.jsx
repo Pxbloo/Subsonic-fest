@@ -1,53 +1,98 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PaymentForm from '@/components/ui/PaymentForm';
 import { useCheckout } from '@/hooks/useCheckout';
 import Button from '@/components/ui/Button';
 import BaseCard from '@/components/ui/BaseCard.jsx';
-import API_BASE_URL from '@/config/api';
 
 const CheckoutPage = () => {
-    const { handlePayment, loading, error, completed } = useCheckout();
-    const [orderItems, setOrderItems] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { startStripeCheckout, loading, error } = useCheckout();
+    const [checkoutDraft, setCheckoutDraft] = useState(null);
 
     useEffect(() => {
-        const fetchOrderItems = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/orderItems`);
-                if (!response.ok) throw new Error('Error al cargar pedidos');
-                const data = await response.json();
-                setOrderItems(data || []);
-            } catch (err) {
-                console.error('Error fetching order items:', err);
-                setOrderItems([]);
+        const nextDraft = location.state?.checkoutDraft;
+
+        if (nextDraft) {
+            setCheckoutDraft(nextDraft);
+            sessionStorage.setItem('checkoutDraft', JSON.stringify(nextDraft));
+            return;
+        }
+
+        try {
+            const savedDraft = sessionStorage.getItem('checkoutDraft');
+            if (savedDraft) {
+                setCheckoutDraft(JSON.parse(savedDraft));
             }
-        };
+        } catch (draftError) {
+            console.error('Error restoring checkout draft:', draftError);
+            setCheckoutDraft(null);
+        }
+    }, [location.state]);
 
-        fetchOrderItems();
-    }, []);
+    const totalAmountNumber = useMemo(() => {
+        const rawAmount = checkoutDraft?.totalAmount ?? 0;
+        const parsedAmount = typeof rawAmount === 'number' ? rawAmount : Number(rawAmount);
+        return Number.isFinite(parsedAmount) ? parsedAmount : 0;
+    }, [checkoutDraft]);
 
-    const totalAmountNumber = orderItems.reduce((sum, item) => sum + item.price, 0);
-    const totalAmount = totalAmountNumber.toLocaleString('es-ES', {
-        style: 'currency',
-        currency: 'EUR',
-    });
+    const totalAmount = useMemo(() => {
+        return totalAmountNumber.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR',
+        });
+    }, [totalAmountNumber]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target);
-        const paymentData = Object.fromEntries(data.entries());
-        handlePayment(paymentData);
+    const sourceLabel = useMemo(() => {
+        if (checkoutDraft?.source === 'tickets') {
+            return 'Compra de entradas';
+        }
+
+        if (checkoutDraft?.source === 'merchandising') {
+            return 'Pedido de merchandising';
+        }
+
+        return 'Pedido en Subsonic Festival';
+    }, [checkoutDraft]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!checkoutDraft) {
+            return;
+        }
+
+        const storedUser = (() => {
+            try {
+                return JSON.parse(localStorage.getItem('user') || 'null');
+            } catch {
+                return null;
+            }
+        })();
+
+        const orderId = checkoutDraft.orderId || crypto.randomUUID();
+
+        await startStripeCheckout({
+            orderId,
+            totalAmount: totalAmountNumber,
+            userId: checkoutDraft.userId || storedUser?.id || null,
+            source: checkoutDraft.source || 'checkout',
+        });
     };
 
-    if (completed) {
+    if (!checkoutDraft) {
         return (
             <div className="max-w-4xl mx-auto p-6 text-center">
-                <h2 className="text-3xl font-montserrat font-black mb-4">Pago completado</h2>
-                <p className="text-subsonic-muted text-sm">¡Gracias por tu compra! Hemos registrado tu pedido.</p>
+                <h2 className="text-3xl font-montserrat font-black mb-4">No hay un pedido pendiente</h2>
+                <p className="text-subsonic-muted text-sm">
+                    Vuelve a la tienda o al festival para iniciar un checkout con Stripe.
+                </p>
 
                 <Button
                     variant="primarySmall"
                     className="mt-6"
-                    onClick={() => { window.location.href = '/'; }}
+                    onClick={() => navigate('/tienda')}
                 >
                     Volver a la tienda
                 </Button>
@@ -64,36 +109,16 @@ const CheckoutPage = () => {
                     <h1 className="text-3xl md:text-4xl font-montserrat font-black mb-2 text-subsonic-accent">Pago</h1>
                     <p className="text-2xl font-montserrat font-bold text-subsonic-text">{totalAmount}</p>
                     <p className="text-[11px] uppercase tracking-[0.25em] text-subsonic-muted mt-1">
-                        {orderItems.length} {orderItems.length === 1 ? 'artículo' : 'artículos'} · Detalle de tu pedido
+                        Pasarela de pago segura
                     </p>
                 </header>
 
-                <div className="space-y-3">
-                    {orderItems.map((item) => (
-                        <div
-                            key={item.id}
-                            className="flex items-center justify-between bg-subsonic-bg/60 border border-subsonic-border rounded-lg px-4 py-3"
-                        >
-                            <div>
-                                <p className="text-xs font-semibold text-subsonic-text">{item.name}</p>
-                                <p className="text-[10px] text-subsonic-muted">{item.category}</p>
-                            </div>
-                            <span className="text-xs font-montserrat text-subsonic-accent">
-                                {item.price.toLocaleString('es-ES', {
-                                    style: 'currency',
-                                    currency: 'EUR',
-                                })}
-                            </span>
-                        </div>
-                    ))}
+                <div className="space-y-3 rounded-xl border border-subsonic-border bg-subsonic-bg/60 px-4 py-4">
+                    <p className="text-sm text-subsonic-muted">{sourceLabel}</p>
+                    <p className="text-base text-subsonic-text">
+                        Finaliza tu compra de forma rápida y segura.
+                    </p>
                 </div>
-
-                <button
-                    type="button"
-                    className="mt-auto text-[11px] uppercase tracking-[0.25em] text-subsonic-accent hover:text-subsonic-text transition-colors text-left"
-                >
-                    Más recomendaciones
-                </button>
                 </BaseCard>
             </section>
 
@@ -101,7 +126,12 @@ const CheckoutPage = () => {
             <section className="md:w-3/5">
                 <BaseCard className="bg-subsonic-surface rounded-xl p-6 md:p-8 gap-6">
                     {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                    <PaymentForm onSubmit={handleSubmit} isLoading={loading} totalAmount={totalAmount} />
+                    <PaymentForm
+                        onSubmit={handleSubmit}
+                        isLoading={loading}
+                        totalAmount={totalAmount}
+                        sourceLabel={sourceLabel}
+                    />
                 </BaseCard>
             </section>
         </div>

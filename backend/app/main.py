@@ -1,3 +1,8 @@
+import os
+from datetime import datetime, timezone
+from pathlib import Path
+
+import stripe
 from fastapi import FastAPI
 from .model.model import SubsonicModel
 from .model.dto.UserDTO import UserDTO
@@ -5,19 +10,27 @@ from .model.dto.ArtistDTO import ArtistDTO
 from .model.dto.FestivalDTO import FestivalDTO
 from .model.dto.GroundDTO import GroundDTO
 from .model.dto.BlogPostDTO import BlogPostDTO
+from .model.dto.OrderItemDTO import OrderItemDTO
 from .model.dto.MerchandisingDTO import MerchandisingDTO
 from .model.dto.HistoryDTO import HistoryDTO
 from fastapi import Depends, Header, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+from dotenv import load_dotenv
 
 import firebase_admin
 from firebase_admin import credentials, auth
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 app = FastAPI()
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +41,33 @@ app.add_middleware(
 )
 
 model = SubsonicModel()
+
+
+class StripeCheckoutRequest(BaseModel):
+    order_id: str = Field(min_length=1)
+    total_amount: Optional[float] = Field(default=None, gt=0)
+    user_id: Optional[str] = None
+    source: str = "checkout"
+    action: str = "create"
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _build_order_payload(payload: StripeCheckoutRequest, status: str) -> OrderItemDTO:
+    return OrderItemDTO(
+        id=payload.order_id,
+        user_id=payload.user_id,
+        title="Pedido en Subsonic Festival",
+        amount=float(payload.total_amount or 0),
+        status=status,
+        payment_method="stripe_test",
+        source=payload.source,
+        created_at=_now_iso(),
+        updated_at=_now_iso(),
+        currency="EUR",
+    )
 
 
 async def get_current_user(authorization: Optional[str] = Header(None)) -> UserDTO:
@@ -340,6 +380,79 @@ async def get_history(current_user: UserDTO = Depends(get_current_user)):
     """Endpoint protegido que devuelve el historial del usuario autenticado."""
     history_items = model.listar_historial_por_usuario(current_user.id)
     return history_items
+
+
+@app.get("/api/orderItems")
+async def get_order_items(user_id: Optional[str] = None):
+    """Devuelve los pedidos registrados en Stripe, opcionalmente filtrados por usuario."""
+    if user_id:
+        return model.listar_pedidos_por_usuario(user_id)
+    return model.listar_pedidos()
+
+
+@app.post("/api/checkout-stripe")
+async def checkout_stripe(payload: StripeCheckoutRequest):
+    """Crea o confirma un pedido Stripe de test con un único concepto genérico."""
+    action = payload.action.lower()
+
+    if action == "confirm":
+        existing_order = model.listar_pedido_por_id(payload.order_id)
+        if not existing_order:
+            raise HTTPException(status_code=404, detail="Pedido no encontrado")
+
+        existing_order.status = "paid_test"
+        existing_order.payment_method = "stripe_test"
+        existing_order.updated_at = _now_iso()
+        model.actualizar_pedido(existing_order)
+        return existing_order
+
+    if payload.total_amount is None:
+        raise HTTPException(status_code=422, detail="total_amount is required")
+
+    if payload.total_amount <= 0:
+        raise HTTPException(status_code=400, detail="El importe debe ser mayor que cero")
+
+    if not stripe.api_key:
+        raise HTTPException(status_code=500, detail="STRIPE_SECRET_KEY no configurada")
+
+    order = model.listar_pedido_por_id(payload.order_id)
+    if order:
+        order.amount = float(payload.total_amount)
+        order.user_id = payload.user_id
+        order.source = payload.source
+        order.status = "pending_test"
+        order.payment_method = "stripe_test"
+        order.updated_at = _now_iso()
+    else:
+        order = _build_order_payload(payload, "pending_test")
+
+    model.crear_pedido(order) if not model.listar_pedido_por_id(order.id) else model.actualizar_pedido(order)
+
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "eur",
+                    "product_data": {"name": "Pedido en Subsonic Festival"},
+                    "unit_amount": int(round(float(payload.total_amount) * 100)),
+                },
+                "quantity": 1,
+            }
+        ],
+        metadata={
+            "order_id": order.id,
+            "user_id": payload.user_id or "",
+        },
+        success_url=f"{FRONTEND_URL}/checkout/success?order_id={order.id}",
+        cancel_url=f"{FRONTEND_URL}/checkout/cancel?order_id={order.id}",
+    )
+
+    order.checkout_session_id = session.id
+    order.updated_at = _now_iso()
+    model.actualizar_pedido(order)
+
+    return {"checkoutUrl": session.url}
 
 # Endpoints de merchandising
 @app.get("/api/merchandising")  

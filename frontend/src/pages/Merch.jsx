@@ -26,6 +26,7 @@ function Merch() {
             { id: "all", label: "Todo" },
             { id: "ropa", label: "Ropa" },
             { id: "accesorios", label: "Accesorios" },
+            { id: "libros", label: "Libros" },
         ],
         []
     );
@@ -71,6 +72,10 @@ function Merch() {
                         categoryId = "accesorios";
                         categoryLabel = "Accesorios";
                     }
+                    else if (type === "libro" || type === "libros") {
+                        categoryId = "libros";
+                        categoryLabel = "Libros";
+                    }
 
                     return {
                         id: String(item.id),
@@ -79,6 +84,7 @@ function Merch() {
                         categoryLabel,
                         price: formattedPrice,
                         description: item.description,
+                        stock: Number(item.stock ?? 0),
                         purchaseOptions: [],
                     };
                 });
@@ -206,6 +212,8 @@ function Merch() {
                         category={p.categoryLabel}
                         price={p.price}
                         description={p.description}
+                        image={p.image}
+                        stock={p.stock}
                         purchaseOptions={p.purchaseOptions}
                         onAddToCart={handleAddToCart}
                     />
@@ -224,5 +232,4 @@ function Merch() {
 }
 
 export default Merch;
-
 

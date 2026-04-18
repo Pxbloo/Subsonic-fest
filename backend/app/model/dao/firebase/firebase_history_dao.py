@@ -1,4 +1,5 @@
 from typing import List, Optional
+from google.cloud.firestore_v1.base_query import FieldFilter
 from app.model.dao.interfaces.history_dao import HistoryDAO
 from app.model.dto.HistoryDTO import HistoryDTO
 from .firebase_connector import FirebaseConnector
@@ -27,7 +28,7 @@ class FirebaseHistoryDAO(HistoryDAO):
 
     def get_by_user_id(self, user_id: str) -> List[HistoryDTO]:
         """Recupera todos los documentos de la colección 'history' que correspondan a un ID de usuario específico."""
-        query = self.collection.where("user_id", "==", user_id).stream()
+        query = self.collection.where(filter=FieldFilter("user_id", "==", user_id)).stream()
         return [HistoryDTO.model_validate(doc.to_dict()) for doc in query]
 
     def create(self, history_item: HistoryDTO) -> bool:

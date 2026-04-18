@@ -696,6 +696,7 @@
       "name": "Camiseta ElectroBeach 2025",
       "type": "ropa",
       "price": 25.99,
+      "stock": 50,
       "description": "Camiseta oficial del festival, algodón 100%, diseño exclusivo."
     },
     {
@@ -703,6 +704,7 @@
       "name": "Gorra Rock City",
       "type": "accesorio",
       "price": 18.5,
+      "stock": 50,
       "description": "Gorra negra con el logo bordado del festival."
     },
     {
@@ -710,6 +712,7 @@
       "name": "Pack de pulseras LED",
       "type": "accesorio",
       "price": 12,
+      "stock": 50,
       "description": "Pack de 3 pulseras LED sincronizables con la música."
     },
     {
@@ -717,6 +720,7 @@
       "name": "Mochila impermeable",
       "type": "accesorio",
       "price": 34.9,
+      "stock": 0,
       "description": "Mochila plegable ideal para festivales, resistente al agua."
     }
   ],

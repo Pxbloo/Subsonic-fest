@@ -31,3 +31,4 @@ __pycache__/
 serviceAccountKey.json
 
 backend/.env
+frontend/pnpm-lock.yaml

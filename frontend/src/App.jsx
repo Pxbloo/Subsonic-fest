@@ -7,6 +7,8 @@ import Home from '@/pages/Home';
 import AuthModal from '@/components/ui/AuthModal';
 import UserProfile from "@/pages/UserProfile.jsx";
 import CheckoutPage from '@/pages/CheckoutPage';
+import CheckoutSuccess from '@/pages/CheckoutSuccess';
+import CheckoutCancel from '@/pages/CheckoutCancel';
 import FestivalInstance from '@/pages/FestivalInstance';
 import ArtistProfile from '@/pages/ArtistProfile';
 import History from '@/pages/History';
@@ -20,47 +22,55 @@ import ContactUs from "@/pages/ContactUs.jsx";
 import TicketsManagement from "@/pages/TicketsManagement.jsx";
 import GroundsProvider from "@/pages/GroundsProvider.jsx";
 import ArtistMan from "@/pages/ArtistManagement.jsx";
+import ProductMan from "@/pages/ProductsManagement.jsx";
+
+import { setPersistence, browserLocalPersistence, onAuthStateChanged } from "firebase/auth";
+import { auth } from './config/firebase';
+import ProtectedRoute from "@/components/layout/ProtectedRoute.jsx";
+
+await setPersistence(auth, browserLocalPersistence);
 
 function App() {
 
   const [isModalOpen, setIsModalOpen] = useState(null); // null, 'login' o 'register'
   const [user, setUser] = useState(null); // null o objeto de usuario
-
-  const checkUserExists = async (userId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/users/${userId}`);
-      return response.ok;
-    }
-    catch (error) {
-      console.error("Error checking user existence:", error);
-      return false;
-    }
-  };
+  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    const validateUser = async () => {
-      const storedUser = localStorage.getItem('user');
-      if (!storedUser) {
-        return;
-      }
-
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
-        const userData = JSON.parse(storedUser);
-        await checkUserExists(userData.id).then(exists => {
-          if (exists) {
-            setUser(userData);
-          } else {
-            localStorage.removeItem('user');
-            console.log("User data found but user does not exist. Removing from local storage.");
-          }
-        });
-      } catch (error) {
-        console.error("Error parsing user data from local storage:", error);
-        localStorage.removeItem('user');
-      }
-    };
+        if (user) {
+          const token = await user.getIdToken();
 
-    validateUser();
+          const response = await fetch(`${API_BASE_URL}/auth/verify`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            console.log("User data received from backend server:", userData);
+            setUser(userData);
+          }
+          else {
+            setUser(null);
+          }
+        }
+        else {
+          setUser(null);
+        }
+        setAuthReady(true);
+      }
+      catch (error) {
+        console.error("Error checking authentication status:", error);
+        setUser(null);
+        setAuthReady(true);
+      }
+
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const openLoginModal = () => setIsModalOpen('login');
@@ -69,13 +79,17 @@ function App() {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
     closeModal();
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      console.log("User signed out successfully");
+      setUser(null);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -100,7 +114,7 @@ function App() {
             {/* Rutas COMUNES */}
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<ContactUs />} />
-            <Route path="/user-profile" element={<UserProfile user={user} />} />
+            <Route path="/user-profile" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider', 'user']}><UserProfile user={user} /> </ProtectedRoute>} />
             <Route path="/festival/:id" element={<FestivalInstance />} />
             <Route path="/artist/:id" element={<ArtistProfile />} />
 
@@ -108,20 +122,22 @@ function App() {
             <Route path="/tienda" element={<Merch />} />
             <Route path="/history" element={<History />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/checkout/success" element={<CheckoutSuccess />} />
+            <Route path="/checkout/cancel" element={<CheckoutCancel />} />
             <Route path="/blog" element={<Blog />} />
 
             {/* Rutas de PROVEEDOR */}
-            <Route path="/sales-dashboard" element={<SalesDashboard />} />
-            <Route path="/grounds" element={<GroundsProvider user={user} />} />
+            <Route path="/sales-dashboard" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider']}> <SalesDashboard /> </ProtectedRoute>} />
+            <Route path="/grounds" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider']}> <GroundsProvider user={user} /> </ProtectedRoute>} />
             {/* --------------- Gestión de recintos de PROVEEDOR conectado a "/grounds" de ADMIN --------------- */}
 
             {/* Rutas de ADMINISTRADOR */}
-            <Route path="/dashboard-grounds" element={<GroundsManagement />} />
-            <Route path="/dashboard-festivales" element={<FestivalsManagement />} />
-            <Route path="/dashboard-usuarios" element={<UsersDashboard />} />
-            <Route path="/dashboard-entradas" element={<TicketsManagement />} />
-            <Route path="/dashboard-artistas" element={<ArtistMan />} />
-
+            <Route path="/dashboard-grounds" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <GroundsManagement /> </ProtectedRoute>} />
+            <Route path="/dashboard-festivales" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <FestivalsManagement /> </ProtectedRoute>} />
+            <Route path="/dashboard-usuarios" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <UsersDashboard /> </ProtectedRoute>} />
+            <Route path="/dashboard-entradas" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <TicketsManagement /> </ProtectedRoute>} />
+            <Route path="/dashboard-artistas" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <ArtistMan /> </ProtectedRoute>} />
+            <Route path="/dashboard-productos" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin']}> <ProductMan /> </ProtectedRoute>} />
           </Routes>
         </main>
 

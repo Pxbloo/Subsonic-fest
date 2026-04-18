@@ -43,7 +43,23 @@ const TicketModal = ({ isOpen, onClose, festival }) => {
   }, 0);
 
   const handleConfirm = () => {
-    navigate('/checkout');
+    const storedUser = (() => {
+      try {
+        return JSON.parse(localStorage.getItem('user') || 'null');
+      } catch {
+        return null;
+      }
+    })();
+
+    const checkoutDraft = {
+      orderId: crypto.randomUUID(),
+      totalAmount,
+      source: 'tickets',
+      userId: storedUser?.id || null,
+    };
+
+    sessionStorage.setItem('checkoutDraft', JSON.stringify(checkoutDraft));
+    navigate('/checkout', { state: { checkoutDraft } });
     onClose();
   };
 
@@ -80,7 +96,7 @@ const TicketModal = ({ isOpen, onClose, festival }) => {
             <Button variant="outline" className="flex-1" onClick={onClose}>Cancelar</Button>
             <Button 
               variant="primary" 
-              className="flex-[2]" 
+              className="flex-2" 
               disabled={totalAmount === 0}
               onClick={handleConfirm}
             >

@@ -3,6 +3,7 @@ from .factory.fakeDAOFactory import FakeDAOFactory
 from .factory.firebaseDAOFactory import FirebaseDAOFactory
 from .dao.firebase.firebase_connector import FirebaseConnector
 from .dto.UserDTO import UserDTO, AddressDTO
+from .dto.OrderItemDTO import OrderItemDTO
 
 
 class SubsonicModel:
@@ -149,6 +150,27 @@ class SubsonicModel:
         """Devuelve el historial de eventos asistidos por un usuario."""
         dao = self.factory.get_history_dao()
         return dao.get_by_user_id(user_id)
+
+    # === Pedidos / Stripe ===
+    def listar_pedidos(self):
+        dao = self.factory.get_order_item_dao()
+        return dao.get_all()
+
+    def listar_pedido_por_id(self, order_id: str):
+        dao = self.factory.get_order_item_dao()
+        return dao.get_by_id(order_id)
+
+    def listar_pedidos_por_usuario(self, user_id: str):
+        dao = self.factory.get_order_item_dao()
+        return dao.get_by_user_id(user_id)
+
+    def crear_pedido(self, order_dto: OrderItemDTO):
+        dao = self.factory.get_order_item_dao()
+        return dao.create(order_dto)
+
+    def actualizar_pedido(self, order_dto: OrderItemDTO):
+        dao = self.factory.get_order_item_dao()
+        return dao.update(order_dto.id, order_dto)
 
     # === Merchandising ===
     def listar_merchandising(self):

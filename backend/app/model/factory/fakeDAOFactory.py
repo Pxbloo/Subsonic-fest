@@ -1,5 +1,6 @@
 from .interfaceDAOFactory import InterfaceDAOFactory
 from ..dao.fake.fake_festival_dao import FakeFestivalDAO
+from ..dao.fake.fake_order_item_dao import FakeOrderItemDAO
 
 
 class FakeDAOFactory(InterfaceDAOFactory):
@@ -22,6 +23,8 @@ class FakeDAOFactory(InterfaceDAOFactory):
         raise NotImplementedError("Fake GroundDAO no implementado")
     def get_history_dao(self):
         raise NotImplementedError("Fake HistoryDAO no implementado")
+    def get_order_item_dao(self):
+        return FakeOrderItemDAO(self.db_path)
     def get_merchandising_dao(self):
         raise NotImplementedError("Fake MerchandisingDAO no implementado")
 

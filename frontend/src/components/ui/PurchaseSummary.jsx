@@ -8,18 +8,6 @@ const formatCurrency = (value) =>
         currency: "EUR",
     });
 
-const formatOptionLabel = (optionName) => {
-    const labels = {
-        extent: "Tamaño",
-        size: "Talla",
-        color: "Color",
-        format: "Formato",
-        finish: "Acabado",
-    };
-
-    return labels[optionName] ?? optionName;
-};
-
 function PurchaseSummary({
     open,
     items = [],
@@ -59,23 +47,25 @@ function PurchaseSummary({
     );
 
     const handleGoToPayment = () => {
+        const storedUser = (() => {
+            try {
+                return JSON.parse(localStorage.getItem("user") || "null");
+            } catch {
+                return null;
+            }
+        })();
+
+        const checkoutDraft = {
+            orderId: crypto.randomUUID(),
+            totalAmount,
+            source: "merchandising",
+            userId: storedUser?.id || null,
+        };
+
+        sessionStorage.setItem("checkoutDraft", JSON.stringify(checkoutDraft));
         navigate("/checkout", {
-            state: {
-                orderItems: items.map((item, index) => ({
-                    id: `${item.key}-${index}`,
-                    name: item.productName,
-                    category:
-                        Object.entries(item.selectedOptions ?? {})
-                            .map(([key, value]) => `${formatOptionLabel(key)}: ${value}`)
-                            .join(" · ") || item.productCategory,
-                    quantity: item.quantity,
-                    price: item.totalPrice,
-                    unitPrice: item.unitPrice,
-                })),
-                totalAmount,
-            },
+            state: { checkoutDraft },
         });
-        navigate("/checkout");
 
         onClose?.();
     };

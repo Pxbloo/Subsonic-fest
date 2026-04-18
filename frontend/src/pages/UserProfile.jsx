@@ -45,7 +45,8 @@ const UserProfile = ({user}) => {
     useEffect(() => {
         const fetchOrderItems = async () => {
             try {
-                const response = await fetch(`${API_BASE_URL}/orderItems`);
+                const query = user?.id ? `?user_id=${encodeURIComponent(user.id)}` : '';
+                const response = await fetch(`${API_BASE_URL}/orderItems${query}`);
                 if (!response.ok) throw new Error('Error al cargar pedidos');
                 const data = await response.json();
                 setOrderItems(data || []);
@@ -56,7 +57,7 @@ const UserProfile = ({user}) => {
         };
 
         fetchOrderItems();
-    }, []);
+    }, [user?.id]);
 
     useEffect(() => {
         const loadFavoriteDetails = async () => {
@@ -130,11 +131,11 @@ const UserProfile = ({user}) => {
     const purchases = useMemo(() => {
         return orderItems.map((item, index) => ({
             id: item.id,
-            title: item.name,
-            date: item.date,
-            amount: item.price,
-            status: index === 0 ? "Completado" : index === 1 ? "En progreso" : "Pendiente",
-            category: item.category
+            title: item.title || item.name || "Pedido en Subsonic Festival",
+            date: item.created_at ? item.created_at.slice(0, 10) : item.date || "",
+            amount: item.amount ?? item.price ?? 0,
+            status: item.status === "paid_test" ? "Completado" : item.status === "pending_test" ? "Pendiente" : (item.status || "Pendiente"),
+            category: item.source || item.category || "Pedido Stripe",
         }));
     }, [orderItems]);
 

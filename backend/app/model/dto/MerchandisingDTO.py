@@ -6,6 +6,7 @@ class MerchandisingDTO(BaseModel):
     name: str
     type: str
     price: float
+    stock: int
     description: str
 
     class Config:
