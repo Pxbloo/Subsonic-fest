@@ -4,6 +4,7 @@ import Button from '../components/ui/Button';
 import SocialLinks from '../components/ui/SocialLinks';
 import TicketModal from '../components/ui/TicketModal';
 import BaseCard from '../components/ui/BaseCard.jsx';
+import FavoriteButton from '../components/ui/FavoriteButton.jsx';
 import API_BASE_URL from '@/config/api';
 
 // --- COMPONENTES INTERNOS ---
@@ -24,18 +25,22 @@ const FestivalLineup = ({ lineup }) => (
     </h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {lineup && lineup.map((artist, index) => (
-        <Link
-          key={index}
-          to={`/artist/${artist.id || artist.name.toLowerCase().replace(/\s+/g, '-')}`}
-          className="block"
-        >
-          <BaseCard className="cursor-pointer h-full">
+        <BaseCard key={index} className="relative h-full">
+          {artist.id && (
+            <div className="absolute right-4 top-4 z-10 rounded-full bg-subsonic-bg/80 p-2 backdrop-blur-sm">
+              <FavoriteButton id={artist.id} type="artist" className="block" />
+            </div>
+          )}
+          <Link
+            to={`/artist/${artist.id || artist.name.toLowerCase().replace(/\s+/g, '-')}`}
+            className="block pr-14"
+          >
             <h3 className="text-xl font-black uppercase tracking-tighter group-hover:text-subsonic-accent transition-colors">
               {artist.name}
             </h3>
             <p className="text-xs text-subsonic-muted font-bold uppercase">{artist.genre}</p>
-          </BaseCard>
-        </Link>
+          </Link>
+        </BaseCard>
       ))}
     </div>
   </section>

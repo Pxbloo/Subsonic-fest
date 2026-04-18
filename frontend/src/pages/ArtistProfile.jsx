@@ -92,13 +92,6 @@ const ArtistProfile = () => {
             <div className="mb-8">
               <SocialLinks variant="minimal" />
             </div>
-
-            <Button variant="primary" className="w-full mb-3 text-xs">
-              Ver Gira 2026
-            </Button>
-            <Button variant="outline" className="w-full text-xs">
-              Añadir a Favoritos
-            </Button>
           </BaseCard>
         </aside>
       </div>

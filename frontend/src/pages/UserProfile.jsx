@@ -1,10 +1,13 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import { Link } from 'react-router-dom';
 import AvatarPicker from '../components/ui/AvatarPicker.jsx';
 import ProfileForm from "@/components/ui/ProfileForm.jsx";
 import RecentPurchases from "@/components/ui/RecentPurchases.jsx";
 import BaseCard from "@/components/ui/BaseCard.jsx";
 import API_BASE_URL from '@/config/api';
 import {getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider} from "firebase/auth";
+import { useFavorites } from '@/hooks/useFavorites';
+import FavoriteButton from '@/components/ui/FavoriteButton';
 
 const UserProfile = ({user}) => {
 
@@ -12,6 +15,13 @@ const UserProfile = ({user}) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderItems, setOrderItems] = useState([]);
+    const { favorites, loadFavorites } = useFavorites();
+    const [favoriteData, setFavoriteData] = useState({
+        artists: [],
+        festivals: [],
+        products: []
+    });
+    const [loadingFavorites, setLoadingFavorites] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -47,6 +57,65 @@ const UserProfile = ({user}) => {
 
         fetchOrderItems();
     }, []);
+
+    useEffect(() => {
+        const loadFavoriteDetails = async () => {
+            if (!favorites || (!favorites.favorite_artists?.length && !favorites.favorite_festivals?.length && !favorites.favorite_products?.length)) {
+                return;
+            }
+
+            setLoadingFavorites(true);
+            try {
+                const artists = [];
+                const festivals = [];
+                const products = [];
+
+                for (const artistId of favorites.favorite_artists || []) {
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/artists/${artistId}`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            artists.push(data);
+                        }
+                    } catch (err) {
+                        console.error(`Error loading artist ${artistId}:`, err);
+                    }
+                }
+
+                for (const festivalId of favorites.favorite_festivals || []) {
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/festivals/${festivalId}`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            festivals.push(data);
+                        }
+                    } catch (err) {
+                        console.error(`Error loading festival ${festivalId}:`, err);
+                    }
+                }
+
+                for (const productId of favorites.favorite_products || []) {
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/merchandising/${productId}`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            products.push(data);
+                        }
+                    } catch (err) {
+                        console.error(`Error loading product ${productId}:`, err);
+                    }
+                }
+
+                setFavoriteData({ artists, festivals, products });
+            } catch (error) {
+                console.error('Error loading favorite details:', error);
+            } finally {
+                setLoadingFavorites(false);
+            }
+        };
+
+        loadFavoriteDetails();
+    }, [favorites]);
 
     function validateResponse(response) {
         if (response.ok) {
@@ -244,6 +313,139 @@ const UserProfile = ({user}) => {
                         <RecentPurchases purchases={purchases} />
                     </BaseCard>
                 </aside>
+            </div>
+
+            <div className="mt-8">
+                <h2 className="text-2xl font-black text-subsonic-accent uppercase tracking-tight mb-6">
+                    Mis Favoritos
+                </h2>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <BaseCard>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-bold text-subsonic-text">Artistas Favoritos</h3>
+                            <p className="text-subsonic-text/70 text-sm">
+                                {favoriteData.artists.length} artista{favoriteData.artists.length !== 1 ? 's' : ''}
+                            </p>
+                        </div>
+                        {loadingFavorites ? (
+                            <div className="text-center py-4">
+                                <p className="text-subsonic-text/60">Cargando...</p>
+                            </div>
+                        ) : favoriteData.artists.length > 0 ? (
+                            <div className="space-y-3">
+                                {favoriteData.artists.map((artist) => (
+                                    <div 
+                                        key={artist.id}
+                                        className="flex items-center justify-between p-3 bg-subsonic-dark-light rounded hover:bg-subsonic-accent/10 transition"
+                                    >
+                                        <div className="flex-1">
+                                            <Link
+                                                to={`/artist/${artist.id}`}
+                                                className="font-semibold text-subsonic-text hover:text-subsonic-accent transition-colors"
+                                            >
+                                                {artist.name}
+                                            </Link>
+                                            <p className="text-sm text-subsonic-text/70">{artist.genre}</p>
+                                        </div>
+                                        <FavoriteButton 
+                                            id={artist.id} 
+                                            type="artist" 
+                                            className="ml-2"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-subsonic-text/60 text-center py-4">
+                                No tienes artistas favoritos aún
+                            </p>
+                        )}
+                    </BaseCard>
+
+                    <BaseCard>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-bold text-subsonic-text">Festivales Favoritos</h3>
+                            <p className="text-subsonic-text/70 text-sm">
+                                {favoriteData.festivals.length} festival{favoriteData.festivals.length !== 1 ? 'es' : ''}
+                            </p>
+                        </div>
+                        {loadingFavorites ? (
+                            <div className="text-center py-4">
+                                <p className="text-subsonic-text/60">Cargando...</p>
+                            </div>
+                        ) : favoriteData.festivals.length > 0 ? (
+                            <div className="space-y-3">
+                                {favoriteData.festivals.map((festival) => (
+                                    <div 
+                                        key={festival.id}
+                                        className="flex items-center justify-between p-3 bg-subsonic-dark-light rounded hover:bg-subsonic-accent/10 transition"
+                                    >
+                                        <div className="flex-1">
+                                            <Link
+                                                to={`/festival/${festival.id}`}
+                                                className="font-semibold text-subsonic-text hover:text-subsonic-accent transition-colors"
+                                            >
+                                                {festival.title || festival.name}
+                                            </Link>
+                                        </div>
+                                        <FavoriteButton 
+                                            id={festival.id} 
+                                            type="festival"
+                                            className="ml-2"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-subsonic-text/60 text-center py-4">
+                                No tienes festivales favoritos aún
+                            </p>
+                        )}
+                    </BaseCard>
+
+                    <BaseCard>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-bold text-subsonic-text">Productos Favoritos</h3>
+                            <p className="text-subsonic-text/70 text-sm">
+                                {favoriteData.products.length} producto{favoriteData.products.length !== 1 ? 's' : ''}
+                            </p>
+                        </div>
+                        {loadingFavorites ? (
+                            <div className="text-center py-4">
+                                <p className="text-subsonic-text/60">Cargando...</p>
+                            </div>
+                        ) : favoriteData.products.length > 0 ? (
+                            <div className="space-y-3">
+                                {favoriteData.products.map((product) => (
+                                    <div 
+                                        key={product.id}
+                                        className="flex items-center justify-between p-3 bg-subsonic-dark-light rounded hover:bg-subsonic-accent/10 transition"
+                                    >
+                                        <div className="flex-1">
+                                            <Link
+                                                to={`/tienda?producto=${encodeURIComponent(product.id)}`}
+                                                className="font-semibold text-subsonic-text hover:text-subsonic-accent transition-colors"
+                                            >
+                                                {product.name}
+                                            </Link>
+                                        </div>
+                                        <FavoriteButton 
+                                            id={product.id} 
+                                            type="product"
+                                            className="ml-2"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-subsonic-text/60 text-center py-4">
+                                No tienes productos favoritos aún
+                            </p>
+                        )}
+                    </BaseCard>
+                </div>
             </div>
         </section>
     );

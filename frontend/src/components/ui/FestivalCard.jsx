@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from './Button'; 
 import BaseCard from './BaseCard';
+import FavoriteButton from './FavoriteButton';
 
 const FestivalCard = ({ id, title, date, startDate, price, description, image }) => {
   const referenceDateString = startDate || date;
@@ -22,7 +23,10 @@ const FestivalCard = ({ id, title, date, startDate, price, description, image })
 
   return (
     <Link to={`/festival/${id}`} className="block h-full">
-      <BaseCard className="items-center text-center h-full">
+      <BaseCard className="relative items-center text-center h-full">
+        <div className="absolute right-4 top-4 z-10 rounded-full bg-subsonic-bg/80 p-2 backdrop-blur-sm">
+          <FavoriteButton id={id} type="festival" className="block" />
+        </div>
         <div className="w-full aspect-video bg-subsonic-border rounded-lg mb-6 flex items-center justify-center overflow-hidden">
           <img 
             src={imageUrl} 
