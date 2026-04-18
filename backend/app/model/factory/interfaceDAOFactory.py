@@ -5,6 +5,7 @@ from ..dao.interfaces.blog_post_dao import BlogPostDAO
 from ..dao.interfaces.festival_dao import FestivalDAO
 from ..dao.interfaces.ground_dao import GroundDAO
 from ..dao.interfaces.history_dao import HistoryDAO
+from ..dao.interfaces.order_item_dao import OrderItemDAO
 from ..dao.interfaces.merchandising_dao import MerchandisingDAO
 
 class InterfaceDAOFactory(ABC):
@@ -32,6 +33,10 @@ class InterfaceDAOFactory(ABC):
 
     @abstractmethod
     def get_history_dao(self) -> HistoryDAO:
+        pass
+
+    @abstractmethod
+    def get_order_item_dao(self) -> OrderItemDAO:
         pass
 
     @abstractmethod
