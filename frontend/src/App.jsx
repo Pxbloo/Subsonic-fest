@@ -22,6 +22,7 @@ import ContactUs from "@/pages/ContactUs.jsx";
 import TicketsManagement from "@/pages/TicketsManagement.jsx";
 import GroundsProvider from "@/pages/GroundsProvider.jsx";
 import ArtistMan from "@/pages/ArtistManagement.jsx";
+import ProductMan from "@/pages/ProductsManagement.jsx";
 
 function App() {
 
@@ -125,6 +126,7 @@ function App() {
             <Route path="/dashboard-usuarios" element={<UsersDashboard />} />
             <Route path="/dashboard-entradas" element={<TicketsManagement />} />
             <Route path="/dashboard-artistas" element={<ArtistMan />} />
+            <Route path="/dashboard-productos" element={<ProductMan />} />
 
           </Routes>
         </main>

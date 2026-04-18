@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
 import ProductModal from './ProductModal';
 
-const ShopCard = ({ name, category, price, description, image, purchaseOptions, onAddToCart}) => {
+const ShopCard = ({ name, category, price, description, image, stock, purchaseOptions, onAddToCart}) => {
 
     const [open, setOpen] = useState(false);
 
     const product = useMemo(
-        () => ({ name, category, price, description, image, purchaseOptions }),
-        [name, category, price, description, image, purchaseOptions]
+        () => ({ name, category, price, description, image, stock, purchaseOptions }),
+        [name, category, price, description, image, stock, purchaseOptions]
     );
 
     return (
