@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import uuid4
 
 import stripe
 from fastapi import FastAPI
@@ -13,6 +14,7 @@ from .model.dto.BlogPostDTO import BlogPostDTO
 from .model.dto.OrderItemDTO import OrderItemDTO
 from .model.dto.MerchandisingDTO import MerchandisingDTO
 from .model.dto.HistoryDTO import HistoryDTO
+from .model.dto.TicketTemplateDTO import TicketTemplateDTO
 from fastapi import Depends, Header, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
@@ -68,6 +70,11 @@ def _build_order_payload(payload: StripeCheckoutRequest, status: str) -> OrderIt
         updated_at=_now_iso(),
         currency="EUR",
     )
+
+
+def _ensure_admin(current_user: UserDTO):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Permiso denegado")
 
 
 async def get_current_user(authorization: Optional[str] = Header(None)) -> UserDTO:
@@ -312,6 +319,52 @@ async def get_festival_artists(festival_id: str):
         raise HTTPException(status_code=404, detail="Festival no encontrado")
     artists = model.listar_artistas_por_festival(festival_id)
     return artists
+
+
+@app.get("/api/ticketTemplates")
+async def get_ticket_templates():
+    """Devuelve plantillas de entradas combinando Firebase y derivadas de festivales."""
+    return model.listar_ticket_templates()
+
+
+@app.post("/api/ticketTemplates")
+async def create_ticket_template(template: TicketTemplateDTO, current_user: UserDTO = Depends(get_current_user)):
+    """Crea una plantilla de entrada en Firebase."""
+    _ensure_admin(current_user)
+    template.id = template.id or str(uuid4())
+    success = model.crear_ticket_template(template)
+    if not success:
+        raise HTTPException(status_code=400, detail="Error al crear plantilla de entrada")
+    return template
+
+
+@app.put("/api/ticketTemplates/{template_id}")
+async def update_ticket_template(template_id: str, template: TicketTemplateDTO, current_user: UserDTO = Depends(get_current_user)):
+    """Actualiza una plantilla de entrada existente en Firebase."""
+    _ensure_admin(current_user)
+    existing_template = model.listar_ticket_template_por_id(template_id)
+    if not existing_template:
+        raise HTTPException(status_code=404, detail="Plantilla de entrada no encontrada")
+
+    template.id = template_id
+    success = model.actualizar_ticket_template(template)
+    if not success:
+        raise HTTPException(status_code=400, detail="Error al actualizar plantilla de entrada")
+    return template
+
+
+@app.delete("/api/ticketTemplates/{template_id}")
+async def delete_ticket_template(template_id: str, current_user: UserDTO = Depends(get_current_user)):
+    """Elimina una plantilla de entrada de Firebase."""
+    _ensure_admin(current_user)
+    existing_template = model.listar_ticket_template_por_id(template_id)
+    if not existing_template:
+        raise HTTPException(status_code=404, detail="Plantilla de entrada no encontrada")
+
+    success = model.eliminar_ticket_template(template_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="Error al eliminar plantilla de entrada")
+    return {"detail": "Plantilla eliminada"}
 
 # Endpoints de recintos (grounds)
 @app.get("/api/grounds")

@@ -27,6 +27,10 @@ class FakeDAOFactory(InterfaceDAOFactory):
         return FakeOrderItemDAO(self.db_path)
     def get_merchandising_dao(self):
         raise NotImplementedError("Fake MerchandisingDAO no implementado")
+    def get_favorites_dao(self):
+        raise NotImplementedError("Fake FavoritesDAO no implementado")
+    def get_ticket_template_dao(self):
+        raise NotImplementedError("Fake TicketTemplateDAO no implementado")
 
     def get_festival_dao(self) -> FakeFestivalDAO:
         # Si self.db_path es None, FakeFestivalDAO usará su DEFAULT_DB_PATH

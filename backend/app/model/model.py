@@ -1,9 +1,11 @@
 import os
+from typing import Optional
 from .factory.fakeDAOFactory import FakeDAOFactory
 from .factory.firebaseDAOFactory import FirebaseDAOFactory
 from .dao.firebase.firebase_connector import FirebaseConnector
 from .dto.UserDTO import UserDTO, AddressDTO
 from .dto.OrderItemDTO import OrderItemDTO
+from .dto.TicketTemplateDTO import TicketTemplateDTO
 
 
 class SubsonicModel:
@@ -149,6 +151,124 @@ class SubsonicModel:
             for artist in self.listar_artistas()
             if str(getattr(artist, "id", "")) in lineup_ids
         ]
+
+    # === Ticket templates ===
+    @staticmethod
+    def _ticket_value(ticket, key, default=None):
+        if isinstance(ticket, dict):
+            return ticket.get(key, default)
+        return getattr(ticket, key, default)
+
+    @staticmethod
+    def _template_signature(template: dict) -> tuple[str, float, tuple[str, ...]]:
+        return (
+            template["name"],
+            template["price"],
+            tuple(template["features"]),
+        )
+
+    @staticmethod
+    def _normalize_ticket_template(raw_template: dict) -> Optional[dict]:
+        if not isinstance(raw_template, dict):
+            return None
+
+        name = raw_template.get("name")
+        if not name:
+            return None
+
+        raw_features = raw_template.get("features")
+        features = raw_features if isinstance(raw_features, list) else []
+
+        try:
+            price = float(raw_template.get("price", 0))
+        except (TypeError, ValueError):
+            price = 0.0
+
+        template_id = raw_template.get("id")
+        if not template_id:
+            normalized_name = str(name).strip().lower().replace(" ", "-")
+            template_id = f"{normalized_name}-{price}"
+
+        return {
+            "id": str(template_id),
+            "name": name,
+            "features": features,
+            "price": price,
+        }
+
+    def _build_ticket_templates_from_festivals(self) -> list[dict]:
+        templates: dict[tuple[str, float, tuple[str, ...]], dict] = {}
+
+        for festival in self.listar_festivales() or []:
+            tickets = getattr(festival, "tickets", []) or []
+            for index, ticket in enumerate(tickets):
+                name = self._ticket_value(ticket, "name")
+                if not name:
+                    continue
+
+                raw_price = self._ticket_value(ticket, "price", 0)
+                try:
+                    price = float(raw_price or 0)
+                except (TypeError, ValueError):
+                    price = 0.0
+
+                raw_features = self._ticket_value(ticket, "features", [])
+                features = list(raw_features) if isinstance(raw_features, list) else []
+
+                key = (name, price, tuple(features))
+                if key in templates:
+                    continue
+
+                ticket_id = self._ticket_value(ticket, "id")
+                if not ticket_id:
+                    normalized_name = str(name).strip().lower().replace(" ", "-")
+                    ticket_id = f"{normalized_name}-{price}-{index}"
+
+                templates[key] = {
+                    "id": str(ticket_id),
+                    "name": name,
+                    "features": features,
+                    "price": price,
+                }
+
+        return list(templates.values())
+
+    def listar_ticket_templates(self) -> list[dict]:
+        dao = self.factory.get_ticket_template_dao()
+        raw_templates: list[dict] = []
+
+        raw_templates.extend(item.model_dump() for item in dao.get_all())
+
+        raw_templates.extend(self._build_ticket_templates_from_festivals())
+        by_signature: dict[tuple[str, float, tuple[str, ...]], dict] = {}
+
+        for item in raw_templates:
+            normalized = self._normalize_ticket_template(item)
+            if not normalized:
+                continue
+            signature = self._template_signature(normalized)
+            if signature not in by_signature:
+                by_signature[signature] = normalized
+
+        return list(by_signature.values())
+
+    def listar_ticket_template_por_id(self, template_id: str):
+        dao = self.factory.get_ticket_template_dao()
+        return dao.get_by_id(template_id)
+
+    def crear_ticket_template(self, template_dto: TicketTemplateDTO):
+        dao = self.factory.get_ticket_template_dao()
+        return dao.create(template_dto)
+
+    def actualizar_ticket_template(self, template_dto: TicketTemplateDTO):
+        if not template_dto.id:
+            return False
+        dao = self.factory.get_ticket_template_dao()
+        return dao.update(template_dto.id, template_dto)
+
+    def eliminar_ticket_template(self, template_id: str):
+        dao = self.factory.get_ticket_template_dao()
+        return dao.delete(template_id)
 
     # === Grounds / Recintos ===
     def listar_grounds(self):

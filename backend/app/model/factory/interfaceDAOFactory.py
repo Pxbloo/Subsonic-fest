@@ -8,6 +8,7 @@ from ..dao.interfaces.history_dao import HistoryDAO
 from ..dao.interfaces.order_item_dao import OrderItemDAO
 from ..dao.interfaces.merchandising_dao import MerchandisingDAO
 from ..dao.interfaces.favorites_dao import FavoritesDAO
+from ..dao.interfaces.ticket_template_dao import TicketTemplateDAO
 
 class InterfaceDAOFactory(ABC):
     """Fábrica de interfaces DAO para la gestión de datos en la aplicación."""
@@ -46,4 +47,8 @@ class InterfaceDAOFactory(ABC):
 
     @abstractmethod
     def get_favorites_dao(self) -> FavoritesDAO:
+        pass
+
+    @abstractmethod
+    def get_ticket_template_dao(self) -> TicketTemplateDAO:
         pass
