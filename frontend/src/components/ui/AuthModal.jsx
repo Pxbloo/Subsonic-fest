@@ -59,6 +59,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   // --- LÓGICA: LOGIN CON GOOGLE ---
   const handleGoogleLogin = async () => {
     setErrorMessage('');
+    if (!canSubmit) return;
     setCanSubmit(false);
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -93,6 +94,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
       );
       
       const uid = userCredential.user.uid;
+      const token = await userCredential.user.getIdToken();
       const fullName = `${registerForm.name} ${registerForm.surname}`.trim();
 
       const newUser = {
@@ -107,16 +109,23 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
 
       const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(newUser),
       });
 
-      if (response.ok) {
-        onLoginSuccess(newUser);
-        onClose();
-      } else {
-        setErrorMessage("Cuenta creada pero hubo un problema guardando tu perfil.");
+      if (!response.ok) {
+        await userCredential.user.delete();
+        setErrorMessage("Error al registrarse. Inténtalo de nuevo.");
+        throw new Error("Error al crear el usuario en el servidor: " + (await response.text()));
       }
+      const userData = await response.json();
+
+      onLoginSuccess(userData);
+      onClose();
+
     } catch (error) {
       console.error("Register Error:", error);
       if (error.code === 'auth/email-already-in-use') {
@@ -130,6 +139,10 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+    if (!canSubmit) {
+      console.log("Demasiados intentos de inicio de sesión en poco tiempo! Espera unos segundos antes de volver a intentarlo.");
+      return;
+    }
     setCanSubmit(false);
 
     if (!form.checkValidity()) {
@@ -181,7 +194,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
             <form className="space-y-5" onSubmit={handleSubmit} noValidate>
               <Input label="Email" type="email" placeholder="tu@email.com" required onChange={(e) => setLoginEmail(e.target.value)}/>
               <Input label="Contraseña" type="password" placeholder="••••••••" required onChange={(e) => setLoginPassword(e.target.value)}/>
-              <Button disabled={canSubmit} type="submit" variant="primary" className="w-full py-4 text-base">Iniciar Sesión</Button>
+              <Button type="submit" variant="primary" className="w-full py-4 text-base">Iniciar Sesión</Button>
             </form>
 
             <div className="relative flex items-center py-2">
@@ -190,7 +203,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
               <div className="flex-grow border-t border-subsonic-border"></div>
             </div>
 
-            <Button disabled={!canSubmit} onClick={handleGoogleLogin} variant="outline" className="w-full py-3 flex items-center justify-center gap-3 border-subsonic-border">
+            <Button onClick={handleGoogleLogin} variant="outline" className="w-full py-3 flex items-center justify-center gap-3 border-subsonic-border">
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -223,7 +236,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
               </BaseCard>
             )}
             
-            <Button disabled={!canSubmit} type="submit" variant="primary" className="md:col-span-2 py-4 text-base mt-2">Registrarse</Button>
+            <Button type="submit" variant="primary" className="md:col-span-2 py-4 text-base mt-2">Registrarse</Button>
           </form>
         )}
         

@@ -34,7 +34,11 @@ class SubsonicModel:
         user_dao = self.factory.get_user_dao()
         user_dto = user_dao.get_by_id(uid)
 
-        if not user_dto:
+        if user_dto:
+            return user_dto
+
+        provider = user_info.get("firebase", {}).get("sign_in_provider", "")
+        if provider == "google.com":
             user_dto = UserDTO(
                 id=uid,
                 name=user_info.get("name", "Usuario de Google"),
@@ -47,8 +51,9 @@ class SubsonicModel:
 
             user_dao.create(user_dto)
             print(f"Nuevo usuario creado mediante Google: {user_dto.email}")
+            return user_dto
 
-        return user_dto
+        return None
 
     # === Usuarios ===
     def crear_usuario(self, user_dto: UserDTO):

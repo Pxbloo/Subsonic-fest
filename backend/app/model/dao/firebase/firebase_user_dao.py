@@ -23,8 +23,17 @@ class FirebaseUserDAO(UserDAO):
         return UserDTO.model_validate(doc.to_dict()) if doc.exists else None
 
     def get_by_email(self, email: str) -> Optional[UserDTO]:
-        doc = self.collection.where("email", "==", email).get()
-        return UserDTO.model_validate(doc.to_dict()) if doc.exists else None
+        doc = self.collection.where("email", "==", email).limit(1).get()
+
+        if not doc:
+            return None
+
+        doc_data = doc[0].to_dict()
+
+        if not doc_data:
+            return None
+
+        return UserDTO.model_validate(doc_data.to_dict())
 
 
     def create(self, user: UserDTO) -> bool:
