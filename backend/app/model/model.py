@@ -91,6 +91,23 @@ class SubsonicModel:
     def eliminar_artista(self, artist_id: str):
         dao = self.factory.get_artist_dao()
         return dao.delete(artist_id)
+    
+    def listar_festivales_por_artista(self, artist_id: str):
+        """Devuelve los festivales que contienen al artista en el lineup."""
+        artist = self.listar_artista_por_id(artist_id)
+        if not artist:
+            return None
+
+        artist_id_str = str(artist_id)
+        return [
+            festival
+            for festival in self.listar_festivales()
+            if any(
+                str(item.get("id") if isinstance(item, dict) else getattr(item, "id", ""))
+                == artist_id_str
+                for item in (getattr(festival, "lineup", []) or [])
+            )
+        ]
 
     # === Festivales ===
     def listar_festivales(self):
@@ -115,8 +132,23 @@ class SubsonicModel:
 
     def listar_artistas_por_festival(self, festival_id: str):
         """Devuelve artistas asociados a un festival."""
-        dao = self.factory.get_artist_dao()
-        return dao.get_all()
+        festival = self.listar_festival_por_id(festival_id)
+        if not festival:
+            return []
+
+        lineup_ids = {
+            str(item.get("id") if isinstance(item, dict) else getattr(item, "id", ""))
+            for item in (getattr(festival, "lineup", []) or [])
+        }
+
+        if not lineup_ids:
+            return []
+
+        return [
+            artist
+            for artist in self.listar_artistas()
+            if str(getattr(artist, "id", "")) in lineup_ids
+        ]
 
     # === Grounds / Recintos ===
     def listar_grounds(self):
