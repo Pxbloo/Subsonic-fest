@@ -8,24 +8,40 @@ import API_BASE_URL from '@/config/api';
 const ArtistProfile = () => {
   const { id } = useParams();
   const [artist, setArtist] = useState(null);
+  const [relatedFestivals, setRelatedFestivals] = useState([]);
 
   useEffect(() => {
-    const fetchArtist = async () => {
+    const fetchArtistAndFestivals = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/artists/${id}`);
-        if (!response.ok) {
+        const [artistResponse, festivalsResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/artists/${id}`),
+          fetch(`${API_BASE_URL}/artists/${id}/festivals`),
+        ]);
+
+        if (!artistResponse.ok) {
           setArtist(null);
+          setRelatedFestivals([]);
           return;
         }
-        const data = await response.json();
-        setArtist(data);
+
+        const artistData = await artistResponse.json();
+        setArtist(artistData);
+
+        if (!festivalsResponse.ok) {
+          setRelatedFestivals([]);
+          return;
+        }
+
+        const festivalsData = await festivalsResponse.json();
+        setRelatedFestivals(Array.isArray(festivalsData) ? festivalsData : []);
       } catch (error) {
-        console.error('Error fetching artist:', error);
+        console.error('Error fetching artist profile data:', error);
         setArtist(null);
+        setRelatedFestivals([]);
       }
     };
 
-    fetchArtist();
+    fetchArtistAndFestivals();
   }, [id]);
 
   if (!artist) {
@@ -80,6 +96,34 @@ const ArtistProfile = () => {
               ></iframe>
             </div>
           )}
+
+          <section>
+            <h3 className="text-lg font-black text-subsonic-accent uppercase mb-4 tracking-tight">
+              Más festivales donde actúa
+            </h3>
+
+            {relatedFestivals.length === 0 ? (
+              <p className="text-sm opacity-70">
+                Todavía no hay más festivales registrados para este artista.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
+                {relatedFestivals.map((festival) => (
+                  <Link key={festival.id} to={`/festival/${festival.id}`} className="block">
+                    <BaseCard className="h-full hover:border-subsonic-accent/70 transition-colors">
+                      <p className="text-xs font-black text-subsonic-muted uppercase tracking-widest mb-2">
+                        {festival.date}
+                      </p>
+                      <h4 className="text-lg font-black uppercase tracking-tight mb-2">
+                        {festival.title}
+                      </h4>
+                      <p className="text-sm opacity-75">{festival.location}</p>
+                    </BaseCard>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
         </div>
 
         {}

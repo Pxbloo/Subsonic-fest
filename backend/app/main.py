@@ -169,6 +169,15 @@ async def get_artist(artist_id: str):
         raise HTTPException(status_code=404, detail="Artista no encontrado")
     return artist
 
+
+@app.get("/api/artists/{artist_id}/festivals")
+async def get_artist_festivals(artist_id: str):
+    """Endpoint público para obtener los festivales de un artista específico."""
+    festivals = model.listar_festivales_por_artista(artist_id)
+    if festivals is None:
+        raise HTTPException(status_code=404, detail="Artista no encontrado")
+    return festivals
+
 # Endpoints de usuarios
 @app.post("/api/users") 
 async def create_user(user: UserDTO):
