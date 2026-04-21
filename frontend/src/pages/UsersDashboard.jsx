@@ -15,6 +15,7 @@ const UsersDashboard = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [canSubmit, setCanSubmit] = useState(true);
 
     const fetchUsers = async () => {
         try {
@@ -67,6 +68,11 @@ const UsersDashboard = () => {
     };
 
     const handleSaveUser = async (userData) => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
         try {
             const auth = getAuth();
             const currentUser = auth.currentUser;
@@ -136,9 +142,15 @@ const UsersDashboard = () => {
         } catch (error) {
             console.error('Error saving user:', error);
         }
+        setCanSubmit(true);
     };
 
     const handleDeleteUser = async (user) => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.')
+            return;
+        }
+        setCanSubmit(false);
         if (!confirmDelete || !user) return;
         try {
             const auth = getAuth();
@@ -164,6 +176,7 @@ const UsersDashboard = () => {
         catch (error) {
             console.error('Error deleting user:', error);
         }
+        setCanSubmit(true);
     };
 
     if (loading) {

@@ -188,6 +188,10 @@ async def get_artist_festivals(artist_id: str):
 # Endpoints de usuarios
 @app.post("/api/users") 
 async def create_user(user: UserDTO):
+    existing_user = model.listar_usuario_por_email(user.email)
+    if existing_user:
+        raise HTTPException(status_code=409, detail="Existe un usuario registrado con este correo")
+
     success = model.crear_usuario(user)
     if not success:
         raise HTTPException(status_code=400, detail="Error al crear el usuario")

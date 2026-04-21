@@ -10,6 +10,7 @@ const CheckoutPage = () => {
     const location = useLocation();
     const { startStripeCheckout, loading, error } = useCheckout();
     const [checkoutDraft, setCheckoutDraft] = useState(null);
+    const [canSubmit, setCanSubmit] = useState(true);
 
     useEffect(() => {
         const nextDraft = location.state?.checkoutDraft;
@@ -58,6 +59,11 @@ const CheckoutPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
 
         if (!checkoutDraft) {
             return;
@@ -79,6 +85,7 @@ const CheckoutPage = () => {
             userId: checkoutDraft.userId || storedUser?.id || null,
             source: checkoutDraft.source || 'checkout',
         });
+        setCanSubmit(true);
     };
 
     if (!checkoutDraft) {

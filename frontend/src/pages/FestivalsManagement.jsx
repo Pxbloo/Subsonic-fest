@@ -166,10 +166,10 @@ const TicketManager = ({ tickets, templates, onAddTemplate, onRemove }) => (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input label="Tipo" value={ticket.name} readOnly />
               <Input label="Precio" value={`${ticket.price}€`} readOnly />
-              <Input 
-                label="Beneficios" 
-                value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''} 
-                readOnly 
+              <Input
+                label="Beneficios"
+                value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''}
+                readOnly
               />
             </div>
           </div>
@@ -193,6 +193,7 @@ const FestivalsManagement = () => {
   const [currentFestival, setCurrentFestival] = useState({
     title: '', date: '', startDate: '', location: '', description: '', tickets: [], lineup: [], grounds: []
   });
+  const [canSubmit, setCanSubmit] = useState(true);
 
   const API_URL = API_BASE_URL;
 
@@ -221,6 +222,11 @@ const FestivalsManagement = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    if (!canSubmit) {
+        alert('Por favor, espera antes de hacer más peticiones.');
+        return;
+    }
+    setCanSubmit(false);
 
     const normalizedLineup = (currentFestival.lineup || [])
       .filter((artist) => artist?.id || artist?.name)
@@ -286,9 +292,15 @@ const FestivalsManagement = () => {
     } catch (err) {
       console.error("Error al guardar festival:", err);
     }
+    setCanSubmit(true);
   };
 
   const handleDelete = async (id) => {
+      if (!canSubmit) {
+          alert('Por favor, espera antes de hacer más peticiones.');
+          return;
+      }
+      setCanSubmit(false);
     if (window.confirm("¿Estás seguro de que quieres eliminar este festival?")) {
       try {
         await fetch(`${API_URL}/festivals/${id}`, { method: 'DELETE' });
@@ -296,6 +308,7 @@ const FestivalsManagement = () => {
       } catch (err) {
         console.error("Error al eliminar festival:", err);
       }
+      setCanSubmit(true);
     }
   };
 
@@ -355,7 +368,7 @@ const FestivalsManagement = () => {
               grounds: (currentFestival.grounds || []).filter((item) => String(item.id) !== String(groundId))
             })}
           />
-          
+
           <LineupManager 
             lineup={currentFestival.lineup} 
             artists={availableArtists} 

@@ -9,6 +9,7 @@ const TicketsManagement = () => {
   const [templates, setTemplates] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTemplate, setCurrentTemplate] = useState({ name: '', features: '', price: '' });
+  const [canSubmit, setCanSubmit] = useState(true);
 
   const API_URL = `${API_BASE_URL}/ticketTemplates`;
 
@@ -27,6 +28,11 @@ const TicketsManagement = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    if (!canSubmit) {
+      alert('Por favor, espera antes de hacer más peticiones.');
+      return;
+    }
+    setCanSubmit(false);
     const isNew = !currentTemplate.id;
     const method = isNew ? 'POST' : 'PUT'; 
     const url = isNew ? API_URL : `${API_URL}/${currentTemplate.id}`;
@@ -52,6 +58,7 @@ const TicketsManagement = () => {
     } catch (err) {
       console.error("Error al sincronizar con db.json:", err);
     }
+    setCanSubmit(true);
   };
 
   const handleEdit = (template) => {

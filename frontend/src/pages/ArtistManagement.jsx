@@ -13,6 +13,7 @@ const ArtistManagement = () => {
     const [selectedArt, setSelectedArt] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [canSubmit, setCanSubmit] = useState(true);
 
     const fetchArtists = async () => {
         try {
@@ -65,6 +66,11 @@ const ArtistManagement = () => {
     };
 
     const handleSaveArtist = async (artistData) => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
         try {
             if (selectedArt) {
                 const response = await fetch(`${API_BASE_URL}/artists/${selectedArt.id}`, {
@@ -97,11 +103,17 @@ const ArtistManagement = () => {
         finally {
             setModalOpen(false);
             await fetchArtists();
+            setCanSubmit(true);
         }
     };
 
     // Manejar el borrado de artistas
     const handleDelete = async () => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
         if (!confirmDelete) return;
         try {
             //Para borrar usar confirmDelete en vez de selectedArt
@@ -115,6 +127,7 @@ const ArtistManagement = () => {
         } catch (error) {
             console.error('Error deleting artist:', error);
         }
+        setCanSubmit(true);
     };
 
     if(loading) {
