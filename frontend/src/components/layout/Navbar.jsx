@@ -12,7 +12,7 @@ const menuItems = {
     ],
     provider: [
         {href: "/", label: "Inicio"},
-        {href: "/grounds", label: "Mis recintos"}, // Medida temporal, gestión de recintos para proveedor NO EXISTE.
+        {href: "/grounds", label: "Mis recintos"},
         {href: "/sales-dashboard", label: "Mis ventas"},
         {href: "/contact", label: "Contacto"},
     ],
@@ -20,6 +20,7 @@ const menuItems = {
         {href: "/dashboard-festivales", label: "Festivales"},
         {href: "/dashboard-grounds", label: "Recintos"},
         {href: "/dashboard-usuarios", label: "Usuarios"},
+        {href: "/dashboard-entradas", label: "Entradas"},
         {href: "/dashboard-artistas", label: "Artistas"},
         {href: "/dashboard-productos", label: "Productos"},
     ]

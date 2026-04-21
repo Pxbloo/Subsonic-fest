@@ -8,6 +8,7 @@ from ..dao.firebase.firebase_history_dao import FirebaseHistoryDAO
 from ..dao.firebase.firebase_order_item_dao import FirebaseOrderItemDAO
 from ..dao.firebase.firebase_merchandising_dao import FirebaseMerchandisingDAO
 from ..dao.firebase.firebase_favorites_dao import FirebaseFavoritesDAO
+from ..dao.firebase.firebase_ticket_template_dao import FirebaseTicketTemplateDAO
 
 
 class FirebaseDAOFactory(InterfaceDAOFactory):
@@ -38,3 +39,6 @@ class FirebaseDAOFactory(InterfaceDAOFactory):
 
     def get_favorites_dao(self) -> FirebaseFavoritesDAO:
         return FirebaseFavoritesDAO()
+
+    def get_ticket_template_dao(self) -> FirebaseTicketTemplateDAO:
+        return FirebaseTicketTemplateDAO()

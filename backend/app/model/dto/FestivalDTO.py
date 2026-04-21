@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 class TicketDTO(BaseModel):
@@ -13,6 +13,15 @@ class LineupItemDTO(BaseModel):
     name: str
     genre: str
 
+
+class GroundItemDTO(BaseModel):
+    """Representación simplificada de un recinto asociado al festival."""
+    id: str
+    name: str
+    area: Optional[str] = None
+    capacity: Optional[int] = None
+    status: Optional[str] = None
+
 class FestivalDTO(BaseModel):
     """Objeto de transferencia de datos principal para la entidad Festival."""
     id: str
@@ -24,6 +33,7 @@ class FestivalDTO(BaseModel):
     description: str
     tickets: List[TicketDTO]
     lineup: List[LineupItemDTO]
+    grounds: List[GroundItemDTO] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
