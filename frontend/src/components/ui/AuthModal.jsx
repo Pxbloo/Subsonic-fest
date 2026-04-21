@@ -16,6 +16,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [canSubmit, setCanSubmit] = useState(true);
   const [registerForm, setRegisterForm] = useState({
     name: '',
     surname: '',
@@ -58,6 +59,8 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   // --- LÓGICA: LOGIN CON GOOGLE ---
   const handleGoogleLogin = async () => {
     setErrorMessage('');
+    if (!canSubmit) return;
+    setCanSubmit(false);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const token = await result.user.getIdToken();
@@ -66,6 +69,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
       console.error("Google Login Error:", error);
       setErrorMessage("Operación de Google cancelada o fallida.");
     }
+    setCanSubmit(true);
   };
 
   // --- LÓGICA: LOGIN CON EMAIL ---
@@ -90,6 +94,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
       );
       
       const uid = userCredential.user.uid;
+      const token = await userCredential.user.getIdToken();
       const fullName = `${registerForm.name} ${registerForm.surname}`.trim();
 
       const newUser = {
@@ -104,16 +109,23 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
 
       const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(newUser),
       });
 
-      if (response.ok) {
-        onLoginSuccess(newUser);
-        onClose();
-      } else {
-        setErrorMessage("Cuenta creada pero hubo un problema guardando tu perfil.");
+      if (!response.ok) {
+        await userCredential.user.delete();
+        setErrorMessage("Error al registrarse. Inténtalo de nuevo.");
+        throw new Error("Error al crear el usuario en el servidor: " + (await response.text()));
       }
+      const userData = await response.json();
+
+      onLoginSuccess(userData);
+      onClose();
+
     } catch (error) {
       console.error("Register Error:", error);
       if (error.code === 'auth/email-already-in-use') {
@@ -127,6 +139,12 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+    if (!canSubmit) {
+      console.log("Demasiados intentos de inicio de sesión en poco tiempo! Espera unos segundos antes de volver a intentarlo.");
+      alert("Vas demasiado rápido. Espera unos segundos antes de volver a intentarlo.")
+      return;
+    }
+    setCanSubmit(false);
 
     if (!form.checkValidity()) {
       setErrorMessage('Por favor, completa los campos obligatorios.');
@@ -141,6 +159,7 @@ const AuthModal = ({ isOpen, initialType, onClose, onLoginSuccess }) => {
     } else {
       await handleRegister();
     }
+    setCanSubmit(true);
   };
 
   if (!isOpen) return null;

@@ -168,10 +168,10 @@ const TicketManager = ({ tickets, templates, onAddTemplate, onRemove }) => (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input label="Tipo" value={ticket.name} readOnly />
               <Input label="Precio" value={`${ticket.price}€`} readOnly />
-              <Input 
-                label="Beneficios" 
-                value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''} 
-                readOnly 
+              <Input
+                label="Beneficios"
+                value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''}
+                readOnly
               />
             </div>
           </div>
@@ -196,6 +196,7 @@ const FestivalsManagement = () => {
   const [currentFestival, setCurrentFestival] = useState({
     title: '', date: '', startDate: '', location: '', description: '', tickets: [], lineup: [], grounds: []
   });
+  const [canSubmit, setCanSubmit] = useState(true);
 
   const API_URL = API_BASE_URL;
 
@@ -222,9 +223,14 @@ const FestivalsManagement = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const handleSave = async (e) => {
         e.preventDefault();
+    
+        if (!canSubmit) {
+          alert('Por favor, espera antes de hacer más peticiones.');
+          return;
+        }
+        setCanSubmit(false);
 
         const auth = getAuth();
         const currentUser = auth.currentUser;
@@ -307,10 +313,17 @@ const FestivalsManagement = () => {
         } catch (err) {
             console.error("Error al guardar festival:", err);
         }
+        setCanSubmit(true);
   };
 
-  const handleDelete = async (festival) => {
-    if (!festival) return;
+  const handleDelete = async (id) => {
+      if (!canSubmit) {
+          alert('Por favor, espera antes de hacer más peticiones.');
+          return;
+      }
+      setCanSubmit(false);
+      if (!festivals) return; 
+
       try {
           const auth = getAuth();
           const currentUser = auth.currentUser;
@@ -329,6 +342,8 @@ const FestivalsManagement = () => {
       } catch (err) {
         console.error("Error al eliminar festival:", err);
       }
+      setCanSubmit(true);
+
   };
 
   return (
@@ -387,7 +402,7 @@ const FestivalsManagement = () => {
               grounds: (currentFestival.grounds || []).filter((item) => String(item.id) !== String(groundId))
             })}
           />
-          
+
           <LineupManager 
             lineup={currentFestival.lineup} 
             artists={availableArtists} 

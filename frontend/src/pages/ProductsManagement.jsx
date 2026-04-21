@@ -14,6 +14,7 @@ const ProductsManagement = () => {
     const [selectedProd, setSelectedProd] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [canSubmit, setCanSubmit] = useState(true);
 
     const fetchProducts = async () => {
         try {
@@ -65,6 +66,11 @@ const ProductsManagement = () => {
     };
 
     const handleSaveProduct = async (productData) => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
         try {
             const auth = getAuth();
             const currentUser = auth.currentUser;
@@ -114,10 +120,16 @@ const ProductsManagement = () => {
         catch (error) {
             console.error('Error saving product:', error);
         }
+        setCanSubmit(true);
     };
 
     // Manejar el borrado de productos
     const handleDelete = async () => {
+        if (!canSubmit) {
+            alert('Por favor, espera antes de hacer más peticiones.');
+            return;
+        }
+        setCanSubmit(false);
         if (!confirmDelete) return;
         try {
             const auth = getAuth();
@@ -143,6 +155,7 @@ const ProductsManagement = () => {
         } catch (error) {
             console.error('Error deleting product:', error);
         }
+        setCanSubmit(true);
     };
 
     if(loading) {

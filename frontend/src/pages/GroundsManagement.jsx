@@ -14,6 +14,7 @@ const GroundsManagement = () => {
   const [newArea, setNewArea] = useState('');
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedGroundId, setSelectedGroundId] = useState(null);
+  const [canSubmit, setCanSubmit] = useState(true);
 
   useEffect(() => {
     const fetchGrounds = async () => {
@@ -58,6 +59,11 @@ const GroundsManagement = () => {
 
   const handleAddGround = (event) => {
     event.preventDefault();
+    if (!canSubmit) {
+      alert('Por favor, espera antes de hacer más peticiones.');
+      return;
+    }
+    setCanSubmit(false);
     const trimmedName = newName.trim();
     const trimmedArea = newArea.trim();
 
@@ -78,9 +84,15 @@ const GroundsManagement = () => {
     setGrounds((prev) => [...prev, nextGround]);
     setNewName('');
     setNewArea('');
+    setCanSubmit(true);
   };
 
   const handleDeleteGround = (id) => {
+    if (!canSubmit) {
+      alert('Por favor, espera antes de hacer más peticiones.');
+      return;
+    }
+    setCanSubmit(false);
     const ground = grounds.find((g) => g.id === id);
     const name = ground?.name || 'este recinto';
 
@@ -93,6 +105,7 @@ const GroundsManagement = () => {
 
     setGrounds((prev) => prev.filter((g) => g.id !== id));
     setSelectedGroundId((current) => (current === id ? null : current));
+    setCanSubmit(true);
   };
 
   const handleCycleStatus = (id) => {
