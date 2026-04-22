@@ -29,6 +29,7 @@ class FestivalDTO(BaseModel):
     date: str
     startDate: str
     location: str
+    image: Optional[str] = None
     price: Optional[float] = None
     description: str
     tickets: List[TicketDTO]

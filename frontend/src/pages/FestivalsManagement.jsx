@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import BaseCard from '@/components/ui/BaseCard';
+import SearchBar from '@/components/ui/SearchBar.jsx';
 import API_BASE_URL from '@/config/api';
-import {getAuth} from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 import ConfirmDialog from '@/components/ui/ConfirmDialog.jsx';
 
-// --- 1. MÓDULO: INFORMACIÓN GENERAL ---
-const GeneralInfoForm = ({ data, onChange }) => (
-  <BaseCard className="border-l-4 border-l-emerald-500 animate-in fade-in duration-500">
-    <h2 className="text-xl font-black text-subsonic-accent uppercase mb-6">Información General</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Input label="Título" value={data.title} onChange={e => onChange({...data, title: e.target.value})} required />
-      <Input label="Fecha Visible" placeholder="Ej: 15-17 Jul" value={data.date} onChange={e => onChange({...data, date: e.target.value})} required />
-      <Input label="Fecha Técnica" type="date" value={data.startDate} onChange={e => onChange({...data, startDate: e.target.value})} required />
-    </div>
-    <div className="mt-6">
-      <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest mb-2 ml-1">Descripción</label>
-      <textarea 
-        className="w-full bg-subsonic-bg border border-subsonic-border p-4 rounded-xl text-subsonic-text text-sm focus:border-subsonic-accent outline-none min-h-[100px]"
-        value={data.description || ''}
-        onChange={e => onChange({...data, description: e.target.value})}
-      />
-    </div>
-  </BaseCard>
-);
+const DEFAULT_FESTIVAL_IMAGE = 'https://www.boombasticfestival.com/images/passes/abono-vip-pass.jpg';
+
+const emptyFestival = {
+  id: '',
+  title: '',
+  date: '',
+  startDate: '',
+  location: '',
+  image: '',
+  description: '',
+  tickets: [],
+  lineup: [],
+  grounds: []
+};
+
+const normalizeFestivalId = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const normalizeFestivalGrounds = (festival, availableGrounds = []) => {
   if (Array.isArray(festival?.grounds) && festival.grounds.length > 0) {
@@ -33,7 +36,7 @@ const normalizeFestivalGrounds = (festival, availableGrounds = []) => {
         id: String(ground.id ?? ''),
         name: String(ground.name ?? '').trim(),
         area: ground.area ?? '',
-        capacity: ground.capacity ?? 0,
+        capacity: Number(ground.capacity ?? 0),
         status: ground.status ?? ''
       }))
       .filter((ground) => ground.id || ground.name);
@@ -45,13 +48,14 @@ const normalizeFestivalGrounds = (festival, availableGrounds = []) => {
     .filter(Boolean);
 
   return locationNames.map((name) => {
-    const existingGround = availableGrounds.find((ground) => ground.name === name);
+    const existingGround = availableGrounds.find((ground) => String(ground.name) === String(name));
+
     if (existingGround) {
       return {
         id: String(existingGround.id),
         name: existingGround.name,
         area: existingGround.area ?? '',
-        capacity: existingGround.capacity ?? 0,
+        capacity: Number(existingGround.capacity ?? 0),
         status: existingGround.status ?? ''
       };
     }
@@ -68,18 +72,88 @@ const normalizeFestivalGrounds = (festival, availableGrounds = []) => {
 
 const formatFestivalLocation = (grounds = []) => grounds.map((ground) => ground.name).join(', ');
 
-// --- 2. MÓDULO: GESTIÓN DE RECINTO (GROUND) ---
+const GeneralInfoForm = ({ data, onChange }) => (
+  <section className="rounded-xl border border-subsonic-border bg-subsonic-surface/40 p-5 space-y-4">
+    <h3 className="text-sm font-black uppercase tracking-wide text-subsonic-accent">Información General</h3>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Input
+        label="Título"
+        value={data.title}
+        onChange={(e) => onChange({ ...data, title: e.target.value })}
+        placeholder="Boombastic Asturias"
+        required
+      />
+      <Input
+        label="ID"
+        value={data.id}
+        onChange={(e) => onChange({ ...data, id: e.target.value })}
+        placeholder="boombastic-asturias"
+      />
+      <Input
+        label="Fecha visible"
+        value={data.date}
+        onChange={(e) => onChange({ ...data, date: e.target.value })}
+        placeholder="15-17 Jul 2026"
+        required
+      />
+      <Input
+        label="Fecha técnica"
+        type="date"
+        value={data.startDate}
+        onChange={(e) => onChange({ ...data, startDate: e.target.value })}
+        required
+      />
+      <Input
+        label="Foto (URL)"
+        type="url"
+        value={data.image || ''}
+        onChange={(e) => onChange({ ...data, image: e.target.value })}
+        placeholder="https://..."
+      />
+    </div>
+
+    <div className="space-y-2">
+      <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest ml-1">
+        Descripción
+      </label>
+      <textarea
+        className="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text placeholder:text-subsonic-muted outline-none focus:ring-2 focus:ring-subsonic-accent/30"
+        rows="4"
+        value={data.description || ''}
+        onChange={(e) => onChange({ ...data, description: e.target.value })}
+        placeholder="Describe la propuesta del festival..."
+      />
+    </div>
+
+    <div className="rounded-lg border border-subsonic-border bg-subsonic-navfooter p-3">
+      <p className="text-xs uppercase tracking-wider text-subsonic-muted mb-2">Vista previa de foto</p>
+      <div className="h-36 w-full overflow-hidden rounded-md border border-subsonic-border bg-subsonic-border">
+        <img
+          src={data.image || DEFAULT_FESTIVAL_IMAGE}
+          alt={data.title || 'Festival'}
+          className="h-full w-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = DEFAULT_FESTIVAL_IMAGE;
+          }}
+        />
+      </div>
+    </div>
+  </section>
+);
+
 const GroundManager = ({ grounds, selectedGrounds, onAddGround, onRemoveGround }) => (
-  <BaseCard className="border-l-4 border-l-cyan-500 animate-in fade-in duration-500 delay-150">
-    <h2 className="text-xl font-black text-white uppercase mb-6">Recintos (Grounds)</h2>
+  <section className="rounded-xl border border-subsonic-border bg-subsonic-surface/40 p-5 space-y-4">
+    <h3 className="text-sm font-black uppercase tracking-wide text-subsonic-accent">Recintos</h3>
+
     <select
-      className="w-full bg-subsonic-bg border border-subsonic-border p-3 rounded-xl text-subsonic-text text-sm outline-none focus:border-subsonic-accent mb-6 disabled:opacity-60"
+      className="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text outline-none focus:ring-2 focus:ring-subsonic-accent/30 disabled:opacity-60"
       onChange={(e) => onAddGround(e.target.value)}
       value=""
       disabled={grounds.length === 0}
     >
       <option value="" disabled>
-        {grounds.length > 0 ? 'Añadir recinto desde la base de datos...' : 'No hay recintos disponibles en la base de datos'}
+        {grounds.length > 0 ? 'Añadir recinto desde la base de datos...' : 'No hay recintos disponibles'}
       </option>
       {grounds.map((ground) => (
         <option key={ground.id} value={ground.id}>
@@ -89,23 +163,24 @@ const GroundManager = ({ grounds, selectedGrounds, onAddGround, onRemoveGround }
     </select>
 
     {selectedGrounds.length === 0 ? (
-      <div className="py-6 text-center border-2 border-dashed border-subsonic-border rounded-2xl">
-        <p className="text-subsonic-muted text-[10px] font-bold uppercase tracking-widest">Debes seleccionar al menos 1 recinto</p>
-      </div>
+      <p className="text-sm text-subsonic-muted">No has añadido recintos.</p>
     ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="space-y-2">
         {selectedGrounds.map((ground, index) => (
-          <div key={`${ground.id}-${index}`} className="flex justify-between items-center bg-subsonic-navfooter border border-subsonic-border p-3 rounded-xl group hover:border-subsonic-accent transition-all">
-            <div className="overflow-hidden pr-4">
-              <p className="text-[10px] font-black text-white uppercase truncate">{ground.name}</p>
-              <p className="text-[10px] text-subsonic-muted uppercase tracking-wider mt-1 truncate">
-                {`${ground.area || 'Área no definida'} • Capacidad: ${ground.capacity || 0} • Estado: ${ground.status || 'n/d'}`}
+          <div
+            key={`${ground.id}-${index}`}
+            className="flex items-center justify-between rounded-md border border-subsonic-border bg-subsonic-navfooter px-3 py-2"
+          >
+            <div className="min-w-0 pr-3">
+              <p className="truncate text-sm font-semibold text-subsonic-text">{ground.name}</p>
+              <p className="truncate text-xs text-subsonic-muted">
+                {`${ground.area || 'Área sin definir'} · Capacidad: ${ground.capacity || 0} · Estado: ${ground.status || 'n/d'}`}
               </p>
             </div>
             <button
               type="button"
               onClick={() => onRemoveGround(ground.id)}
-              className="text-subsonic-muted hover:text-red-500 transition-colors"
+              className="text-subsonic-muted hover:text-red-500"
             >
               ✕
             </button>
@@ -113,380 +188,629 @@ const GroundManager = ({ grounds, selectedGrounds, onAddGround, onRemoveGround }
         ))}
       </div>
     )}
-  </BaseCard>
+  </section>
 );
 
-// --- 3. MÓDULO: GESTIÓN DE CARTELERA (LINEUP) ---
 const LineupManager = ({ lineup, artists, onAdd, onRemove }) => (
-  <BaseCard className="border-l-4 border-l-purple-500 animate-in fade-in duration-500 delay-300">
-    <h2 className="text-xl font-black text-white uppercase mb-6">Cartelera (Lineup)</h2>
-    <select 
-      className="w-full bg-subsonic-bg border border-subsonic-border p-3 rounded-xl text-subsonic-text text-sm outline-none focus:border-subsonic-accent mb-6"
+  <section className="rounded-xl border border-subsonic-border bg-subsonic-surface/40 p-5 space-y-4">
+    <h3 className="text-sm font-black uppercase tracking-wide text-subsonic-accent">Cartelera</h3>
+
+    <select
+      className="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text outline-none focus:ring-2 focus:ring-subsonic-accent/30"
       onChange={(e) => onAdd(e.target.value)}
       value=""
     >
       <option value="" disabled>Añadir artista desde la base de datos...</option>
-      {artists.map(art => <option key={art.id} value={art.id}>{art.name} ({art.genre})</option>)}
+      {artists.map((artist) => (
+        <option key={artist.id} value={artist.id}>
+          {artist.name} ({artist.genre})
+        </option>
+      ))}
     </select>
-    {lineup && lineup.length > 0 ? (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+    {lineup.length === 0 ? (
+      <p className="text-sm text-subsonic-muted">No has añadido artistas.</p>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {lineup.map((artist, index) => (
-          <div key={index} className="flex justify-between items-center bg-subsonic-navfooter border border-subsonic-border p-3 rounded-xl group hover:border-subsonic-accent transition-all">
-            <div className="overflow-hidden">
-              <p className="text-[10px] font-black text-white uppercase truncate">{artist.name}</p>
+          <div
+            key={`${artist.id || artist.name}-${index}`}
+            className="flex items-center justify-between rounded-md border border-subsonic-border bg-subsonic-navfooter px-3 py-2"
+          >
+            <div className="min-w-0 pr-3">
+              <p className="truncate text-sm font-semibold text-subsonic-text">{artist.name}</p>
+              <p className="truncate text-xs text-subsonic-muted">{artist.genre || 'Sin género'}</p>
             </div>
-            <button type="button" onClick={() => onRemove(index)} className="text-subsonic-muted hover:text-red-500 transition-colors">✕</button>
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              className="text-subsonic-muted hover:text-red-500"
+            >
+              ✕
+            </button>
           </div>
         ))}
       </div>
-    ) : (
-      <div className="py-6 text-center border-2 border-dashed border-subsonic-border rounded-2xl">
-        <p className="text-subsonic-muted text-[10px] font-bold uppercase tracking-widest">Debes seleccionar al menos 1 artista en la cartelera</p>
-      </div>
     )}
-  </BaseCard>
+  </section>
 );
 
-// --- 4. MÓDULO: GESTIÓN DE TICKETS ---
 const TicketManager = ({ tickets, templates, onAddTemplate, onRemove }) => (
-  <BaseCard className="border-l-4 border-l-subsonic-accent animate-in fade-in duration-500 delay-500">
-    <h2 className="text-xl font-black text-white uppercase mb-6">Entradas y Precios</h2>
-    <select 
-      className="w-full bg-subsonic-bg border border-subsonic-border p-3 rounded-xl text-subsonic-text text-sm outline-none focus:border-subsonic-accent mb-6"
+  <section className="rounded-xl border border-subsonic-border bg-subsonic-surface/40 p-5 space-y-4">
+    <h3 className="text-sm font-black uppercase tracking-wide text-subsonic-accent">Entradas y precios</h3>
+
+    <select
+      className="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text outline-none focus:ring-2 focus:ring-subsonic-accent/30"
       onChange={(e) => onAddTemplate(e.target.value)}
       value=""
     >
       <option value="" disabled>Añadir entrada desde la base de datos...</option>
-      {templates.map(t => <option key={t.id} value={t.id}>{t.name} ({t.price}€)</option>)}
+      {templates.map((template) => (
+        <option key={template.id} value={template.id}>
+          {template.name} ({template.price}€)
+        </option>
+      ))}
     </select>
-    
-    {tickets && tickets.length > 0 ? (
-      <div className="space-y-4">
+
+    {tickets.length === 0 ? (
+      <p className="text-sm text-subsonic-muted">No has añadido entradas.</p>
+    ) : (
+      <div className="space-y-2">
         {tickets.map((ticket, index) => (
-          <div key={index} className="p-4 bg-subsonic-bg/50 border border-subsonic-border rounded-xl relative group">
-            <button type="button" onClick={() => onRemove(index)} className="absolute top-2 right-2 text-subsonic-muted hover:text-red-500 transition-colors">✕</button>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Input label="Tipo" value={ticket.name} readOnly />
-              <Input label="Precio" value={`${ticket.price}€`} readOnly />
-              <Input
-                label="Beneficios"
-                value={Array.isArray(ticket.features) ? ticket.features.join(', ') : ticket.features || ''}
-                readOnly
-              />
-            </div>
+          <div
+            key={`${ticket.name}-${index}`}
+            className="relative rounded-md border border-subsonic-border bg-subsonic-navfooter px-3 py-2"
+          >
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              className="absolute right-2 top-2 text-subsonic-muted hover:text-red-500"
+            >
+              ✕
+            </button>
+            <p className="pr-6 text-sm font-semibold text-subsonic-text">{ticket.name} · {ticket.price}€</p>
+            <p className="pr-6 text-xs text-subsonic-muted">
+              {Array.isArray(ticket.features) ? ticket.features.join(', ') : String(ticket.features || '')}
+            </p>
           </div>
         ))}
       </div>
-    ) : (
-      <div className="py-6 text-center border-2 border-dashed border-subsonic-border rounded-2xl">
-        <p className="text-subsonic-muted text-[10px] font-bold uppercase tracking-widest">Debes seleccionar al menos 1 entrada</p>
-      </div>
     )}
-  </BaseCard>
+  </section>
 );
 
-// --- COMPONENTE PRINCIPAL ---
+const FestivalFormModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  data,
+  onChange,
+  isEditing,
+  artists,
+  grounds,
+  templates,
+  onAddGround,
+  onRemoveGround,
+  onAddArtist,
+  onRemoveArtist,
+  onAddTemplate,
+  onRemoveTemplate
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6">
+      <div className="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-subsonic-border bg-subsonic-navfooter shadow-2xl">
+        <div className="flex shrink-0 items-center justify-between border-b border-subsonic-border px-6 py-4">
+          <h2 className="text-xl font-black uppercase tracking-tight text-subsonic-accent">
+            {isEditing ? 'Editar festival' : 'Nuevo festival'}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-lg text-subsonic-muted hover:text-subsonic-text"
+            aria-label="Cerrar modal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form onSubmit={onSave} className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+          <GeneralInfoForm data={data} onChange={onChange} />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <GroundManager
+              grounds={grounds}
+              selectedGrounds={data.grounds || []}
+              onAddGround={onAddGround}
+              onRemoveGround={onRemoveGround}
+            />
+            <LineupManager
+              lineup={data.lineup || []}
+              artists={artists}
+              onAdd={onAddArtist}
+              onRemove={onRemoveArtist}
+            />
+          </div>
+
+          <TicketManager
+            tickets={data.tickets || []}
+            templates={templates}
+            onAddTemplate={onAddTemplate}
+            onRemove={onRemoveTemplate}
+          />
+
+          <div className="flex justify-end gap-3 border-t border-subsonic-border pt-4">
+            <Button
+              type="button"
+              onClick={onClose}
+              className="bg-subsonic-accent px-5 py-2 text-subsonic-bg"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              className="bg-subsonic-accent px-5 py-2 text-subsonic-bg"
+            >
+              Guardar
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const FestivalsManagement = () => {
   const [festivals, setFestivals] = useState([]);
   const [availableArtists, setAvailableArtists] = useState([]);
   const [availableGrounds, setAvailableGrounds] = useState([]);
   const [ticketTemplates, setTicketTemplates] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFestival, setSelectedFestival] = useState(null);
   const [festivalToDelete, setFestivalToDelete] = useState(null);
-  const [currentFestival, setCurrentFestival] = useState({
-    title: '', date: '', startDate: '', location: '', description: '', tickets: [], lineup: [], grounds: []
-  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentFestival, setCurrentFestival] = useState(emptyFestival);
   const [canSubmit, setCanSubmit] = useState(true);
-
-  const API_URL = API_BASE_URL;
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const [fRes, aRes, gRes, tRes] = await Promise.all([
-        fetch(`${API_URL}/festivals`),
-        fetch(`${API_URL}/artists`),
-        fetch(`${API_URL}/grounds`),
-        fetch(`${API_URL}/ticketTemplates`)
+        fetch(`${API_BASE_URL}/festivals`),
+        fetch(`${API_BASE_URL}/artists`),
+        fetch(`${API_BASE_URL}/grounds`),
+        fetch(`${API_BASE_URL}/ticketTemplates`)
       ]);
-      
+
       if (fRes.ok) setFestivals(await fRes.json());
       if (aRes.ok) setAvailableArtists(await aRes.json());
-      if (gRes && gRes.ok) setAvailableGrounds(await gRes.json());
-      if (tRes && tRes.ok) setTicketTemplates(await tRes.json());
+      if (gRes.ok) setAvailableGrounds(await gRes.json());
+      if (tRes.ok) setTicketTemplates(await tRes.json());
     } catch (err) {
-      console.error("Error cargando datos de la API:", err);
+      console.error('Error cargando datos de la API:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSave = async (e) => {
-        e.preventDefault();
-    
-        if (!canSubmit) {
-          alert('Por favor, espera antes de hacer más peticiones.');
-          return;
-        }
-        setCanSubmit(false);
+  const filteredFestivals = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
 
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
+    if (!term) return festivals;
 
-        const token = await currentUser.getIdToken();
+    return festivals.filter((festival) =>
+      [
+        festival.id,
+        festival.title,
+        festival.date,
+        festival.startDate,
+        festival.location,
+      ]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(term))
+    );
+  }, [searchTerm, festivals]);
 
-        const normalizedLineup = (currentFestival.lineup || [])
-            .filter((artist) => artist?.id || artist?.name)
-            .map((artist) => ({
-                id: String(artist.id || ''),
-                name: String(artist.name || ''),
-                genre: String(artist.genre || '')
-            }));
-
-        const normalizedTickets = (currentFestival.tickets || [])
-            .filter((ticket) => ticket?.name)
-            .map((ticket) => ({
-                name: String(ticket.name || ''),
-                price: Number(ticket.price || 0),
-                features: Array.isArray(ticket.features) ? ticket.features : []
-            }));
-
-        const normalizedGrounds = (currentFestival.grounds || [])
-            .filter((ground) => ground?.name)
-            .map((ground) => ({
-                id: String(ground.id || ''),
-                name: String(ground.name),
-                area: ground.area || '',
-                capacity: Number(ground.capacity || 0),
-                status: ground.status || ''
-            }));
-
-        if (normalizedGrounds.length < 1) {
-            alert('Debes seleccionar al menos 1 recinto para el festival.');
-            return;
-        }
-
-        if (normalizedLineup.length < 1) {
-            alert('Debes seleccionar al menos 1 artista en la cartelera.');
-            return;
-        }
-
-        if (normalizedTickets.length < 1) {
-            alert('Debes seleccionar al menos 1 entrada para el festival.');
-            return;
-        }
-
-        const isNew = !currentFestival.id;
-        const festivalToSave = {
-            ...currentFestival,
-            id: isNew
-                ? currentFestival.title.trim().toLowerCase().replace(/\s+/g, '-')
-                : currentFestival.id,
-            lineup: normalizedLineup,
-            tickets: normalizedTickets,
-            grounds: normalizedGrounds,
-            location: formatFestivalLocation(normalizedGrounds)
-        };
-
-        const method = isNew ? 'POST' : 'PUT';
-        const url = isNew ? `${API_BASE_URL}/festivals` : `${API_BASE_URL}/festivals/${currentFestival.id}`;
-
-        try {
-            const response = await fetch(url, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(festivalToSave)
-            });
-
-            if (response.ok) {
-                setIsEditing(false);
-                fetchData();
-            } else {
-                const errorText = await response.text();
-                console.error('Error al guardar festival:', response.status, errorText);
-            }
-        } catch (err) {
-            console.error("Error al guardar festival:", err);
-        }
-        setCanSubmit(true);
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedFestival(null);
+    setCurrentFestival(emptyFestival);
   };
 
-  const handleDelete = async (id) => {
-      if (!canSubmit) {
-          alert('Por favor, espera antes de hacer más peticiones.');
-          return;
-      }
-      setCanSubmit(false);
-      if (!festivals) return; 
+  const handleNewFestival = () => {
+    setSelectedFestival(null);
+    setCurrentFestival(emptyFestival);
+    setModalOpen(true);
+  };
 
-      try {
-          const auth = getAuth();
-          const currentUser = auth.currentUser;
+  const handleEditFestival = (festival) => {
+    setSelectedFestival(festival);
+    setCurrentFestival({
+      ...emptyFestival,
+      ...festival,
+      image: festival?.image || festival?.photo || '',
+      lineup: Array.isArray(festival?.lineup) ? festival.lineup : [],
+      tickets: Array.isArray(festival?.tickets) ? festival.tickets : [],
+      grounds: normalizeFestivalGrounds(festival, availableGrounds)
+    });
+    setModalOpen(true);
+  };
 
-          const token = await currentUser.getIdToken();
-          const response = await fetch(`${API_BASE_URL}/festivals/${festival.id}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-          });
-          if (!response.ok){
-              console.error('Failed to delete artist:', response.statusText);
-          }
-          fetchData();
-      } catch (err) {
-        console.error("Error al eliminar festival:", err);
+  const handleAddGround = (groundId) => {
+    const ground = availableGrounds.find((item) => String(item.id) === String(groundId));
+    if (!ground) return;
+
+    const alreadyAdded = (currentFestival.grounds || []).some((item) => String(item.id) === String(ground.id));
+    if (alreadyAdded) {
+      alert('Este recinto ya ha sido añadido.');
+      return;
+    }
+
+    setCurrentFestival((prev) => ({
+      ...prev,
+      grounds: [
+        ...(prev.grounds || []),
+        {
+          id: String(ground.id),
+          name: ground.name,
+          area: ground.area || '',
+          capacity: Number(ground.capacity || 0),
+          status: ground.status || ''
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveGround = (groundId) => {
+    setCurrentFestival((prev) => ({
+      ...prev,
+      grounds: (prev.grounds || []).filter((item) => String(item.id) !== String(groundId))
+    }));
+  };
+
+  const handleAddArtist = (artistId) => {
+    const artist = availableArtists.find((item) => String(item.id) === String(artistId));
+    if (!artist) return;
+
+    const alreadyAdded = (currentFestival.lineup || []).some((item) => String(item.id) === String(artist.id));
+    if (alreadyAdded) {
+      alert('Este artista ya ha sido añadido.');
+      return;
+    }
+
+    setCurrentFestival((prev) => ({
+      ...prev,
+      lineup: [
+        ...(prev.lineup || []),
+        {
+          id: String(artist.id),
+          name: String(artist.name || ''),
+          genre: String(artist.genre || '')
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveArtist = (index) => {
+    setCurrentFestival((prev) => ({
+      ...prev,
+      lineup: (prev.lineup || []).filter((_, currentIndex) => currentIndex !== index)
+    }));
+  };
+
+  const handleAddTemplate = (templateId) => {
+    const template = ticketTemplates.find((item) => String(item.id) === String(templateId));
+    if (!template) return;
+
+    const isDuplicate = (currentFestival.tickets || []).some(
+      (ticket) => ticket.name === template.name && Number(ticket.price) === Number(template.price)
+    );
+
+    if (isDuplicate) {
+      alert('Esta entrada ya ha sido añadida.');
+      return;
+    }
+
+    setCurrentFestival((prev) => ({
+      ...prev,
+      tickets: [
+        ...(prev.tickets || []),
+        {
+          name: String(template.name || ''),
+          price: Number(template.price || 0),
+          features: Array.isArray(template.features) ? template.features : []
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveTemplate = (index) => {
+    setCurrentFestival((prev) => ({
+      ...prev,
+      tickets: (prev.tickets || []).filter((_, currentIndex) => currentIndex !== index)
+    }));
+  };
+
+  const handleSaveFestival = async (e) => {
+    e.preventDefault();
+
+    if (!canSubmit) {
+      alert('Por favor, espera antes de hacer más peticiones.');
+      return;
+    }
+
+    setCanSubmit(false);
+
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        throw new Error('No user is currently logged in or user is not authenticated.');
       }
+
+      const token = await currentUser.getIdToken();
+
+      const normalizedLineup = (currentFestival.lineup || [])
+        .filter((artist) => artist?.id || artist?.name)
+        .map((artist) => ({
+          id: String(artist.id || ''),
+          name: String(artist.name || ''),
+          genre: String(artist.genre || '')
+        }));
+
+      const normalizedTickets = (currentFestival.tickets || [])
+        .filter((ticket) => ticket?.name)
+        .map((ticket) => ({
+          name: String(ticket.name || ''),
+          price: Number(ticket.price || 0),
+          features: Array.isArray(ticket.features) ? ticket.features : []
+        }));
+
+      const normalizedGrounds = (currentFestival.grounds || [])
+        .filter((ground) => ground?.name)
+        .map((ground) => ({
+          id: String(ground.id || ''),
+          name: String(ground.name || ''),
+          area: String(ground.area || ''),
+          capacity: Number(ground.capacity || 0),
+          status: String(ground.status || '')
+        }));
+
+      if (normalizedGrounds.length < 1) {
+        alert('Debes seleccionar al menos 1 recinto para el festival.');
+        return;
+      }
+
+      if (normalizedLineup.length < 1) {
+        alert('Debes seleccionar al menos 1 artista en la cartelera.');
+        return;
+      }
+
+      if (normalizedTickets.length < 1) {
+        alert('Debes seleccionar al menos 1 entrada para el festival.');
+        return;
+      }
+
+      const isNew = !selectedFestival?.id;
+      const festivalId = isNew
+        ? normalizeFestivalId(currentFestival.title)
+        : String(selectedFestival.id || currentFestival.id || '');
+
+      if (!festivalId) {
+        alert('Debes indicar un título válido para generar el ID del festival.');
+        return;
+      }
+
+      const festivalToSave = {
+        ...currentFestival,
+        id: festivalId,
+        title: String(currentFestival.title || '').trim(),
+        date: String(currentFestival.date || '').trim(),
+        startDate: String(currentFestival.startDate || '').trim(),
+        image: String(currentFestival.image || '').trim(),
+        description: String(currentFestival.description || '').trim(),
+        lineup: normalizedLineup,
+        tickets: normalizedTickets,
+        grounds: normalizedGrounds,
+        location: formatFestivalLocation(normalizedGrounds)
+      };
+
+      const method = isNew ? 'POST' : 'PUT';
+      const url = isNew
+        ? `${API_BASE_URL}/festivals`
+        : `${API_BASE_URL}/festivals/${festivalId}`;
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(festivalToSave)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Request failed: ${response.status} ${errorText}`);
+      }
+
+      closeModal();
+      await fetchData();
+    } catch (err) {
+      console.error('Error al guardar festival:', err);
+    } finally {
       setCanSubmit(true);
-
+    }
   };
+
+  const handleDeleteFestival = async (festival) => {
+    if (!canSubmit) {
+      alert('Por favor, espera antes de hacer más peticiones.');
+      return;
+    }
+
+    if (!festival?.id) return;
+
+    setCanSubmit(false);
+
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        throw new Error('No user is currently logged in or user is not authenticated.');
+      }
+
+      const token = await currentUser.getIdToken();
+      const response = await fetch(`${API_BASE_URL}/festivals/${festival.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Failed to delete festival:', response.statusText);
+      }
+
+      setFestivalToDelete(null);
+      await fetchData();
+    } catch (err) {
+      console.error('Error al eliminar festival:', err);
+    } finally {
+      setCanSubmit(true);
+    }
+  };
+
+  if (loading) {
+    return <div className="text-center p-8">Cargando festivales...</div>;
+  }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10 p-6">
-      <header className="flex justify-between items-center border-b border-subsonic-border pb-6">
-        <div>
-          <h1 className="text-4xl font-black text-subsonic-text uppercase tracking-tighter">Gestión de Festivales</h1>
-          <p className="text-subsonic-muted text-[10px] uppercase tracking-widest mt-1">Conectado a Base de Datos Local</p>
+    <div className="container mx-auto p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-black text-subsonic-accent uppercase tracking-tight">
+          Gestión de Festivales
+        </h1>
+        <Button
+          onClick={handleNewFestival}
+          className="border border-subsonic-border text-subsonic-bg font-black px-5 py-2 rounded-full uppercase text-sm hover:border-subsonic-bg transition"
+        >
+          + Nuevo Festival
+        </Button>
+      </div>
+
+      <div className="mb-6 max-w-md">
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Buscar por título, id, fecha o ubicación..."
+          showButton={false}
+          className="w-full"
+          inputClassName="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text placeholder:text-subsonic-muted outline-none focus:ring-2 focus:ring-subsonic-accent/30"
+        />
+      </div>
+
+      <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl overflow-hidden">
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-225 w-full divide-y divide-subsonic-border">
+            <thead className="bg-subsonic-surface/50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Título</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Fecha</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Ubicación</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Artistas</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Entradas</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Foto</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-subsonic-muted uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-subsonic-border">
+              {filteredFestivals.length > 0 ? (
+                filteredFestivals.map((festival) => (
+                  <tr key={festival.id} className="hover:bg-subsonic-surface/20 transition">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-subsonic-text">{festival.id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-subsonic-text">{festival.title}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-subsonic-text">{festival.date}</td>
+                    <td className="px-6 py-4 text-sm text-subsonic-text max-w-xs truncate" title={festival.location || ''}>
+                      {festival.location || '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-subsonic-text">
+                      {Array.isArray(festival.lineup) ? festival.lineup.length : 0}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-subsonic-text">
+                      {Array.isArray(festival.tickets) ? festival.tickets.length : 0}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${festival.image ? 'bg-green-500/20 text-green-300' : 'bg-subsonic-border text-subsonic-muted'}`}>
+                        {festival.image ? 'Sí' : 'No'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                      <Button
+                        onClick={() => handleEditFestival(festival)}
+                        className="bg-subsonic-border text-subsonic-accent hover:text-opacity-80 hover:bg-subsonic-accent hover:text-subsonic-bg px-6 py-2"
+                        variant=""
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        onClick={() => setFestivalToDelete(festival)}
+                        className="bg-subsonic-border text-red-400 hover:bg-red-500 hover:text-subsonic-bg px-6 py-2"
+                        variant=""
+                      >
+                        Eliminar
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="px-6 py-10 text-center text-sm text-subsonic-muted">
+                    No se encontraron festivales con ese filtro.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-        {!isEditing && (
-          <Button 
-            variant="primarySmall" 
-            onClick={() => {
-              setIsEditing(true); 
-              setCurrentFestival({ title: '', date: '', startDate: '', location: '', description: '', tickets: [], lineup: [], grounds: [] });
-            }}
-          >
-            Nuevo Festival
-          </Button>
-        )}
-      </header>
+      </div>
 
-      {isEditing ? (
-        <form onSubmit={handleSave} className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-          <GeneralInfoForm data={currentFestival} onChange={setCurrentFestival} />
+      <FestivalFormModal
+        isOpen={modalOpen}
+        onClose={closeModal}
+        onSave={handleSaveFestival}
+        data={currentFestival}
+        onChange={setCurrentFestival}
+        isEditing={!!selectedFestival}
+        artists={availableArtists}
+        grounds={availableGrounds}
+        templates={ticketTemplates}
+        onAddGround={handleAddGround}
+        onRemoveGround={handleRemoveGround}
+        onAddArtist={handleAddArtist}
+        onRemoveArtist={handleRemoveArtist}
+        onAddTemplate={handleAddTemplate}
+        onRemoveTemplate={handleRemoveTemplate}
+      />
 
-          <GroundManager
-            grounds={availableGrounds}
-            selectedGrounds={currentFestival.grounds || []}
-            onAddGround={(groundId) => {
-              const ground = availableGrounds.find((item) => String(item.id) === String(groundId));
-              if (!ground) return;
-
-              const alreadyAdded = (currentFestival.grounds || []).some((item) => String(item.id) === String(ground.id));
-              if (alreadyAdded) {
-                alert('Este recinto ya ha sido añadido.');
-                return;
-              }
-
-              setCurrentFestival({
-                ...currentFestival,
-                grounds: [
-                  ...(currentFestival.grounds || []),
-                  {
-                    id: String(ground.id),
-                    name: ground.name,
-                    area: ground.area || '',
-                    capacity: ground.capacity || 0,
-                    status: ground.status || ''
-                  }
-                ]
-              });
-            }}
-            onRemoveGround={(groundId) => setCurrentFestival({
-              ...currentFestival,
-              grounds: (currentFestival.grounds || []).filter((item) => String(item.id) !== String(groundId))
-            })}
-          />
-
-          <LineupManager 
-            lineup={currentFestival.lineup} 
-            artists={availableArtists} 
-            onAdd={(id) => {
-              const art = availableArtists.find(a => a.id === id);
-              if (art && !currentFestival.lineup.some(a => a.name === art.name)) {
-                setCurrentFestival({...currentFestival, lineup: [...currentFestival.lineup, { id: art.id, name: art.name, genre: art.genre }]});
-              }
-            }} 
-            onRemove={(idx) => setCurrentFestival({...currentFestival, lineup: currentFestival.lineup.filter((_, i) => i !== idx)})}
-          />
-          
-          <TicketManager 
-            tickets={currentFestival.tickets} 
-            templates={ticketTemplates}
-            onAddTemplate={(tid) => {
-              const t = ticketTemplates.find(tem => String(tem.id) === String(tid));
-              if (t) {
-                const isDuplicate = currentFestival.tickets.some(tic => tic.name === t.name && tic.price === t.price);
-                
-                if (isDuplicate) {
-                  alert("Esta entrada ya ha sido añadida.");
-                  return;
-                }
-
-                setCurrentFestival({
-                  ...currentFestival, 
-                  tickets: [...currentFestival.tickets, { 
-                    name: t.name, 
-                    price: t.price, 
-                    features: t.features 
-                  }]
-                });
-              }
-            }}
-            onRemove={(idx) => setCurrentFestival({...currentFestival, tickets: currentFestival.tickets.filter((_, i) => i !== idx)})}
-          />
-
-          <div className="flex gap-4 sticky bottom-4 bg-subsonic-bg/80 backdrop-blur-md p-4 rounded-2xl border border-subsonic-border shadow-2xl z-10">
-            <Button type="submit" variant="primary" className="flex-1">Guardar Festival</Button>
-            <Button type="button" variant="outline" className="flex-1" onClick={() => setIsEditing(false)}>Cancelar</Button>
-          </div>
-        </form>
-      ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {festivals.map(fest => (
-            <div key={fest.id} className="bg-subsonic-navfooter border border-subsonic-border p-6 rounded-2xl flex justify-between items-center group hover:border-subsonic-accent transition-all">
-              <div>
-                <h3 className="text-xl font-black text-subsonic-text uppercase">{fest.title}</h3>
-                <p className="text-xs text-subsonic-muted font-bold uppercase tracking-widest">{fest.date} • {fest.location}</p>
-              </div>
-              <div className="flex gap-3">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setCurrentFestival({
-                      ...fest,
-                      grounds: normalizeFestivalGrounds(fest, availableGrounds)
-                    });
-                    setIsEditing(true);
-                  }}
-                >
-                  Editar
-                </Button>
-                <Button 
-                  variant="danger" 
-                  className="text-xs px-4" 
-                  onClick={() => setFestivalToDelete(fest)}
-                >
-                  Eliminar
-                </Button>
-              </div>
-            </div>
-          ))}
-            <ConfirmDialog
-                isOpen={!!festivalToDelete}
-                onClose={() => setFestivalToDelete(null)}
-                onConfirm={handleDelete}
-                title="Eliminar festival"
-                message={`¿Estás seguro de que deseas eliminar a "${festivalToDelete?.title}"? Esta acción no se puede deshacer.`}
-                user={festivalToDelete}
-            />
-        </div>
-      )}
+      <ConfirmDialog
+        isOpen={!!festivalToDelete}
+        onClose={() => setFestivalToDelete(null)}
+        onConfirm={handleDeleteFestival}
+        title="Eliminar festival"
+        message={`¿Estás seguro de que deseas eliminar "${festivalToDelete?.title}"? Esta acción no se puede deshacer.`}
+        user={festivalToDelete}
+      />
     </div>
   );
 };
