@@ -121,7 +121,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
 
                         <div className="mt-4 flex items-center justify-between">
                             <span className="text-subsonic-accent text-2xl font-black">
-                                {product.price}
+                                {product.price}€
                             </span>
 
                             {/* Seleccionar cantidad (mínimo 0 y máximo 20) */}

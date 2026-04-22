@@ -25,7 +25,7 @@ const ShopCard = ({ id, name, category, price, description, image, stock, purcha
                 {description}
             </p>
             <div className="flex justify-between items-center w-full mt-auto">
-                <span className="text-subsonic-accent font-black text-xl">{price}</span>
+                <span className="text-subsonic-accent font-black text-xl">{price}€</span>
                 <button
                     onClick={() => setOpen(true)}
                     className="bg-subsonic-accent text-subsonic-bg px-4 py-2 rounded-full font-black text-xs uppercase hover:bg-subsonic-text transition-colors"

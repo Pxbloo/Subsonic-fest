@@ -56,7 +56,7 @@ const FestivalTicketComparison = ({ tickets }) => (
         <div key={index} className="bg-subsonic-navfooter/50 border border-subsonic-border rounded-3xl p-6 flex flex-col h-full">
           <div className="mb-6">
             <h4 className="text-xl font-black text-white uppercase tracking-tighter">{ticket.name}</h4>
-            <p className="text-subsonic-accent font-black text-2xl">{ticket.price}</p>
+            <p className="text-subsonic-accent font-black text-2xl">{ticket.price}€</p>
           </div>
           <ul className="space-y-3 mb-8 flex-grow">
             {ticket.features && ticket.features.map((feature, fIndex) => (
@@ -135,7 +135,7 @@ const FestivalInstance = () => {
               {festival.tickets && festival.tickets.map((ticket, index) => (
                 <div key={index} className="flex justify-between items-center border-b border-subsonic-border pb-4 hover:border-subsonic-accent transition-colors group">
                   <span className="text-sm font-bold uppercase group-hover:text-subsonic-text">{ticket.name}</span>
-                  <span className="text-xl font-black text-subsonic-accent">{ticket.price}</span>
+                  <span className="text-xl font-black text-subsonic-accent">{ticket.price}€</span>
                 </div>
               ))}
             </div>
