@@ -88,7 +88,7 @@ const ProdcutCRUModal = ({ isOpen, onClose, onSave, product }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6">
             <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-subsonic-border bg-subsonic-navfooter shadow-2xl">
                 <div className="flex shrink-0 items-center justify-between border-b border-subsonic-border px-6 py-4">
                     <h2 className="text-xl font-black uppercase tracking-tight text-subsonic-accent">

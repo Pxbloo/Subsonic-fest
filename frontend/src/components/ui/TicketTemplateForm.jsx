@@ -1,62 +1,162 @@
-import React from 'react';
-import BaseCard from './BaseCard';
+import React, { useEffect, useState } from 'react';
 import Input from './Input';
 import Button from './Button';
 
-const TicketTemplateForm = ({ data, onChange, onSave, onCancel }) => {
+const emptyTemplate = {
+  id: '',
+  name: '',
+  features: '',
+  price: ''
+};
 
-  const handleFeaturesChange = (e) => {
-    onChange({ ...data, features: e.target.value });
+const normalizeTemplateId = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+const mergeTemplateWithDefaults = (template = {}) => ({
+  ...emptyTemplate,
+  ...template,
+  features: Array.isArray(template.features) ? template.features.join(', ') : (template.features ?? ''),
+  price: template.price ?? ''
+});
+
+const TicketTemplateForm = ({ isOpen, onClose, onSave, template }) => {
+  const [templateData, setTemplateData] = useState(emptyTemplate);
+
+  useEffect(() => {
+    if (template) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTemplateData(mergeTemplateWithDefaults(template));
+    } else {
+      setTemplateData(emptyTemplate);
+    }
+  }, [template, isOpen]);
+
+  useEffect(() => {
+    if (!template) {
+      const generatedId = normalizeTemplateId(templateData.name);
+      if (generatedId && templateData.id !== generatedId) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setTemplateData((prev) => ({
+          ...prev,
+          id: generatedId,
+        }));
+      }
+    }
+  }, [template, templateData.name, templateData.id]);
+
+  if (!isOpen) return null;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTemplateData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const parsedPrice = Number(templateData.price);
+
+    onSave?.({
+      ...templateData,
+      price: Number.isFinite(parsedPrice) ? parsedPrice : 0,
+      features: String(templateData.features || '')
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean)
+    });
   };
 
   return (
-    <form onSubmit={onSave} className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-      <BaseCard className="border-l-4 border-l-subsonic-accent">
-        <h2 className="text-xl font-black text-subsonic-accent uppercase mb-6 font-montserrat tracking-tight">
-          Configuración de la Planilla
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input 
-            label="Nombre de la Planilla" 
-            placeholder="Ej: Abono VIP"
-            value={data.name || ''} 
-            onChange={e => onChange({...data, name: e.target.value})} 
-            required 
-          />
-          <Input 
-            label="Precio de Referencia (€)" 
-            placeholder="Ej: 99.99"
-            type="text" 
-            value={data.price || ''} 
-            onChange={e => onChange({...data, price: e.target.value})} 
-            required 
-          />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-subsonic-border bg-subsonic-navfooter shadow-2xl">
+        <div className="flex shrink-0 items-center justify-between border-b border-subsonic-border px-6 py-4">
+          <h2 className="text-xl font-black uppercase tracking-tight text-subsonic-accent">
+            {template ? 'Editar plantilla de entrada' : 'Nueva plantilla de entrada'}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-lg text-subsonic-muted hover:text-subsonic-text"
+            aria-label="Cerrar modal"
+          >
+            ✕
+          </button>
         </div>
 
-        <div className="mt-6">
-          <label className="block text-xs font-montserrat text-subsonic-muted uppercase tracking-widest mb-2 ml-1">
-            Beneficios Incluidos (separados por comas)
-          </label>
-          <textarea 
-            className="w-full bg-subsonic-bg border border-subsonic-border p-4 rounded-xl text-subsonic-text text-sm focus:border-subsonic-accent outline-none min-h-[120px] transition-all hover:border-subsonic-accent/50"
-            placeholder="Ej: Acceso Prioritario, Barra Libre, Merchandising Oficial..."
-            value={Array.isArray(data.features) ? data.features.join(', ') : data.features || ''}
-            onChange={handleFeaturesChange}
-            required
-          />
-        </div>
-      </BaseCard>
+        <form onSubmit={handleSubmit} className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Input
+              label="Nombre"
+              name="name"
+              value={templateData.name}
+              onChange={handleChange}
+              placeholder="Abono VIP"
+              required
+            />
+            <Input
+              label="ID"
+              name="id"
+              value={templateData.id}
+              onChange={handleChange}
+              placeholder="abono-vip"
+              required
+            />
+            <Input
+              label="Precio (€)"
+              name="price"
+              type="number"
+              min="0"
+              step="0.01"
+              value={templateData.price}
+              onChange={handleChange}
+              placeholder="99.99"
+              required
+            />
+          </div>
 
-      <div className="flex gap-4 sticky bottom-4 bg-subsonic-bg/80 backdrop-blur-md p-4 rounded-2xl border border-subsonic-border shadow-2xl z-10">
-        <Button type="submit" variant="primary" className="flex-1">
-          {data.id ? 'Actualizar Planilla' : 'Guardar Nueva Planilla'}
-        </Button>
-        <Button type="button" variant="outline" className="flex-1" onClick={onCancel}>
-          Cancelar
-        </Button>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-subsonic-muted">
+              Beneficios (separados por comas)
+            </label>
+            <textarea
+              name="features"
+              value={templateData.features}
+              onChange={handleChange}
+              rows="4"
+              placeholder="Acceso prioritario, Zona VIP, Consumición incluida"
+              className="w-full rounded-md border border-subsonic-border bg-subsonic-surface px-4 py-2 text-sm text-subsonic-text placeholder:text-subsonic-muted outline-none focus:ring-2 focus:ring-subsonic-accent/30"
+              required
+            />
+          </div>
+
+          <div className="rounded-xl border border-subsonic-border bg-subsonic-surface/40 p-4">
+            <p className="text-sm text-subsonic-muted">
+              Define los beneficios de forma clara para reutilizar esta plantilla en la gestión de festivales.
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-3 border-t border-subsonic-border pt-4">
+            <Button
+              type="button"
+              onClick={onClose}
+              className="bg-subsonic-accent px-5 py-2 text-subsonic-bg"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              className="bg-subsonic-accent px-5 py-2 text-subsonic-bg"
+            >
+              Guardar
+            </Button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 };
 
