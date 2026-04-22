@@ -285,6 +285,21 @@ class SubsonicModel:
         dao = self.factory.get_ground_dao()
         return dao.get_all()
 
+    def crear_recinto(self, ground_dto):
+        """Crea un nuevo recinto."""
+        dao = self.factory.get_ground_dao()
+        return dao.create(ground_dto)
+
+    def actualizar_recinto(self, ground_dto):
+        """Actualiza un recinto existente."""
+        dao = self.factory.get_ground_dao()
+        return dao.update(ground_dto.id, ground_dto)
+
+    def eliminar_recinto(self, ground_id: str):
+        """Elimina un recinto por su ID."""
+        dao = self.factory.get_ground_dao()
+        return dao.delete(ground_id)
+
     # === Blog ===
     def listar_blog_posts(self):
         """Devuelve todas las entradas del blog."""
