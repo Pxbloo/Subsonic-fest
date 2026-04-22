@@ -57,7 +57,7 @@ const FestivalCard = ({ id, title, date, startDate, price, description, image })
           ) : (
             <>
               <span className="text-subsonic-accent font-black text-xl">
-                {price}
+                {price}€
               </span>
               <Button variant="primarySmall">
                 Más información
