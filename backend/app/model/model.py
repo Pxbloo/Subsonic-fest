@@ -347,6 +347,10 @@ class SubsonicModel:
         dao = self.factory.get_merchandising_dao()
         return dao.update(product_dto.id, product_dto)
 
+    def eliminar_merchandising(self, product_id: str):
+        dao = self.factory.get_merchandising_dao()
+        return dao.delete(product_id)
+
     # === Favoritos ===
     def obtener_favoritos_usuario(self, user_id: str):
         """Devuelve los favoritos de un usuario."""

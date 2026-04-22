@@ -3,6 +3,8 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import BaseCard from '@/components/ui/BaseCard';
 import API_BASE_URL from '@/config/api';
+import {getAuth} from "firebase/auth";
+import ConfirmDialog from '@/components/ui/ConfirmDialog.jsx';
 
 // --- 1. MÓDULO: INFORMACIÓN GENERAL ---
 const GeneralInfoForm = ({ data, onChange }) => (
@@ -190,6 +192,7 @@ const FestivalsManagement = () => {
   const [availableGrounds, setAvailableGrounds] = useState([]);
   const [ticketTemplates, setTicketTemplates] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [festivalToDelete, setFestivalToDelete] = useState(null);
   const [currentFestival, setCurrentFestival] = useState({
     title: '', date: '', startDate: '', location: '', description: '', tickets: [], lineup: [], grounds: []
   });
@@ -221,78 +224,96 @@ const FestivalsManagement = () => {
   }, []);
 
   const handleSave = async (e) => {
-    e.preventDefault();
-    if (!canSubmit) {
-        alert('Por favor, espera antes de hacer más peticiones.');
-        return;
-    }
-    setCanSubmit(false);
-
-    const normalizedLineup = (currentFestival.lineup || [])
-      .filter((artist) => artist?.id || artist?.name)
-      .map((artist) => ({
-        id: String(artist.id || ''),
-        name: String(artist.name || ''),
-        genre: String(artist.genre || '')
-      }));
-
-    const normalizedTickets = (currentFestival.tickets || [])
-      .filter((ticket) => ticket?.name)
-      .map((ticket) => ({
-        name: String(ticket.name || ''),
-        price: Number(ticket.price || 0),
-        features: Array.isArray(ticket.features) ? ticket.features : []
-      }));
-
-    const normalizedGrounds = (currentFestival.grounds || [])
-      .filter((ground) => ground?.name)
-      .map((ground) => ({
-        id: String(ground.id || ''),
-        name: String(ground.name),
-        area: ground.area || '',
-        capacity: Number(ground.capacity || 0),
-        status: ground.status || ''
-      }));
-
-    if (normalizedGrounds.length < 1) {
-      alert('Debes seleccionar al menos 1 recinto para el festival.');
-      return;
-    }
-
-    if (normalizedLineup.length < 1) {
-      alert('Debes seleccionar al menos 1 artista en la cartelera.');
-      return;
-    }
-
-    if (normalizedTickets.length < 1) {
-      alert('Debes seleccionar al menos 1 entrada para el festival.');
-      return;
-    }
-
-    const festivalToSave = {
-      ...currentFestival,
-      lineup: normalizedLineup,
-      tickets: normalizedTickets,
-      grounds: normalizedGrounds,
-      location: formatFestivalLocation(normalizedGrounds)
-    };
-
-    const isNew = !currentFestival.id;
-    const method = isNew ? 'POST' : 'PUT';
-    const url = isNew ? `${API_URL}/festivals` : `${API_URL}/festivals/${currentFestival.id}`;
+        e.preventDefault();
     
-    try {
-      await fetch(url, {
-        method,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(festivalToSave)
-      });
-      setIsEditing(false);
-      fetchData();
-    } catch (err) {
-      console.error("Error al guardar festival:", err);
-    }
-    setCanSubmit(true);
+        if (!canSubmit) {
+          alert('Por favor, espera antes de hacer más peticiones.');
+          return;
+        }
+        setCanSubmit(false);
+
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+
+        const token = await currentUser.getIdToken();
+
+        const normalizedLineup = (currentFestival.lineup || [])
+            .filter((artist) => artist?.id || artist?.name)
+            .map((artist) => ({
+                id: String(artist.id || ''),
+                name: String(artist.name || ''),
+                genre: String(artist.genre || '')
+            }));
+
+        const normalizedTickets = (currentFestival.tickets || [])
+            .filter((ticket) => ticket?.name)
+            .map((ticket) => ({
+                name: String(ticket.name || ''),
+                price: Number(ticket.price || 0),
+                features: Array.isArray(ticket.features) ? ticket.features : []
+            }));
+
+        const normalizedGrounds = (currentFestival.grounds || [])
+            .filter((ground) => ground?.name)
+            .map((ground) => ({
+                id: String(ground.id || ''),
+                name: String(ground.name),
+                area: ground.area || '',
+                capacity: Number(ground.capacity || 0),
+                status: ground.status || ''
+            }));
+
+        if (normalizedGrounds.length < 1) {
+            alert('Debes seleccionar al menos 1 recinto para el festival.');
+            return;
+        }
+
+        if (normalizedLineup.length < 1) {
+            alert('Debes seleccionar al menos 1 artista en la cartelera.');
+            return;
+        }
+
+        if (normalizedTickets.length < 1) {
+            alert('Debes seleccionar al menos 1 entrada para el festival.');
+            return;
+        }
+
+        const isNew = !currentFestival.id;
+        const festivalToSave = {
+            ...currentFestival,
+            id: isNew
+                ? currentFestival.title.trim().toLowerCase().replace(/\s+/g, '-')
+                : currentFestival.id,
+            lineup: normalizedLineup,
+            tickets: normalizedTickets,
+            grounds: normalizedGrounds,
+            location: formatFestivalLocation(normalizedGrounds)
+        };
+
+        const method = isNew ? 'POST' : 'PUT';
+        const url = isNew ? `${API_BASE_URL}/festivals` : `${API_BASE_URL}/festivals/${currentFestival.id}`;
+
+        try {
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(festivalToSave)
+            });
+
+            if (response.ok) {
+                setIsEditing(false);
+                fetchData();
+            } else {
+                const errorText = await response.text();
+                console.error('Error al guardar festival:', response.status, errorText);
+            }
+        } catch (err) {
+            console.error("Error al guardar festival:", err);
+        }
+        setCanSubmit(true);
   };
 
   const handleDelete = async (id) => {
@@ -301,15 +322,28 @@ const FestivalsManagement = () => {
           return;
       }
       setCanSubmit(false);
-    if (window.confirm("¿Estás seguro de que quieres eliminar este festival?")) {
+      if (!festivals) return; 
+
       try {
-        await fetch(`${API_URL}/festivals/${id}`, { method: 'DELETE' });
-        fetchData();
+          const auth = getAuth();
+          const currentUser = auth.currentUser;
+
+          const token = await currentUser.getIdToken();
+          const response = await fetch(`${API_BASE_URL}/festivals/${festival.id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+          });
+          if (!response.ok){
+              console.error('Failed to delete artist:', response.statusText);
+          }
+          fetchData();
       } catch (err) {
         console.error("Error al eliminar festival:", err);
       }
       setCanSubmit(true);
-    }
+
   };
 
   return (
@@ -436,13 +470,21 @@ const FestivalsManagement = () => {
                 <Button 
                   variant="danger" 
                   className="text-xs px-4" 
-                  onClick={() => handleDelete(fest.id)}
+                  onClick={() => setFestivalToDelete(fest)}
                 >
                   Eliminar
                 </Button>
               </div>
             </div>
           ))}
+            <ConfirmDialog
+                isOpen={!!festivalToDelete}
+                onClose={() => setFestivalToDelete(null)}
+                onConfirm={handleDelete}
+                title="Eliminar festival"
+                message={`¿Estás seguro de que deseas eliminar a "${festivalToDelete?.title}"? Esta acción no se puede deshacer.`}
+                user={festivalToDelete}
+            />
         </div>
       )}
     </div>

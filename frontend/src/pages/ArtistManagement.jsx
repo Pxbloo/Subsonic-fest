@@ -4,6 +4,7 @@ import API_BASE_URL from "@/config/api.js";
 import Button from "@/components/ui/Button.jsx";
 import SearchBar from "@/components/ui/SearchBar.jsx";
 import ConfirmDialog from "@/components/ui/ConfirmDialog.jsx";
+import {getAuth} from "firebase/auth";
 
 const ArtistManagement = () => {
 
@@ -66,44 +67,62 @@ const ArtistManagement = () => {
     };
 
     const handleSaveArtist = async (artistData) => {
+      
         if (!canSubmit) {
             alert('Por favor, espera antes de hacer más peticiones.');
             return;
         }
         setCanSubmit(false);
+      
         try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+                throw new Error('No user is currently logged in or user is not authenticated.');
+            }
+
+            const token = await currentUser.getIdToken();
+
             if (selectedArt) {
                 const response = await fetch(`${API_BASE_URL}/artists/${selectedArt.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify(artistData)
                 });
+
                 if (!response.ok) {
-                    console.error('Failed to update user:', response.statusText);
+                    const errorText = await response.text();
+                    throw new Error(`Request failed: ${response.status} ${errorText}`);
                 }
-            }
-            else {
+            } else {
                 const response = await fetch(`${API_BASE_URL}/artists`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify(artistData)
+                    body: JSON.stringify({
+                        ...artistData,
+                        stock: 0
+                    })
                 });
+
                 if (!response.ok) {
-                    console.error('Failed to create user:', response.statusText);
+                    const errorText = await response.text();
+                    throw new Error(`Request failed: ${response.status} ${errorText}`);
                 }
             }
-        }
-        catch (error) {
-            console.error('Error saving user:', error);
-        }
-        finally {
+
             setModalOpen(false);
             await fetchArtists();
             setCanSubmit(true);
+        }
+        catch (error) {
+            console.error('Error saving product:', error);
         }
     };
 
@@ -116,13 +135,25 @@ const ArtistManagement = () => {
         setCanSubmit(false);
         if (!confirmDelete) return;
         try {
-            //Para borrar usar confirmDelete en vez de selectedArt
-            const response = await fetch(`${API_BASE_URL}/artists/${selectedArt.id}`, {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            const token = await currentUser.getIdToken();
+
+            if (!currentUser) {
+                throw new Error('No user is currently logged in or user is not authenticated.');
+            }
+            //Para borrar usar confirmDelete
+            const response = await fetch(`${API_BASE_URL}/artists/${confirmDelete.id}`, {
                 method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
             if (!response.ok){
                 console.error('Failed to delete artist:', response.statusText);
             }
+            setConfirmDelete(null);
             await fetchArtists();
         } catch (error) {
             console.error('Error deleting artist:', error);

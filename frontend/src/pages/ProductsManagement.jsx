@@ -132,14 +132,26 @@ const ProductsManagement = () => {
         setCanSubmit(false);
         if (!confirmDelete) return;
         try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+                throw new Error('No user is currently logged in or user is not authenticated.');
+            }
+
+            const token = await currentUser.getIdToken();
+
             const response = await fetch(`${API_BASE_URL}/merchandising/${confirmDelete.id}`, {
                 method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
             if (!response.ok){
                 console.error('Failed to delete product:', response.statusText);
             }
-            await fetchProducts();
             setConfirmDelete(null);
+            await fetchProducts();
         } catch (error) {
             console.error('Error deleting product:', error);
         }
