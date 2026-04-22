@@ -6,13 +6,15 @@ import stripe
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from firebase_admin import credentials
 
-from .controller.controller import router 
+from .controller.controller import router
 
 
-BASE_DIR = Path(__file__).resolve().parent
-load_dotenv(BASE_DIR.parent / ".env")
+# Cargar variables de entorno desde la raíz
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # backend/app -> backend -> raíz
+load_dotenv(BASE_DIR / ".env")
 
 
 def _initialize_firebase() -> None:
@@ -36,6 +38,10 @@ app.add_middleware(
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
 
 app.include_router(router)
+
+static_dir = BASE_DIR / "static"
+if static_dir.exists():
+    app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
 
 if __name__ == "__main__":
