@@ -348,6 +348,18 @@ async def create_ground(ground: GroundDTO, current_user: UserDTO = Depends(get_c
 	return ground
 
 
+@router.put("/api/grounds/{ground_id}")
+async def update_ground(ground_id: str, ground: GroundDTO, current_user: UserDTO = Depends(get_current_user)):
+	if current_user.role not in ["admin", "provider"]:
+		raise HTTPException(status_code=403, detail="Solo administradores o proveedores pueden actualizar recintos")
+
+	ground.id = ground_id
+	success = model.actualizar_recinto(ground)
+	if not success:
+		raise HTTPException(status_code=404, detail="Recinto no encontrado")
+	return ground
+
+
 @router.delete("/api/grounds/{ground_id}")
 async def delete_ground(ground_id: str, current_user: UserDTO = Depends(get_current_user)):
 	if current_user.role not in ["admin", "provider"]:
