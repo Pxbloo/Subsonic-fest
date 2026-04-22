@@ -316,7 +316,7 @@ const FestivalsManagement = () => {
         setCanSubmit(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (festival) => {
       if (!canSubmit) {
           alert('Por favor, espera antes de hacer más peticiones.');
           return;
