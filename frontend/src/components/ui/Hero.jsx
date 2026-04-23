@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from './Button'; 
 
 const Hero = () => {
   return (
@@ -10,11 +9,6 @@ const Hero = () => {
       <p className="text-xl md:text-2xl text-subsonic-text font-bold mb-8 uppercase">
         EVENTOS, EXPERIENCIAS Y MÁS
       </p>
-      
-      {}
-      <Button variant="outline">
-        Siente la Vibración
-      </Button>
     </section>
   );
 };
