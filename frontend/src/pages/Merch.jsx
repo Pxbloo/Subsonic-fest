@@ -85,7 +85,7 @@ function Merch() {
                         price: formattedPrice,
                         description: item.description,
                         stock: Number(item.stock ?? 0),
-                        purchaseOptions: [],
+                        purchaseOptions: Array.isArray(item.purchaseOptions) ? item.purchaseOptions : [],
                     };
                 });
 

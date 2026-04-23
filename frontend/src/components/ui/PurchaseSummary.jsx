@@ -8,6 +8,18 @@ const formatCurrency = (value) =>
         currency: "EUR",
     });
 
+const formatOptionLabel = (optionName) => {
+    const labels = {
+        extent: "Tamaño",
+        size: "Talla",
+        color: "Color",
+        format: "Formato",
+        finish: "Acabado",
+    };
+
+    return labels[optionName] ?? optionName;
+};
+
 function PurchaseSummary({
     open,
     items = [],

@@ -16,6 +16,20 @@ const ProductsManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [canSubmit, setCanSubmit] = useState(true);
 
+    const normalizePurchaseOptions = (purchaseOptions) =>
+        Array.isArray(purchaseOptions)
+            ? purchaseOptions
+                .filter((option) => option?.name && Array.isArray(option?.values))
+                .map((option) => ({
+                    name: String(option.name).trim(),
+                    label: String(option.label || option.name).trim(),
+                    values: option.values
+                        .map((value) => String(value).trim())
+                        .filter(Boolean),
+                }))
+                .filter((option) => option.values.length > 0)
+            : [];
+
     const fetchProducts = async () => {
         try {
             setLoading(true);
@@ -25,7 +39,12 @@ const ProductsManagement = () => {
                 console.error('Failed to fetch products:', response.statusText);
             }
             const data = await response.json();
-            setProducts(data);
+            setProducts(
+                (data || []).map((product) => ({
+                    ...product,
+                    purchaseOptions: normalizePurchaseOptions(product.purchaseOptions),
+                }))
+            );
         }
         catch (error) {
             console.error('Error fetching products:', error);
@@ -80,8 +99,10 @@ const ProductsManagement = () => {
             }
 
             const token = await currentUser.getIdToken();
-            const productPayload = { ...productData };
-            delete productPayload.id;
+            const payload = {
+                ...productData,
+                purchaseOptions: normalizePurchaseOptions(productData.purchaseOptions),
+            };
 
             if (selectedProd) {
                 const response = await fetch(`${API_BASE_URL}/merchandising/${selectedProd.id}`, {
@@ -90,7 +111,7 @@ const ProductsManagement = () => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify(productPayload)
+                    body: JSON.stringify(payload)
                 });
 
                 if (!response.ok) {
@@ -104,7 +125,10 @@ const ProductsManagement = () => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify(productPayload)
+                    body: JSON.stringify({
+                        ...payload,
+                        stock: 0
+                    })
                 });
 
                 if (!response.ok) {
