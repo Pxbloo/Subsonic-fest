@@ -6,6 +6,7 @@ import TicketModal from '../components/ui/TicketModal';
 import BaseCard from '../components/ui/BaseCard.jsx';
 import FavoriteButton from '../components/ui/FavoriteButton.jsx';
 import API_BASE_URL from '@/config/api';
+import groundImage from '@/assets/images/Ground.jpg';
 
 // --- COMPONENTES INTERNOS ---
 
@@ -46,6 +47,54 @@ const FestivalLineup = ({ lineup }) => (
   </section>
 );
 
+const FestivalGrounds = ({ grounds = [] }) => {
+  const safeGrounds = Array.isArray(grounds) ? grounds : [];
+
+  return (
+    <section>
+      <h2 className="text-3xl font-black text-subsonic-accent uppercase mb-6 font-montserrat tracking-tight">
+        Recintos
+      </h2>
+
+      {safeGrounds.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {safeGrounds.map((ground, index) => (
+            <BaseCard key={ground.id || `${ground.name}-${index}`} className="h-full overflow-hidden border border-subsonic-border/70 p-0">
+              <div className="h-full">
+                <div className="aspect-video overflow-hidden bg-subsonic-navfooter">
+                  <img
+                    src={ground.image || groundImage}
+                    alt={ground.name}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+
+                <div className="space-y-2 p-5">
+                  <h3 className="text-xl font-black uppercase tracking-tighter text-white">
+                    {ground.name}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-subsonic-muted">
+                    {ground.description || ground.area || 'Recinto del festival'}
+                  </p>
+                  {ground.capacity ? (
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-subsonic-accent">
+                      Aforo aprox. {Number(ground.capacity).toLocaleString('es-ES')} personas
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            </BaseCard>
+          ))}
+        </div>
+      ) : (
+        <BaseCard className="border border-subsonic-border/70">
+          <p className="text-lg leading-relaxed opacity-80">No hay recintos disponibles para este festival.</p>
+        </BaseCard>
+      )}
+    </section>
+  );
+};
+
 const FestivalTicketComparison = ({ tickets }) => (
   <section className="animate-in fade-in duration-700">
     <h2 className="text-3xl font-black text-subsonic-accent uppercase mb-8 font-montserrat tracking-tight">
@@ -58,7 +107,7 @@ const FestivalTicketComparison = ({ tickets }) => (
             <h4 className="text-xl font-black text-white uppercase tracking-tighter">{ticket.name}</h4>
             <p className="text-subsonic-accent font-black text-2xl">{ticket.price}€</p>
           </div>
-          <ul className="space-y-3 mb-8 flex-grow">
+          <ul className="space-y-3 mb-8 grow">
             {ticket.features && ticket.features.map((feature, fIndex) => (
               <li key={fIndex} className="text-xs font-bold uppercase flex items-center gap-2 text-subsonic-text opacity-80">
                 <span className="text-subsonic-accent">✓</span> {feature}
@@ -122,6 +171,7 @@ const FestivalInstance = () => {
         <div className="lg:col-span-2 space-y-16">
           <FestivalAbout description={festival.description} />
           <FestivalLineup lineup={festival.lineup} />
+          <FestivalGrounds grounds={festival.grounds} />
           <FestivalTicketComparison 
             tickets={festival.tickets} 
             onSelect={() => setIsTicketModalOpen(true)} 
