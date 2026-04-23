@@ -5,10 +5,12 @@ const useSalesDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [festivals, setFestivals] = useState([]);
   const [grounds, setGrounds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [festivalsRes, groundsRes] = await Promise.allSettled([
           fetch(`${API_BASE_URL}/festivals`),
           fetch(`${API_BASE_URL}/grounds`),
@@ -27,6 +29,8 @@ const useSalesDashboard = () => {
         console.error('Error fetching dashboard data:', error);
         setFestivals([]);
         setGrounds([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -37,7 +41,9 @@ const useSalesDashboard = () => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return festivals;
     return festivals.filter((festival) =>
-      festival.title.toLowerCase().includes(term)
+      [festival.id, festival.title, festival.date, festival.startDate, festival.location]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(term))
     );
   }, [searchTerm, festivals]);
 
@@ -45,7 +51,9 @@ const useSalesDashboard = () => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return grounds;
     return grounds.filter((ground) =>
-      ground.name.toLowerCase().includes(term)
+      [ground.id, ground.name, ground.area, ground.status, ground.capacity]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(term))
     );
   }, [searchTerm, grounds]);
 
@@ -58,7 +66,10 @@ const useSalesDashboard = () => {
   }, []);
 
   return {
+    loading,
     searchTerm,
+    festivals,
+    grounds,
     filteredFestivals,
     filteredGrounds,
     handleSearchChange,
