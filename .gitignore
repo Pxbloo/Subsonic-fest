@@ -32,3 +32,9 @@ serviceAccountKey.json
 
 frontend/pnpm-lock.yaml
 .env
+
+# Docker (tercera entrega)
+dockerfile
+.dockerignore
+Dockerfile
+**/Dockerfile
