@@ -59,7 +59,7 @@ function Merch() {
                 const mappedProducts = (data || []).map((item) => {
                     const rawPrice = typeof item.price === "number" ? item.price : Number(item.price);
                     const numericPrice = Number.isNaN(rawPrice) ? 0 : rawPrice;
-                    const formattedPrice = `${numericPrice.toFixed(2)}€`;
+                    const formattedPrice = numericPrice.toFixed(2);
 
                     const type = String(item.type || "").toLowerCase();
                     let categoryId = "otros";
