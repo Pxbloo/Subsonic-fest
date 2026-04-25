@@ -64,9 +64,19 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
         onClose?.();
     };
 
+    const stopModalPropagation = (event) => {
+        event.stopPropagation();
+    };
+
+    const handleClose = (event) => {
+        event.stopPropagation();
+        onClose?.();
+    };
+
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={stopModalPropagation}
             role="dialog"
             aria-modal="true"
             aria-label={title}
@@ -75,7 +85,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
             <button
                 type="button"
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                onClick={onClose}
+                onClick={handleClose}
                 aria-label="Cerrar"
             />
 
@@ -94,7 +104,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                     {/* Cerrar modal */}
                     <button
                         type="button"
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="rounded-full px-3 py-1 text-sm font-black hover:bg-white/10 transition"
                         aria-label="Cerrar"
                     >
@@ -197,7 +207,7 @@ function ProductModal({ open, product, onClose, onAddToCart }) {
                         <div className="mt-6 flex gap-3">
                             <button
                                 type="button"
-                                onClick={onClose}
+                                onClick={handleClose}
                                 className="flex-1 rounded-full border border-subsonic-border bg-subsonic-bg/40 px-6 py-3 text-sm font-black uppercase hover:bg-white/10 transition"
                             >
                                 Cancelar

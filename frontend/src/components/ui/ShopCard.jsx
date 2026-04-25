@@ -6,14 +6,44 @@ const ShopCard = ({ id, name, category, price, description, image, stock, purcha
 
     const [open, setOpen] = useState(false);
 
+    const openModal = () => setOpen(true);
+
+    const handleCardKeyDown = (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openModal();
+        }
+    };
+
+    const stopPropagation = (event) => {
+        event.stopPropagation();
+    };
+
+    const handleOpenFromButton = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openModal();
+    };
+
     const product = useMemo(
         () => ({ name, category, price, description, image, stock, purchaseOptions }),
         [name, category, price, description, image, stock, purchaseOptions]
     );
 
     return (
-        <div className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl p-6 flex flex-col items-center text-center hover:border-subsonic-accent transition-colors group relative">
-            <div className="absolute right-4 top-4 z-10 rounded-full bg-subsonic-bg/80 p-2 backdrop-blur-sm">
+        <div
+            className="bg-subsonic-navfooter border border-subsonic-border rounded-2xl p-6 flex flex-col items-center text-center hover:border-subsonic-accent transition-colors group relative cursor-pointer"
+            onClick={openModal}
+            onKeyDown={handleCardKeyDown}
+            role="button"
+            tabIndex={0}
+            aria-label={`Abrir producto ${name}`}
+        >
+            <div
+                className="absolute right-4 top-4 z-10 rounded-full bg-subsonic-bg/80 p-2 backdrop-blur-sm"
+                onClick={stopPropagation}
+                onKeyDown={stopPropagation}
+            >
                 <FavoriteButton id={id} type="product" className="block" />
             </div>
             <div className="w-full aspect-video bg-subsonic-border rounded-lg mb-6 flex items-center justify-center overflow-hidden">
@@ -27,7 +57,8 @@ const ShopCard = ({ id, name, category, price, description, image, stock, purcha
             <div className="flex justify-between items-center w-full mt-auto">
                 <span className="text-subsonic-accent font-black text-xl">{price}€</span>
                 <button
-                    onClick={() => setOpen(true)}
+                    type="button"
+                    onClick={handleOpenFromButton}
                     className="bg-subsonic-accent text-subsonic-bg px-4 py-2 rounded-full font-black text-xs uppercase hover:bg-subsonic-text transition-colors"
                 >
                     Añadir al carrito
