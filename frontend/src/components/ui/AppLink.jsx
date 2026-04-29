@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const AppLink = ({ href = "#", children, className = "" }) => {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className={`text-subsonic-text font-bold hover:text-subsonic-btn transition ${className}`}
     >
       {children}
-    </a>
+    </Link>
   );
 };
 
