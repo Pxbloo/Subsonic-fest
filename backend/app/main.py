@@ -39,7 +39,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
 
 app.include_router(router)
 
-static_dir = BASE_DIR / "static"
+static_dir = Path(__file__).resolve().parent / "static"
 if static_dir.exists():
     app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
@@ -47,4 +47,4 @@ if static_dir.exists():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
