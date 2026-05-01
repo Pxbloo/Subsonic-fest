@@ -4,6 +4,7 @@ import PaymentForm from '@/components/ui/PaymentForm';
 import { useCheckout } from '@/hooks/useCheckout';
 import Button from '@/components/ui/Button';
 import BaseCard from '@/components/ui/BaseCard.jsx';
+import { getCurrentUserId } from '@/utils/currentUser';
 
 const CheckoutPage = () => {
     const navigate = useNavigate();
@@ -66,26 +67,24 @@ const CheckoutPage = () => {
         setCanSubmit(false);
 
         if (!checkoutDraft) {
+            setCanSubmit(true);
             return;
         }
 
-        const storedUser = (() => {
-            try {
-                return JSON.parse(localStorage.getItem('user') || 'null');
-            } catch {
-                return null;
-            }
-        })();
+        const orderId = checkoutDraft.orderId || (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2,9)}`);
 
-        const orderId = checkoutDraft.orderId || crypto.randomUUID();
-
-        await startStripeCheckout({
-            orderId,
-            totalAmount: totalAmountNumber,
-            userId: checkoutDraft.userId || storedUser?.id || null,
-            source: checkoutDraft.source || 'checkout',
-        });
-        setCanSubmit(true);
+        try {
+            await startStripeCheckout({
+                orderId,
+                totalAmount: totalAmountNumber,
+                userId: checkoutDraft.userId || getCurrentUserId(),
+                source: checkoutDraft.source || 'checkout',
+            });
+        } catch (err) {
+            console.error('Checkout error:', err);
+        } finally {
+            setCanSubmit(true);
+        }
     };
 
     if (!checkoutDraft) {

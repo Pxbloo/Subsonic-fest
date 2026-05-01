@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import API_BASE_URL from '@/config/api';
+import { getCurrentUserId } from '@/utils/currentUser';
+
+const getTime = (value) => {
+    const time = Date.parse(value || '');
+    return Number.isNaN(time) ? 0 : time;
+};
 
 export const useHistory = () => {
     const [data, setData] = useState(null);
@@ -9,15 +15,8 @@ export const useHistory = () => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const storedUser = (() => {
-                    try {
-                        return JSON.parse(localStorage.getItem('user') || 'null');
-                    } catch {
-                        return null;
-                    }
-                })();
-
-                const orderQuery = storedUser?.id ? `?user_id=${encodeURIComponent(storedUser.id)}` : '';
+                const currentUserId = getCurrentUserId();
+                const orderQuery = currentUserId ? `?user_id=${encodeURIComponent(currentUserId)}` : '';
 
                 let historyHeaders = undefined;
                 const auth = getAuth();
@@ -38,19 +37,26 @@ export const useHistory = () => {
                 const history = historyRes.ok ? await historyRes.json() : [];
                 const orders = ordersRes.ok ? await ordersRes.json() : [];
 
-                const merchandising = (orders || []).map((order) => {
-                    const amount = Number(order.amount ?? 0);
+                const sortedHistory = [...(history || [])].sort((a, b) =>
+                    getTime(b.date || b.created_at) - getTime(a.date || a.created_at)
+                );
 
-                    return {
-                        id: order.id,
-                        title: order.title || 'Pedido en Subsonic Festival',
-                        date: order.created_at ? order.created_at.slice(0, 10) : '',
-                        amount,
-                        status: order.status === 'paid_test' ? 'Completado' : 'Pendiente',
-                    };
-                });
+                const merchandising = (orders || [])
+                    .map((order) => {
+                        const amount = Number(order.amount ?? 0);
 
-                setData({ pastFestivals: history || [], merchandising: merchandising || [] });
+                        return {
+                            id: order.id,
+                            title: order.title || 'Pedido en Subsonic Festival',
+                            date: order.created_at ? order.created_at.slice(0, 10) : '',
+                            created_at: order.created_at,
+                            amount,
+                            status: order.status === 'paid_test' ? 'Completado' : 'Pendiente',
+                        };
+                    })
+                    .sort((a, b) => getTime(b.created_at || b.date) - getTime(a.created_at || a.date));
+
+                setData({ pastFestivals: sortedHistory, merchandising: merchandising || [] });
             } catch (error) {
                 console.error('Error fetching history data:', error);
                 setData({ pastFestivals: [], merchandising: [] });

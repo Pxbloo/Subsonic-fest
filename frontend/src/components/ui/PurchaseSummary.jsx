@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/ui/Button";
+import { getCurrentUserId } from "@/utils/currentUser";
+import { createOrderId } from "@/utils/orderId";
 
 const formatCurrency = (value) =>
     value.toLocaleString("es-ES", {
@@ -59,19 +61,11 @@ function PurchaseSummary({
     );
 
     const handleGoToPayment = () => {
-        const storedUser = (() => {
-            try {
-                return JSON.parse(localStorage.getItem("user") || "null");
-            } catch {
-                return null;
-            }
-        })();
-
         const checkoutDraft = {
-            orderId: crypto.randomUUID(),
+            orderId: createOrderId(),
             totalAmount,
             source: "merchandising",
-            userId: storedUser?.id || null,
+            userId: getCurrentUserId(),
         };
 
         sessionStorage.setItem("checkoutDraft", JSON.stringify(checkoutDraft));

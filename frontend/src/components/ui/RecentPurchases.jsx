@@ -1,18 +1,30 @@
 // src/components/profile/RecentPurchases.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RecentPurchases = ({ purchases = [] }) => {
+    const recentPurchases = purchases.slice(0, 3);
+
     return (
         <div>
-            <h3 className="text-lg font-black text-subsonic-text uppercase mb-4">
-                Compras recientes
-            </h3>
+            <div className="mb-4 flex items-center justify-between gap-3">
+                <h3 className="text-lg font-black text-subsonic-text uppercase">
+                    Compras recientes
+                </h3>
 
-            {purchases.length === 0 ? (
+                <Link
+                    to="/history"
+                    className="shrink-0 rounded-full border border-subsonic-accent px-3 py-1 text-[10px] font-black uppercase tracking-wide text-subsonic-accent transition hover:bg-subsonic-accent hover:text-subsonic-bg"
+                >
+                    Ver todo
+                </Link>
+            </div>
+
+            {recentPurchases.length === 0 ? (
                 <p className="text-sm text-subsonic-text/70">Aún no tienes compras.</p>
             ) : (
                 <ul className="space-y-3">
-                    {purchases.map((p) => (
+                    {recentPurchases.map((p) => (
                         <li
                             key={p.id}
                             className="border border-subsonic-border rounded-xl p-4 bg-subsonic-bg/40"

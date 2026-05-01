@@ -4,7 +4,7 @@ from typing import Optional
 from uuid import uuid4
 
 import stripe
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from ..model.dto.ArtistDTO import ArtistDTO
@@ -21,7 +21,7 @@ from ..model.model import SubsonicModel
 router = APIRouter()
 model = SubsonicModel()
 
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "").rstrip("/")
 
 
 class StripeCheckoutRequest(BaseModel):
@@ -49,6 +49,20 @@ def _build_order_payload(payload: StripeCheckoutRequest, status: str) -> OrderIt
 		updated_at=_now_iso(),
 		currency="EUR",
 	)
+
+
+def _resolve_frontend_url(request: Request) -> str:
+	if FRONTEND_URL:
+		return FRONTEND_URL
+
+	forwarded_proto = request.headers.get("x-forwarded-proto")
+	forwarded_host = request.headers.get("x-forwarded-host")
+
+	if forwarded_host:
+		scheme = forwarded_proto or request.url.scheme
+		return f"{scheme}://{forwarded_host}".rstrip("/")
+
+	return str(request.base_url).rstrip("/")
 
 
 def _ensure_admin(current_user: UserDTO) -> None:
@@ -436,7 +450,7 @@ async def get_order_items(user_id: Optional[str] = None):
 
 
 @router.post("/api/checkout-stripe")
-async def checkout_stripe(payload: StripeCheckoutRequest):
+async def checkout_stripe(payload: StripeCheckoutRequest, request: Request):
 	action = payload.action.lower()
 
 	if action == "confirm":
@@ -475,6 +489,8 @@ async def checkout_stripe(payload: StripeCheckoutRequest):
 	else:
 		model.actualizar_pedido(order)
 
+	frontend_url = _resolve_frontend_url(request)
+
 	session = stripe.checkout.Session.create(
 		mode="payment",
 		line_items=[
@@ -488,8 +504,8 @@ async def checkout_stripe(payload: StripeCheckoutRequest):
 			}
 		],
 		metadata={"order_id": order.id, "user_id": payload.user_id or ""},
-		success_url=f"{FRONTEND_URL}/checkout/success?order_id={order.id}",
-		cancel_url=f"{FRONTEND_URL}/checkout/cancel?order_id={order.id}",
+		success_url=f"{frontend_url}/checkout/success?order_id={order.id}",
+		cancel_url=f"{frontend_url}/checkout/cancel?order_id={order.id}",
 	)
 
 	order.checkout_session_id = session.id

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import TicketItem from './TicketItem';
+import { getCurrentUserId } from '@/utils/currentUser';
+import { createOrderId } from '@/utils/orderId';
 
 const TicketModal = ({ isOpen, onClose, festival }) => {
   const navigate = useNavigate();
@@ -43,19 +45,11 @@ const TicketModal = ({ isOpen, onClose, festival }) => {
   }, 0);
 
   const handleConfirm = () => {
-    const storedUser = (() => {
-      try {
-        return JSON.parse(localStorage.getItem('user') || 'null');
-      } catch {
-        return null;
-      }
-    })();
-
     const checkoutDraft = {
-      orderId: crypto.randomUUID(),
+      orderId: createOrderId(),
       totalAmount,
       source: 'tickets',
-      userId: storedUser?.id || null,
+      userId: getCurrentUserId(),
     };
 
     sessionStorage.setItem('checkoutDraft', JSON.stringify(checkoutDraft));

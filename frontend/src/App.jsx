@@ -21,6 +21,7 @@ import UsersDashboard from "@/pages/UsersDashboard.jsx";
 import ContactUs from "@/pages/ContactUs.jsx";
 import TicketsManagement from "@/pages/TicketsManagement.jsx";
 import GroundsProvider from "@/pages/GroundsProvider.jsx";
+import GroundInstance from "@/pages/GroundInstance.jsx";
 import ArtistMan from "@/pages/ArtistManagement.jsx";
 import ProductMan from "@/pages/ProductsManagement.jsx";
 
@@ -52,19 +53,23 @@ function App() {
             const userData = await response.json();
             console.log("User data received from backend server:", userData);
             setUser(userData);
+            localStorage.setItem('user', JSON.stringify(userData));
           }
           else {
             setUser(null);
+            localStorage.removeItem('user');
           }
         }
         else {
           setUser(null);
+          localStorage.removeItem('user');
         }
         setAuthReady(true);
       }
       catch (error) {
         console.error("Error checking authentication status:", error);
         setUser(null);
+        localStorage.removeItem('user');
         setAuthReady(true);
       }
 
@@ -79,6 +84,7 @@ function App() {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
     closeModal();
   };
 
@@ -87,6 +93,7 @@ function App() {
       await auth.signOut();
       console.log("User signed out successfully");
       setUser(null);
+      localStorage.removeItem('user');
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -129,6 +136,7 @@ function App() {
             {/* Rutas de PROVEEDOR */}
             <Route path="/sales-dashboard" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider']}> <SalesDashboard /> </ProtectedRoute>} />
             <Route path="/grounds" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider']}> <GroundsProvider user={user} /> </ProtectedRoute>} />
+            <Route path="/grounds/:id" element={<ProtectedRoute user={user} authReady={authReady} allowedRoles={['admin', 'provider']}> <GroundInstance /> </ProtectedRoute>} />
             {/* --------------- Gestión de recintos de PROVEEDOR conectado a "/grounds" de ADMIN --------------- */}
 
             {/* Rutas de ADMINISTRADOR */}

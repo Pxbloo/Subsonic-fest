@@ -9,6 +9,11 @@ import {getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider
 import { useFavorites } from '@/hooks/useFavorites';
 import FavoriteButton from '@/components/ui/FavoriteButton';
 
+const getTime = (value) => {
+    const time = Date.parse(value || '');
+    return Number.isNaN(time) ? 0 : time;
+};
+
 const UserProfile = ({user}) => {
 
     const [isEditing, setIsEditing] = useState(false);
@@ -129,14 +134,16 @@ const UserProfile = ({user}) => {
     }
 
     const purchases = useMemo(() => {
-        return orderItems.map((item, index) => ({
-            id: item.id,
-            title: item.title || item.name || "Pedido en Subsonic Festival",
-            date: item.created_at ? item.created_at.slice(0, 10) : item.date || "",
-            amount: item.amount ?? item.price ?? 0,
-            status: item.status === "paid_test" ? "Completado" : item.status === "pending_test" ? "Pendiente" : (item.status || "Pendiente"),
-            category: item.source || item.category || "Pedido Stripe",
-        }));
+        return [...orderItems]
+            .sort((a, b) => getTime(b.created_at || b.date) - getTime(a.created_at || a.date))
+            .map((item) => ({
+                id: item.id,
+                title: item.title || item.name || "Pedido en Subsonic Festival",
+                date: item.created_at ? item.created_at.slice(0, 10) : item.date || "",
+                amount: item.amount ?? item.price ?? 0,
+                status: item.status === "paid_test" ? "Completado" : item.status === "pending_test" ? "Pendiente" : (item.status || "Pendiente"),
+                category: item.source || item.category || "Pedido Stripe",
+            }));
     }, [orderItems]);
 
     const handleAvatarChange = (nextUrl) => {
