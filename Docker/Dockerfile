@@ -9,13 +9,8 @@ COPY frontend/package.json frontend/pnpm-lock.yaml ./
 # Instalar pnpm y dependencias
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
-# Copiar código fuente del frontend
-COPY frontend/src ./src
-COPY frontend/index.html ./
-COPY frontend/vite.config.js ./
-COPY frontend/tailwind.config.js ./
-COPY frontend/postcss.config.js ./
-COPY frontend/eslint.config.js ./
+# Copiar el código del frontend (incluye public/)
+COPY frontend/ ./
 
 # Build del frontend
 RUN pnpm run build
@@ -43,9 +38,6 @@ COPY --from=frontend-builder /app/frontend/dist ./app/static
 
 # Copiar serviceAccountKey.json
 COPY backend/serviceAccountKey.json ./
-
-# Copiar .env desde la raíz (opcional)
-COPY .env* ./
 
 ENV PYTHONUNBUFFERED=1
 

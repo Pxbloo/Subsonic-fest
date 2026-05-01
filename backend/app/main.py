@@ -19,9 +19,9 @@ PROJECT_DIR = BACKEND_DIR.parent
 
 
 def _load_environment() -> None:
-    for env_path in (PROJECT_DIR / ".env", BACKEND_DIR / ".env"):
-        if env_path.exists():
-            load_dotenv(env_path)
+    env_path = PROJECT_DIR / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
 
 
 def _first_existing_path(*paths: Path) -> Path | None:

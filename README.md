@@ -9,6 +9,31 @@ Este README describe cómo levantar el proyecto en local y cómo se conectan las
 
 ---
 
+## Configuración global
+
+El proyecto usa un único fichero `.env` en la raíz del repositorio. No se usan ficheros `.env` dentro de `frontend/` ni `backend/`.
+
+Configuración mínima:
+
+```env
+DATA_BACKEND=firebase
+FIREBASE_CREDENTIALS=backend/serviceAccountKey.json
+FRONTEND_URL=http://localhost:5173
+STRIPE_SECRET_KEY=sk_test_xxx
+VITE_API_URL=/api
+PYTHONUNBUFFERED=1
+```
+
+En producción, `FRONTEND_URL` debe apuntar al dominio público, por ejemplo:
+
+```env
+FRONTEND_URL=http://subsonic-festival-l1g4.duckdns.org
+```
+
+`VITE_API_URL=/api` permite que el frontend use la misma URL base que la web desplegada. En desarrollo, Vite redirige `/api` al backend local mediante proxy.
+
+---
+
 ## Requisitos previos
 
 - Python 3.11+ (recomendado) y `pip`.
@@ -45,13 +70,7 @@ Código en `backend/`.
    pip install -r requirements.txt
    ```
 
-5. Crear/editar `backend/.env` (mínimo funcional):
-
-   ```env
-   DATA_BACKEND=firebase
-   FRONTEND_URL=http://localhost:5173
-   STRIPE_SECRET_KEY=sk_test_xxx
-   ```
+5. Crear/editar el `.env` de la raíz del proyecto.
 
    Opciones de `DATA_BACKEND`:
    - `firebase`: usa Firestore y requiere `serviceAccountKey.json` válido.
@@ -73,14 +92,19 @@ Código en `backend/`.
 
 Código en `frontend/`.
 
-El frontend consume la API del backend a través de `frontend/src/config/api.js`, que por defecto apunta a:
+El frontend consume la API del backend a través de `frontend/src/config/api.js`, que lee `VITE_API_URL` desde el `.env` de la raíz.
 
 ```js
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? "http://localhost:8000/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
 ```
 
-Si no defines ninguna variable de entorno, usará `http://localhost:8000/api`.
+La configuración recomendada es:
+
+```env
+VITE_API_URL=/api
+```
+
+En desarrollo, `frontend/vite.config.js` incluye un proxy para enviar `/api` a `http://localhost:8000`.
 
 1. Ir a la carpeta del frontend:
 
@@ -94,19 +118,13 @@ Si no defines ninguna variable de entorno, usará `http://localhost:8000/api`.
    npm install
    ```
 
-3. (Opcional) Crear un fichero `.env` en `frontend/` para configurar la URL de la API:
-
-   ```bash
-   VITE_API_URL=http://localhost:8000/api
-   ```
-
-4. Lanzar el servidor de desarrollo:
+3. Lanzar el servidor de desarrollo:
 
    ```bash
    npm run dev
    ```
 
-5. Abrir el navegador en:
+4. Abrir el navegador en:
    - `http://localhost:5173`
 
 ---
@@ -119,7 +137,7 @@ En dos terminales distintas:
    - `cd backend`
    - Activar entorno virtual.
    - `pip install -r requirements.txt` (solo la primera vez).
-   - Revisar `backend/.env`.
+   - Revisar el `.env` de la raíz.
    - `uvicorn app.main:app --reload --port 8000`.
 
 2. **Terminal 2 (frontend)**
@@ -128,6 +146,27 @@ En dos terminales distintas:
    - `npm run dev`.
 
 ## De esta forma el frontend se servirá en `http://localhost:5173` y se comunicará con la API del backend en `http://localhost:8000/api`.
+
+---
+
+## Docker
+
+El Dockerfile está en `Docker/Dockerfile`, pero el contexto de build debe ser la raíz del proyecto:
+
+```bash
+docker build -f Docker/Dockerfile -t pablofr4/subsonic-festival:latest .
+```
+
+Para ejecutar el contenedor usando el `.env` global:
+
+```bash
+docker run -d \
+  -p 80:8000 \
+  --name subsonic-festival \
+  --restart unless-stopped \
+  --env-file .env \
+  pablofr4/subsonic-festival:latest
+```
 
 ## Notas
 

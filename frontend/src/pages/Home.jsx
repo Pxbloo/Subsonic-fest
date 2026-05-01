@@ -96,7 +96,7 @@ const Home = () => {
 
         {error && (
           <div className="mb-8 w-full rounded-xl border border-red-500 bg-red-500/10 p-4 text-red-500">
-            Error de conexión: {error}. Revisa si json-server está corriendo en el puerto 3000.
+            Error de conexión: {error}. Revisa que la API esté disponible en /api.
           </div>
         )}
 
